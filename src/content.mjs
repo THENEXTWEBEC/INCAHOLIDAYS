@@ -5,8 +5,8 @@ export const site = {
   email: "info@incaholidays.com",
   phoneDisplay: "+593 2 241 6283",
   phoneHref: "+59322416283",
-  whatsappDisplay: "+593 99 618 9559",
-  whatsappHref: "593996189559",
+  whatsappDisplay: "+54 9 3518 62-8874",
+  whatsappHref: "5493518628874",
   location: "Quito, Ecuador"
 };
 
