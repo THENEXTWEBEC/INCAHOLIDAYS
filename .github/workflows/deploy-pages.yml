@@ -29,6 +29,9 @@ jobs:
       - name: Build site
         run: node src/build.mjs
 
+      - name: Adjust links for project Pages path
+        run: find dist -type f -name '*.html' -print0 | xargs -0 sed -i 's#="/#="/INCAHOLIDAYS/#g'
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
