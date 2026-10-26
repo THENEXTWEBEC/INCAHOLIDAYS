@@ -381,7 +381,7 @@ const spanishTranslations = [
   ["A stay with context", "Una estancia con contexto"], ["Ask about Villa Doris", "Pregunta por Villa Doris"], ["Cloud-forest setting", "Entorno de bosque nublado"], ["Close to Quito.<br>Surrounded by another rhythm.", "Cerca de Quito.<br>Rodeada de otro ritmo."], ["The house & gardens", "La casa y los jardines"], ["Warmth in the details.", "Calidez en los detalles."], ["Stay at Villa Doris", "Alójate en Villa Doris"], ["Begin or end your Ecuador journey in Nono.", "Comienza o termina tu viaje por Ecuador en Nono."],
   ["About Inca Holidays", "Sobre Inca Holidays"], ["Ecuador is not a list of places. It is a network of stories.", "Ecuador no es una lista de lugares. Es una red de historias."], ["Inca Holidays creates cultural and soft-adventure experiences for independent travelers and small groups, balancing well-known highlights with Ecuador's quieter corners.", "Inca Holidays crea experiencias culturales y de aventura suave para viajeros independientes y grupos pequeños, equilibrando los lugares conocidos con los rincones más tranquilos de Ecuador."], ["Local knowledge. Personal journeys.", "Conocimiento local. Viajes personales."], ["What guides the work", "Lo que guía nuestro trabajo"], ["Know the wonders.<br>Know the corners.<br>Know the secrets.", "Conoce las maravillas.<br>Conoce los rincones.<br>Conoce los secretos."], ["Designed, not packaged", "Diseñado, no empaquetado"], ["Highlights and hidden corners", "Lugares destacados y rincones ocultos"], ["Nature with responsibility", "Naturaleza con responsabilidad"], ["Based in Quito", "Con sede en Quito"], ["Close to the journey from its first idea.", "Cerca del viaje desde su primera idea."], ["Speak with Inca Holidays about the regions, experiences and pace you want.", "Habla con Inca Holidays sobre las regiones, experiencias y ritmo que deseas."], ["Start the conversation", "Comienza la conversación"],
   ["Plan your trip", "Planifica tu viaje"], ["Tell us where your curiosity leads.", "Cuéntanos adónde te lleva tu curiosidad."], ["Share the outline of your trip. The details below will open a pre-filled email to Inca Holidays so you can review and send it from your own email account.", "Comparte la idea general de tu viaje. Los datos siguientes abrirán un correo preparado para Inca Holidays, para que puedas revisarlo y enviarlo desde tu propia cuenta."], ["Direct contact", "Contacto directo"], ["Prefer to talk first?", "¿Prefieres hablar primero?"], ["Contact Inca Holidays in Quito through the details published in the brochure.", "Contacta con Inca Holidays en Quito usando los datos publicados en el folleto."], ["Email", "Correo electrónico"], ["Phone", "Teléfono"], ["Based in", "Con sede en"], ["About you", "Sobre ti"], ["Who should we contact about this journey?", "¿Con quién debemos contactar sobre este viaje?"], ["Full name", "Nombre completo"], ["WhatsApp with country code", "WhatsApp con código de país"], ["Number of travelers", "Número de viajeros"], ["Where would you like to go?", "¿Adónde te gustaría ir?"], ["Select every region that interests you.", "Selecciona cada región que te interese."], ["Country house in Nono", "Casa de campo en Nono"], ["Shape the journey", "Diseña el viaje"], ["Approximate information is enough to begin.", "La información aproximada es suficiente para comenzar."], ["Approximate start", "Inicio aproximado"], ["Approximate end", "Fin aproximado"], ["Preferred experience", "Experiencia preferida"], ["Choose one", "Elige una"], ["Cultural experiences", "Experiencias culturales"], ["Soft adventure", "Aventura suave"], ["Nature and wildlife", "Naturaleza y fauna"], ["Birdwatching", "Observación de aves"], ["A balanced mix", "Una combinación equilibrada"], ["Comments or preferences", "Comentarios o preferencias"], ["Prepare my trip request", "Preparar mi solicitud de viaje"], ["Please review the highlighted fields.", "Revisa los campos destacados."], ["This field is required.", "Este campo es obligatorio."], ["Select at least one destination.", "Selecciona al menos un destino."], ["Please confirm before preparing the email.", "Confirma antes de preparar el correo."], ["The end month must be after the start month.", "El mes de finalización debe ser posterior al de inicio."], ["Creating a pre-filled email for your review.", "Creando un correo preparado para que lo revises."], ["Your request is ready.", "Tu solicitud está lista."], ["Review and send it from your email application.", "Revísala y envíala desde tu aplicación de correo."], ["Open the email draft", "Abrir el borrador de correo"],
-  ["Privacy notice", "Aviso de privacidad"], ["Website information", "Información del sitio"], ["Trip enquiries", "Consultas de viaje"], ["Your choices", "Tus opciones"], ["Contact information", "Información de contacto"], ["Website terms", "Términos del sitio web"], ["Plain-language terms for this website draft.", "Términos claros para este borrador del sitio web."], ["Travel information", "Información de viaje"], ["Enquiries are not bookings", "Las consultas no son reservas"], ["Photography", "Fotografía"], ["Page not found", "Página no encontrada"], ["The trail ends here", "El sendero termina aquí"], ["This page has wandered off route.", "Esta página se ha desviado de la ruta."], ["Return home", "Volver al inicio"],
+  ["Privacy notice", "Aviso de privacidad"], ["Website information", "Información del sitio"], ["Trip enquiries", "Consultas de viaje"], ["Your choices", "Tus opciones"], ["Contact information", "Información de contacto"], ["Website terms", "Términos del sitio web"], ["Plain-language terms for this website draft.", "Términos claros para este borrador del sitio web."], ["Travel information", "Información de viaje"], ["Enquiries are not bookings", "Las consultas no son reservas"], ["Photography", "Fotografía"], ["Page not found", "Página no encontrada"], ["The trail ends here", "El sendero termina aquí"], ["This page has wandered off route.", "Esta página se ha desviado de la ruta."], ["Return to the destination atlas or begin planning a new journey.", "Vuelve al atlas de destinos o comienza a planificar un nuevo viaje."], ["Return home", "Volver al inicio"], ["Explore destinations", "Explora los destinos"],
   ["Galapagos", "Galápagos"], ["Andes & Highlands", "Andes y tierras altas"], ["Amazon Rainforest", "Selva amazónica"], ["Nono Cloud Forest", "Bosque nublado de Nono"], ["Cruises & island hopping", "Cruceros y rutas entre islas"], ["Volcanoes, heritage & living culture", "Volcanes, patrimonio y cultura viva"], ["Biodiversity & conservation", "Biodiversidad y conservación"], ["A hidden Andean paradise", "Un paraíso andino escondido"], ["Wildlife encounters shaped around your pace.", "Encuentros con la fauna al ritmo que elijas."], ["Where altitude reveals a living history.", "Donde la altura revela una historia viva."], ["Enter one of the planet's richest ecosystems.", "Entra en uno de los ecosistemas más ricos del planeta."], ["Cloud forest, hummingbirds and village life.", "Bosque nublado, colibríes y vida de pueblo."], ["Cruises and island-hopping journeys amid volcanic landscapes and endemic wildlife.", "Cruceros y viajes entre islas, entre paisajes volcánicos y fauna endémica."], ["Snow-capped volcanoes, colonial haciendas, markets and communities across Ecuador's highlands.", "Volcanes nevados, haciendas coloniales, mercados y comunidades en las tierras altas de Ecuador."], ["Guided jungle walks, quiet canoe rides, birdwatching and cultural experiences in the rainforest.", "Caminatas guiadas por la selva, paseos tranquilos en canoa, observación de aves y experiencias culturales en la Amazonía."], ["Two- and three-day journeys from Quito into a natural and cultural landscape in the Andean cloud forest.", "Viajes de dos y tres días desde Quito hacia un paisaje natural y cultural en el bosque nublado andino."], ["The Galapagos Islands reward unhurried exploration.", "Las islas Galápagos recompensan la exploración sin prisa."], ["Volcanic landscapes", "Paisajes volcánicos"], ["Colonial haciendas", "Haciendas coloniales"], ["Markets & heritage", "Mercados y patrimonio"], ["Local cultures", "Culturas locales"], ["Guided walks", "Caminatas guiadas"], ["Canoe journeys", "Viajes en canoa"], ["Wildlife & birds", "Fauna y aves"], ["Cultural connection", "Conexión cultural"], ["Two or three days", "Dos o tres días"], ["Active exploration", "Exploración activa"], ["Birdlife", "Vida de aves"], ["Local life", "Vida local"], ["Cruises", "Cruceros"], ["Island hopping", "Ruta entre islas"], ["Endemic wildlife", "Fauna endémica"], ["Flexible duration", "Duración flexible"]
 ];
 
@@ -418,6 +418,7 @@ spanishTranslations.push(
 function translateToSpanish(html) {
   let translated = html;
   for (const [from, to] of [...spanishTranslations].sort((a, b) => b[0].length - a[0].length)) translated = translated.split(from).join(to);
+  translated = translated.replaceAll("Contactoo", "Contacto").replaceAll("Contactoa", "Contacta");
   translated = translated.replace('<html lang="en">', '<html lang="es">');
   return translated;
 }
@@ -426,8 +427,25 @@ function lightbox() {
   return `<dialog class="lightbox" data-lightbox><button type="button" aria-label="Close image" data-lightbox-close>${icon("close")}</button><figure><img alt="" data-lightbox-image><figcaption data-lightbox-caption></figcaption></figure></dialog>`;
 }
 
+const spanishMeta = {
+  home: { title: "Viajes a medida por Ecuador y Galápagos", description: "Viajes privados a medida por las islas Galápagos, los Andes ecuatorianos, la Amazonía y el bosque nublado de Nono." },
+  destinations: { title: "Destinos en Ecuador y Galápagos", description: "Explora viajes a medida por Galápagos, los Andes, la Amazonía y el bosque nublado de Nono." },
+  "destination-galapagos": { title: "Viajes a medida por Galápagos", description: "Cruceros y viajes entre islas, entre paisajes volcánicos y fauna endémica." },
+  "destination-andes": { title: "Viajes a medida por los Andes", description: "Volcanes nevados, haciendas coloniales, mercados y comunidades en las tierras altas de Ecuador." },
+  "destination-amazon": { title: "Viajes a medida por la Amazonía", description: "Caminatas guiadas, paseos en canoa, observación de aves y experiencias culturales en la selva." },
+  "destination-nono": { title: "Viajes a medida por Nono", description: "Viajes de dos y tres días al bosque nublado andino, con colibríes, vida local y naturaleza." },
+  villa: { title: "Villa Doris en el bosque nublado de Nono", description: "Descubre Villa Doris, una casa de campo rodeada de naturaleza en el bosque nublado del Chocó Andino, cerca de Quito." },
+  about: { title: "Sobre Inca Holidays", description: "Conoce Inca Holidays, una empresa de viajes de Quito que crea experiencias culturales, de aventura suave y viajes a medida." },
+  plan: { title: "Planifica tu viaje a medida", description: "Cuéntale a Inca Holidays tus fechas, intereses y estilo de viaje para comenzar a diseñar tu itinerario." },
+  privacy: { title: "Aviso de privacidad", description: "Cómo se gestiona la información de las consultas de viaje en el sitio web de Inca Holidays." },
+  terms: { title: "Términos del sitio web", description: "Términos para utilizar el sitio web de Inca Holidays y enviar consultas de viaje." },
+  404: { title: "Página no encontrada", description: "La página solicitada no se encuentra disponible." }
+};
+
 function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
-  const canonical = `${site.origin}${path}`;
+  const localizedMeta = locale === "es" ? (spanishMeta[pageKey] || { title, description }) : { title, description };
+  const canonicalPath = locale === "en" ? localizedPath(path, "en") : path;
+  const canonical = `${site.origin}${canonicalPath}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
@@ -437,21 +455,21 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
     telephone: site.phoneDisplay,
     address: { "@type": "PostalAddress", addressLocality: "Quito", addressCountry: "EC" },
     areaServed: ["Ecuador", "Galapagos Islands"],
-    description: pages.about.description
+    description: locale === "es" ? spanishMeta.about.description : pages.about.description
   };
   const rendered = `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(title)} | ${site.name}</title>
-  <meta name="description" content="${escapeHtml(description)}">
+  <title>${escapeHtml(localizedMeta.title)} | ${site.name}</title>
+  <meta name="description" content="${escapeHtml(localizedMeta.description)}">
   <meta name="theme-color" content="#20382b">
   <link rel="canonical" href="${canonical}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="${site.name}">
-  <meta property="og:title" content="${escapeHtml(title)}">
-  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:title" content="${escapeHtml(localizedMeta.title)}">
+  <meta property="og:description" content="${escapeHtml(localizedMeta.description)}">
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${site.origin}${image}">
   <meta name="twitter:card" content="summary_large_image">
@@ -506,15 +524,25 @@ for (const page of outputPages) {
   await writeRoute(localizedPath(page.path, "en"), baseHtml({ pageKey: page.key, title: page.title, description: page.description, path: page.path, main: page.main, image: page.image, locale: "en" }));
 }
 
-const notFound = baseHtml({
+const notFoundMain = `<main id="main" class="not-found"><div class="shell"><span class="not-found__number">404</span><span class="eyebrow">The trail ends here</span><h1>This page has wandered off route.</h1><p>Return to the destination atlas or begin planning a new journey.</p><div><a class="button button--ink" href="/">Return home ${icon("arrow")}</a><a class="text-link" href="/destinations/">Explore destinations ${icon("diagonal")}</a></div></div></main>`;
+const notFoundEs = baseHtml({
   pageKey: "404",
   title: "Page not found",
   description: "The requested page could not be found.",
   path: "/404.html",
-  main: `<main id="main" class="not-found"><div class="shell"><span class="not-found__number">404</span><span class="eyebrow">The trail ends here</span><h1>This page has wandered off route.</h1><p>Return to the destination atlas or begin planning a new journey.</p><div><a class="button button--ink" href="/">Return home ${icon("arrow")}</a><a class="text-link" href="/destinations/">Explore destinations ${icon("diagonal")}</a></div></div></main>`
+  main: notFoundMain,
+  locale: "es"
 });
-await writeFile(join(dist, "404.html"), translateToSpanish(notFound));
-  await writeFile(join(dist, "en", "404.html"), notFound.replaceAll('href="/', 'href="/en/').replaceAll('content="/', 'content="/en/').replaceAll('href="/en/assets/', 'href="/assets/').replaceAll('href="/en/en/', 'href="/en/'));
+const notFoundEn = baseHtml({
+  pageKey: "404",
+  title: "Page not found",
+  description: "The requested page could not be found.",
+  path: "/404.html",
+  main: notFoundMain,
+  locale: "en"
+});
+await writeFile(join(dist, "404.html"), notFoundEs);
+await writeFile(join(dist, "en", "404.html"), notFoundEn);
 
 const sitemapRoutes = outputPages.filter(p => !["privacy", "terms"].includes(p.key)).map(p => `${site.origin}${p.path}`);
 await writeFile(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map(url => `  <url><loc>${url}</loc></url>`).join("\n")}\n</urlset>\n`);

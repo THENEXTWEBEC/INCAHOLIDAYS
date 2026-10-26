@@ -1,7 +1,7 @@
 export const site = {
   name: "Inca Holidays",
   tagline: "Tailor-made journeys through Ecuador and the Galapagos Islands",
-  origin: "https://inca-holidays-ecuador.robustlyric4.chatgpt.site",
+  origin: "https://thenextwebec.github.io/INCAHOLIDAYS",
   email: "info@incaholidays.com",
   phoneDisplay: "+593 2 241 6283",
   phoneHref: "+59322416283",
