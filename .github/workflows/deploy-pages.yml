@@ -30,7 +30,7 @@ jobs:
         run: node src/build.mjs
 
       - name: Adjust links for project Pages path
-        run: find dist -type f -name '*.html' -print0 | xargs -0 sed -i 's#="/#="/INCAHOLIDAYS/#g'
+        run: find dist -type f -name '*.html' -print0 | xargs -0 perl -pi -e 's#="/#="/INCAHOLIDAYS/#g; s#(?<!/INCAHOLIDAYS)/assets/#/INCAHOLIDAYS/assets/#g'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
