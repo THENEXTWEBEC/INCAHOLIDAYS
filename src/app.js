@@ -1,4 +1,5 @@
 const header = document.querySelector("[data-site-header]");
+const isSpanish = document.body?.dataset.locale !== "en";
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -6,7 +7,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 function setMenu(open) {
   if (!menuToggle || !mobileMenu) return;
   menuToggle.setAttribute("aria-expanded", String(open));
-  menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  menuToggle.setAttribute("aria-label", open ? (isSpanish ? "Cerrar menú" : "Close menu") : (isSpanish ? "Abrir menú" : "Open menu"));
   mobileMenu.classList.toggle("is-open", open);
   document.body.classList.toggle("menu-open", open);
 }
@@ -131,11 +132,11 @@ if (form) {
       clearError(field);
       if (field.type === "checkbox") return;
       if (!field.value.trim()) {
-        showError(field, "This field is required.");
+        showError(field, isSpanish ? "Este campo es obligatorio." : "This field is required.");
         valid = false;
         firstInvalid ||= field;
       } else if (field.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
-        showError(field, "Enter a valid email address.");
+        showError(field, isSpanish ? "Introduce un correo válido." : "Enter a valid email address.");
         valid = false;
         firstInvalid ||= field;
       }
@@ -145,7 +146,7 @@ if (form) {
     const destinationError = form.querySelector("[data-destination-error]");
     destinationError.textContent = "";
     if (!destinations.length) {
-      destinationError.textContent = "Select at least one destination.";
+      destinationError.textContent = isSpanish ? "Selecciona al menos un destino." : "Select at least one destination.";
       valid = false;
       firstInvalid ||= form.querySelector('input[name="destinations"]');
     }
@@ -155,7 +156,7 @@ if (form) {
     consentError.textContent = "";
     if (!consent.checked) {
       consent.setAttribute("aria-invalid", "true");
-      consentError.textContent = "Please confirm before preparing the email.";
+      consentError.textContent = isSpanish ? "Confirma antes de preparar el correo." : "Please confirm before preparing the email.";
       valid = false;
       firstInvalid ||= consent;
     }
@@ -163,14 +164,14 @@ if (form) {
     const start = form.elements.start.value;
     const end = form.elements.end.value;
     if (start && end && end < start) {
-      showError(form.elements.end, "The end month must be after the start month.");
+      showError(form.elements.end, isSpanish ? "El mes de finalización debe ser posterior al de inicio." : "The end month must be after the start month.");
       valid = false;
       firstInvalid ||= form.elements.end;
     }
 
     if (!valid) {
       status.className = "form-status";
-      status.textContent = "Please review the highlighted fields.";
+      status.textContent = isSpanish ? "Revisa los campos destacados." : "Please review the highlighted fields.";
       firstInvalid?.focus();
       return;
     }
@@ -182,38 +183,38 @@ if (form) {
     }
 
     submit.disabled = true;
-    submitLabel.textContent = "Preparing your request";
+    submitLabel.textContent = isSpanish ? "Preparando tu solicitud" : "Preparing your request";
     status.className = "form-status";
-    status.textContent = "Creating a pre-filled email for your review.";
+    status.textContent = isSpanish ? "Creando un correo preparado para que lo revises." : "Creating a pre-filled email for your review.";
 
     const data = new FormData(form);
     const selectedDestinations = data.getAll("destinations").join(", ");
     const body = [
-      "Hello Inca Holidays,",
+      isSpanish ? "Hola, Inca Holidays:" : "Hello Inca Holidays,",
       "",
-      "I would like to begin planning a tailor-made journey.",
+      isSpanish ? "Me gustaría comenzar a planificar un viaje a medida." : "I would like to begin planning a tailor-made journey.",
       "",
-      `Name: ${data.get("name")}`,
-      `Email: ${data.get("email")}`,
+      `${isSpanish ? "Nombre" : "Name"}: ${data.get("name")}`,
+      `${isSpanish ? "Correo" : "Email"}: ${data.get("email")}`,
       `WhatsApp: ${data.get("whatsapp")}`,
-      `Travelers: ${data.get("travelers")}`,
-      `Destinations: ${selectedDestinations}`,
-      `Approximate start: ${data.get("start")}`,
-      `Approximate end: ${data.get("end") || "Flexible"}`,
-      `Preferred experience: ${data.get("experience")}`,
+      `${isSpanish ? "Viajeros" : "Travelers"}: ${data.get("travelers")}`,
+      `${isSpanish ? "Destinos" : "Destinations"}: ${selectedDestinations}`,
+      `${isSpanish ? "Inicio aproximado" : "Approximate start"}: ${data.get("start")}`,
+      `${isSpanish ? "Fin aproximado" : "Approximate end"}: ${data.get("end") || (isSpanish ? "Flexible" : "Flexible")}`,
+      `${isSpanish ? "Experiencia preferida" : "Preferred experience"}: ${data.get("experience")}`,
       "",
-      "Comments or preferences:",
-      data.get("comments") || "No additional comments yet.",
+      isSpanish ? "Comentarios o preferencias:" : "Comments or preferences:",
+      data.get("comments") || (isSpanish ? "Todavía no hay comentarios adicionales." : "No additional comments yet."),
       "",
-      "Thank you."
+      isSpanish ? "Gracias." : "Thank you."
     ].join("\n");
     const mailto = `mailto:info@incaholidays.com?subject=${encodeURIComponent(`Custom Ecuador itinerary request — ${data.get("name")}`)}&body=${encodeURIComponent(body)}`;
 
     window.setTimeout(() => {
       submit.disabled = false;
-      submitLabel.textContent = "Prepare my trip request";
+      submitLabel.textContent = isSpanish ? "Preparar mi solicitud de viaje" : "Prepare my trip request";
       status.className = "form-status is-success";
-      status.innerHTML = `<strong>Your request is ready.</strong><br>Review and send it from your email application.<br><a href="${mailto}">Open the email draft</a>`;
+      status.innerHTML = isSpanish ? `<strong>Tu solicitud está lista.</strong><br>Revísala y envíala desde tu aplicación de correo.<br><a href="${mailto}">Abrir el borrador de correo</a>` : `<strong>Your request is ready.</strong><br>Review and send it from your email application.<br><a href="${mailto}">Open the email draft</a>`;
       status.querySelector("a")?.focus();
     }, 450);
   });

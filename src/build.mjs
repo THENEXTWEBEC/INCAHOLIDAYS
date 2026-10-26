@@ -37,8 +37,16 @@ function icon(name, className = "icon") {
   return `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${iconPaths[name]}</svg>`;
 }
 
-function nav(pageKey) {
+function localizedPath(path, locale = "es") {
+  if (locale !== "en") return path;
+  return path === "/" ? "/en/" : `/en${path}`;
+}
+
+function nav(pageKey, locale = "es") {
   const destinationActive = pageKey === "destinations" || pageKey.startsWith("destination-");
+  const otherLocale = locale === "es" ? "en" : "es";
+  const currentPath = pageKey === "404" ? "/" : (pages[pageKey]?.path || (pageKey.startsWith("destination-") ? `/destinations/${pageKey.replace("destination-", "")}/` : "/"));
+  const languagePath = localizedPath(currentPath, otherLocale);
   return `<header class="site-header" data-site-header>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="header-inner">
@@ -47,33 +55,33 @@ function nav(pageKey) {
         <span><strong>Inca Holidays</strong><small>Ecuador · Galapagos</small></span>
       </a>
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="/destinations/" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
-        <a href="/villa-doris/" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
-        <a href="/about/" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
+        <a href="${localizedPath("/destinations/", locale)}" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
+        <a href="${localizedPath("/villa-doris/", locale)}" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
+        <a href="${localizedPath("/about/", locale)}" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
       </nav>
-      <a class="header-cta" href="/plan-your-trip/">Plan your trip ${icon("arrow")}</a>
+      <div class="header-actions"><a class="language-switch" href="__LANGUAGE_PATH__" aria-label="${locale === "es" ? "Switch to English" : "Cambiar a español"}">${locale === "es" ? "EN" : "ES"}</a><a class="header-cta" href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("arrow")}</a></div>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-menu-toggle>
         <span class="menu-open">${icon("menu")}</span><span class="menu-close">${icon("close")}</span>
       </button>
     </div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" data-mobile-menu>
-      <a href="/">Home <span>00</span></a>
-      <a href="/destinations/">Destinations <span>01–04</span></a>
-      <a href="/villa-doris/">Villa Doris <span>05</span></a>
-      <a href="/about/">About <span>06</span></a>
-      <a href="/plan-your-trip/">Plan your trip ${icon("diagonal")}</a>
+      <a href="${localizedPath("/", locale)}">Home <span>00</span></a>
+      <a href="${localizedPath("/destinations/", locale)}">Destinations <span>01–04</span></a>
+      <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris <span>05</span></a>
+      <a href="${localizedPath("/about/", locale)}">About <span>06</span></a>
+      <a href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("diagonal")}</a>
     </nav>
   </header>`;
 }
 
-function footer() {
+function footer(locale = "es") {
   return `<footer class="site-footer">
     <div class="footer-lead shell">
       <div>
         <span class="eyebrow light">From Quito to the islands</span>
         <h2>Begin with a conversation.</h2>
       </div>
-      <a class="circle-link" href="/plan-your-trip/" aria-label="Plan your trip">${icon("diagonal")}</a>
+      <a class="circle-link" href="${localizedPath("/plan-your-trip/", locale)}" aria-label="Plan your trip">${icon("diagonal")}</a>
     </div>
     <div class="footer-grid shell">
       <div class="footer-brand">
@@ -82,8 +90,8 @@ function footer() {
       </div>
       <div>
         <h3>Explore</h3>
-        ${destinations.map(d => `<a href="/destinations/${d.slug}/">${d.name}</a>`).join("")}
-        <a href="/villa-doris/">Villa Doris</a>
+        ${destinations.map(d => `<a href="${localizedPath(`/destinations/${d.slug}/`, locale)}">${d.name}</a>`).join("")}
+        <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris</a>
       </div>
       <div>
         <h3>Contact</h3>
@@ -95,12 +103,12 @@ function footer() {
       <div class="footer-note">
         <h3>Travel thoughtfully</h3>
         <p>Every itinerary begins with the places, people and pace that matter to you.</p>
-        <a href="/plan-your-trip/">Request a custom itinerary ${icon("arrow")}</a>
+        <a href="${localizedPath("/plan-your-trip/", locale)}">Request a custom itinerary ${icon("arrow")}</a>
       </div>
     </div>
     <div class="footer-bottom shell">
       <span>© ${new Date().getFullYear()} Inca Holidays</span>
-      <div><a href="/privacy/">Privacy</a><a href="/terms/">Website terms</a></div>
+      <div><a href="${localizedPath("/privacy/", locale)}">Privacy</a><a href="${localizedPath("/terms/", locale)}">Website terms</a></div>
       <span>Quito, Ecuador</span>
     </div>
   </footer>`;
@@ -355,11 +363,70 @@ function termsPage() {
   return `<main id="main" class="legal-page"><section class="legal-hero"><div class="shell"><span class="eyebrow">Website information</span><h1>Website terms</h1><p>Plain-language terms for this website draft.</p></div></section><section class="legal-content section"><div class="shell legal-grid"><aside><a href="#information">Travel information</a><a href="#enquiries">Enquiries</a><a href="#imagery">Imagery</a></aside><article><h2 id="information">Travel information</h2><p>The website introduces the destinations and experiences documented in the Inca Holidays brochure. It does not display prices, live availability, confirmed bookings or automatic reservations.</p><h2 id="enquiries">Enquiries are not bookings</h2><p>Submitting or emailing a trip request begins a conversation. A booking exists only after Inca Holidays provides and confirms the relevant commercial terms directly with you.</p><h2 id="imagery">Photography</h2><p>Destination photography is illustrative of the documented regions. Villa Doris photography is drawn from verified property material supplied through the brochure and the existing Inca Holidays website.</p><p class="legal-note">These draft terms should be reviewed by the business before the final domain launch.</p></article></div></section></main>`;
 }
 
+const spanishTranslations = [
+  ["Tailor-made journeys through Ecuador and the Galapagos Islands", "Viajes a medida por Ecuador y las islas Galápagos"],
+  ["Private journeys through Ecuador & Galapagos", "Viajes privados por Ecuador y Galápagos"],
+  ["Destinations", "Destinos"], ["About", "Nosotros"], ["Plan your trip", "Planifica tu viaje"], ["Home", "Inicio"], ["Explore destinations", "Explora los destinos"],
+  ["Skip to content", "Ir al contenido"], ["Close menu", "Cerrar menú"], ["Open menu", "Abrir menú"], ["Ecuador · Galapagos", "Ecuador · Galápagos"],
+  ["From Quito to the islands", "De Quito a las islas"], ["Begin with a conversation.", "Comienza con una conversación."],
+  ["Tailor-made cultural and soft-adventure journeys for independent travelers and small groups.", "Viajes culturales y de aventura suave, diseñados para viajeros independientes y grupos pequeños."],
+  ["Explore", "Explora"], ["Contact", "Contacto"], ["Travel thoughtfully", "Viaja con conciencia"], ["Every itinerary begins with the places, people and pace that matter to you.", "Cada itinerario comienza con los lugares, las personas y el ritmo que te importan."], ["Request a custom itinerary", "Solicita un itinerario a medida"], ["Privacy", "Privacidad"], ["Website terms", "Términos del sitio"], ["Quito, Ecuador", "Quito, Ecuador"],
+  ["Private journeys through Ecuador & Galapagos", "Viajes privados por Ecuador y Galápagos"], ["Travel deeper", "Viaja más profundo"], ["into Ecuador.", "por Ecuador."], ["Cultural encounters, soft adventure and tailor-made routes for independent travelers and small groups.", "Encuentros culturales, aventura suave y rutas a medida para viajeros independientes y grupos pequeños."], ["Explore destinations", "Explora los destinos"],
+  ["People before places", "Las personas antes que los lugares"], ["Ecuador, known from within", "Ecuador, conocido desde dentro"], ["The celebrated wonders. The quiet corners. The stories in between.", "Las maravillas célebres. Los rincones tranquilos. Las historias entre ambos."], ["Inca Holidays creates cultural and soft-adventure experiences that balance Ecuador's highlights with the less-known places that make a journey feel personal.", "Inca Holidays crea experiencias culturales y de aventura suave que equilibran los grandes atractivos de Ecuador con lugares menos conocidos que hacen que cada viaje sea personal."], ["Meet Inca Holidays", "Conoce Inca Holidays"],
+  ["Four distinct worlds", "Cuatro mundos distintos"], ["Choose a direction.", "Elige una dirección."], ["We will shape the route.", "Nosotros trazaremos la ruta."], ["From volcanic islands to cloud forest, each region offers a different way into Ecuador.", "De las islas volcánicas al bosque nublado, cada región ofrece una forma distinta de descubrir Ecuador."], ["Explore", "Explora"],
+  ["Tailor-made by design", "Diseñado a tu medida"], ["No fixed formula.", "Sin fórmulas fijas."], ["One considered journey.", "Un viaje pensado para ti."], ["Start with the landscapes and experiences that draw you in. Inca Holidays brings them into a balanced itinerary, with the duration and pace adapted to your trip.", "Comienza con los paisajes y experiencias que te atraen. Inca Holidays los reúne en un itinerario equilibrado, con duración y ritmo adaptados a tu viaje."], ["Start planning", "Comienza a planificar"], ["Tell us what moves you", "Cuéntanos qué te inspira"], ["Share your dates, interests, group and preferred rhythm.", "Comparte tus fechas, intereses, grupo y ritmo preferido."], ["Shape the route together", "Diseñemos la ruta juntos"], ["Balance signature places with quieter, authentic experiences.", "Equilibra lugares emblemáticos con experiencias auténticas y tranquilas."], ["Travel with local knowledge", "Viaja con conocimiento local"], ["Arrive with a journey built around Ecuador, not around a template.", "Llega con un viaje construido alrededor de Ecuador, no de una plantilla."],
+  ["A richer way to travel", "Una forma más profunda de viajar"], ["Small moments make the distance worthwhile.", "Los pequeños momentos hacen que la distancia valga la pena."], ["Wildlife that rewards patience", "Fauna que recompensa la paciencia"], ["Culture with context", "Cultura con contexto"], ["Stay close to nature", "Quédate cerca de la naturaleza"], ["A country house surrounded by the biodiversity and village life of Nono, presented in the brochure as a welcoming place to begin or end an Ecuador journey.", "Una casa de campo rodeada por la biodiversidad y la vida de Nono, presentada en el folleto como un lugar acogedor para comenzar o terminar un viaje por Ecuador."], ["Discover Villa Doris", "Descubre Villa Doris"], ["Travel with care", "Viaja con cuidado"], ["Nature, hospitality and community belong in the same story.", "La naturaleza, la hospitalidad y la comunidad forman parte de la misma historia."], ["The brochure places responsible travel at the heart of Amazon lodging choices and Villa Doris's relationship with its local community. That perspective guides how these journeys are presented.", "El folleto sitúa el viaje responsable en el centro de las decisiones de alojamiento en la Amazonía y de la relación de Villa Doris con su comunidad local. Esa perspectiva guía la forma en que presentamos estos viajes."], ["Your journey, made personal", "Tu viaje, hecho personal"], ["Tell us what you want to discover.", "Cuéntanos qué quieres descubrir."], ["Share your dates, interests and travel style. We will use them to begin shaping a journey around you.", "Comparte tus fechas, intereses y estilo de viaje. Los usaremos para empezar a diseñar un viaje alrededor de ti."],
+  ["Ecuador in four directions", "Ecuador en cuatro direcciones"], ["One small country. Four immense worlds.", "Un país pequeño. Cuatro mundos inmensos."], ["Explore the archipelago, highlands, rainforest and cloud forest, then bring them together in a journey shaped around you.", "Explora el archipiélago, las tierras altas, la selva y el bosque nublado, y únelos en un viaje diseñado para ti."], ["The destination atlas", "El atlas de destinos"], ["Each region stands on its own. Together, they reveal the remarkable range of Ecuador.", "Cada región tiene su propia esencia. Juntas revelan la extraordinaria diversidad de Ecuador."], ["Combine regions", "Combina regiones"], ["Let Ecuador unfold one landscape at a time.", "Deja que Ecuador se revele paisaje a paisaje."],
+  ["The experience", "La experiencia"], ["Include", "Incluye"], ["Ways to explore", "Formas de explorar"], ["Designed around", "Diseñado según"], ["how you travel.", "tu forma de viajar."], ["These are the ingredients documented in the Inca Holidays brochure. Your itinerary can bring them together in a way that suits your time and interests.", "Estos son los ingredientes que aparecen en el folleto de Inca Holidays. Tu itinerario puede reunirlos de una forma que se adapte a tu tiempo e intereses."], ["A sense of place", "El espíritu del lugar"], ["Look closer.", "Mira más de cerca."], ["Build a journey with", "Construye un viaje con"], ["Make this landscape part of your story.", "Haz que este paisaje sea parte de tu historia."],
+  ["A stay with context", "Una estancia con contexto"], ["Ask about Villa Doris", "Pregunta por Villa Doris"], ["Cloud-forest setting", "Entorno de bosque nublado"], ["Close to Quito.<br>Surrounded by another rhythm.", "Cerca de Quito.<br>Rodeada de otro ritmo."], ["The house & gardens", "La casa y los jardines"], ["Warmth in the details.", "Calidez en los detalles."], ["Stay at Villa Doris", "Alójate en Villa Doris"], ["Begin or end your Ecuador journey in Nono.", "Comienza o termina tu viaje por Ecuador en Nono."],
+  ["About Inca Holidays", "Sobre Inca Holidays"], ["Ecuador is not a list of places. It is a network of stories.", "Ecuador no es una lista de lugares. Es una red de historias."], ["Inca Holidays creates cultural and soft-adventure experiences for independent travelers and small groups, balancing well-known highlights with Ecuador's quieter corners.", "Inca Holidays crea experiencias culturales y de aventura suave para viajeros independientes y grupos pequeños, equilibrando los lugares conocidos con los rincones más tranquilos de Ecuador."], ["Local knowledge. Personal journeys.", "Conocimiento local. Viajes personales."], ["What guides the work", "Lo que guía nuestro trabajo"], ["Know the wonders.<br>Know the corners.<br>Know the secrets.", "Conoce las maravillas.<br>Conoce los rincones.<br>Conoce los secretos."], ["Designed, not packaged", "Diseñado, no empaquetado"], ["Highlights and hidden corners", "Lugares destacados y rincones ocultos"], ["Nature with responsibility", "Naturaleza con responsabilidad"], ["Based in Quito", "Con sede en Quito"], ["Close to the journey from its first idea.", "Cerca del viaje desde su primera idea."], ["Speak with Inca Holidays about the regions, experiences and pace you want.", "Habla con Inca Holidays sobre las regiones, experiencias y ritmo que deseas."], ["Start the conversation", "Comienza la conversación"],
+  ["Plan your trip", "Planifica tu viaje"], ["Tell us where your curiosity leads.", "Cuéntanos adónde te lleva tu curiosidad."], ["Share the outline of your trip. The details below will open a pre-filled email to Inca Holidays so you can review and send it from your own email account.", "Comparte la idea general de tu viaje. Los datos siguientes abrirán un correo preparado para Inca Holidays, para que puedas revisarlo y enviarlo desde tu propia cuenta."], ["Direct contact", "Contacto directo"], ["Prefer to talk first?", "¿Prefieres hablar primero?"], ["Contact Inca Holidays in Quito through the details published in the brochure.", "Contacta con Inca Holidays en Quito usando los datos publicados en el folleto."], ["Email", "Correo electrónico"], ["Phone", "Teléfono"], ["Based in", "Con sede en"], ["About you", "Sobre ti"], ["Who should we contact about this journey?", "¿Con quién debemos contactar sobre este viaje?"], ["Full name", "Nombre completo"], ["WhatsApp with country code", "WhatsApp con código de país"], ["Number of travelers", "Número de viajeros"], ["Where would you like to go?", "¿Adónde te gustaría ir?"], ["Select every region that interests you.", "Selecciona cada región que te interese."], ["Country house in Nono", "Casa de campo en Nono"], ["Shape the journey", "Diseña el viaje"], ["Approximate information is enough to begin.", "La información aproximada es suficiente para comenzar."], ["Approximate start", "Inicio aproximado"], ["Approximate end", "Fin aproximado"], ["Preferred experience", "Experiencia preferida"], ["Choose one", "Elige una"], ["Cultural experiences", "Experiencias culturales"], ["Soft adventure", "Aventura suave"], ["Nature and wildlife", "Naturaleza y fauna"], ["Birdwatching", "Observación de aves"], ["A balanced mix", "Una combinación equilibrada"], ["Comments or preferences", "Comentarios o preferencias"], ["Prepare my trip request", "Preparar mi solicitud de viaje"], ["Please review the highlighted fields.", "Revisa los campos destacados."], ["This field is required.", "Este campo es obligatorio."], ["Select at least one destination.", "Selecciona al menos un destino."], ["Please confirm before preparing the email.", "Confirma antes de preparar el correo."], ["The end month must be after the start month.", "El mes de finalización debe ser posterior al de inicio."], ["Creating a pre-filled email for your review.", "Creando un correo preparado para que lo revises."], ["Your request is ready.", "Tu solicitud está lista."], ["Review and send it from your email application.", "Revísala y envíala desde tu aplicación de correo."], ["Open the email draft", "Abrir el borrador de correo"],
+  ["Privacy notice", "Aviso de privacidad"], ["Website information", "Información del sitio"], ["Trip enquiries", "Consultas de viaje"], ["Your choices", "Tus opciones"], ["Contact information", "Información de contacto"], ["Website terms", "Términos del sitio web"], ["Plain-language terms for this website draft.", "Términos claros para este borrador del sitio web."], ["Travel information", "Información de viaje"], ["Enquiries are not bookings", "Las consultas no son reservas"], ["Photography", "Fotografía"], ["Page not found", "Página no encontrada"], ["The trail ends here", "El sendero termina aquí"], ["This page has wandered off route.", "Esta página se ha desviado de la ruta."], ["Return home", "Volver al inicio"],
+  ["Galapagos", "Galápagos"], ["Andes & Highlands", "Andes y tierras altas"], ["Amazon Rainforest", "Selva amazónica"], ["Nono Cloud Forest", "Bosque nublado de Nono"], ["Cruises & island hopping", "Cruceros y rutas entre islas"], ["Volcanoes, heritage & living culture", "Volcanes, patrimonio y cultura viva"], ["Biodiversity & conservation", "Biodiversidad y conservación"], ["A hidden Andean paradise", "Un paraíso andino escondido"], ["Wildlife encounters shaped around your pace.", "Encuentros con la fauna al ritmo que elijas."], ["Where altitude reveals a living history.", "Donde la altura revela una historia viva."], ["Enter one of the planet's richest ecosystems.", "Entra en uno de los ecosistemas más ricos del planeta."], ["Cloud forest, hummingbirds and village life.", "Bosque nublado, colibríes y vida de pueblo."], ["Cruises and island-hopping journeys amid volcanic landscapes and endemic wildlife.", "Cruceros y viajes entre islas, entre paisajes volcánicos y fauna endémica."], ["Snow-capped volcanoes, colonial haciendas, markets and communities across Ecuador's highlands.", "Volcanes nevados, haciendas coloniales, mercados y comunidades en las tierras altas de Ecuador."], ["Guided jungle walks, quiet canoe rides, birdwatching and cultural experiences in the rainforest.", "Caminatas guiadas por la selva, paseos tranquilos en canoa, observación de aves y experiencias culturales en la Amazonía."], ["Two- and three-day journeys from Quito into a natural and cultural landscape in the Andean cloud forest.", "Viajes de dos y tres días desde Quito hacia un paisaje natural y cultural en el bosque nublado andino."], ["The Galapagos Islands reward unhurried exploration.", "Las islas Galápagos recompensan la exploración sin prisa."], ["Volcanic landscapes", "Paisajes volcánicos"], ["Colonial haciendas", "Haciendas coloniales"], ["Markets & heritage", "Mercados y patrimonio"], ["Local cultures", "Culturas locales"], ["Guided walks", "Caminatas guiadas"], ["Canoe journeys", "Viajes en canoa"], ["Wildlife & birds", "Fauna y aves"], ["Cultural connection", "Conexión cultural"], ["Two or three days", "Dos o tres días"], ["Active exploration", "Exploración activa"], ["Birdlife", "Vida de aves"], ["Local life", "Vida local"], ["Cruises", "Cruceros"], ["Island hopping", "Ruta entre islas"], ["Endemic wildlife", "Fauna endémica"], ["Flexible duration", "Duración flexible"]
+];
+
+spanishTranslations.push(
+  ["Inca Holidays creates cruises and island-hopping journeys that bring you close to the archipelago's wildlife and distinctive island landscapes.", "Inca Holidays crea cruceros y viajes entre islas que te acercan a la fauna del archipiélago y a sus paisajes únicos."],
+  ["Packages begin at four days and can be adapted to the length of stay you want. The balance of islands, wildlife and time ashore is shaped around your travel style.", "Los programas comienzan en cuatro días y se adaptan a la duración de tu estancia. El equilibrio entre islas, fauna y tiempo en tierra se diseña según tu estilo de viaje."],
+  ["Explore the archipelago by water, with each day opening onto a different island environment.", "Explora el archipiélago por agua y descubre cada día un entorno insular diferente."],
+  ["Build a land-based journey across islands while keeping the experience personal and flexible.", "Construye un viaje terrestre entre islas, manteniendo una experiencia personal y flexible."],
+  ["Look for giant tortoises, marine iguanas, sea lions and the birdlife that make the islands singular.", "Busca tortugas gigantes, iguanas marinas, lobos marinos y las aves que hacen únicas a estas islas."],
+  ["Begin with four days and adapt the itinerary to the time you have available.", "Comienza con cuatro días y adapta el itinerario al tiempo que tengas disponible."],
+  ["From the majestic Andes and snow-capped volcanoes to colonial-style haciendas and colorful markets, Ecuador's highlands hold layers of history, landscape and living culture.", "Desde los majestuosos Andes y los volcanes nevados hasta las haciendas de estilo colonial y los mercados coloridos, las tierras altas de Ecuador reúnen historia, paisaje y cultura viva."],
+  ["Inca Holidays custom-designs experiences that take you into the heart of the region: its people, traditions, heritage and the quieter places between celebrated landmarks.", "Inca Holidays diseña experiencias a medida que te llevan al corazón de la región: su gente, tradiciones, patrimonio y los lugares tranquilos entre los grandes atractivos."],
+  ["Travel through high-altitude scenery shaped by Ecuador's mountain corridor.", "Recorre paisajes de altura formados por el corredor montañoso de Ecuador."],
+  ["Stay close to the character and history of the highlands in traditional settings.", "Acércate al carácter y la historia de las tierras altas en entornos tradicionales."],
+  ["Meet the color, craft and everyday rhythms of Andean towns and markets.", "Conoce el color, la artesanía y los ritmos cotidianos de los pueblos y mercados andinos."],
+  ["Create respectful encounters that connect landscape with the people who live there.", "Crea encuentros respetuosos que conecten el paisaje con las personas que lo habitan."],
+  ["The Ecuadorian Amazon is an invitation to pay attention: to birds above the canopy, water moving beside a canoe and the extraordinary density of life within the forest.", "La Amazonía ecuatoriana invita a prestar atención: a las aves sobre el dosel, al agua junto a la canoa y a la extraordinaria densidad de vida del bosque."],
+  ["Journeys can include guided jungle walks, tranquil canoe rides, wildlife and bird watching, storytelling and selected lodging considered for its environmental credibility and commitment to preserving the rainforest ecosystem.", "Los viajes pueden incluir caminatas guiadas por la selva, paseos tranquilos en canoa, observación de fauna y aves, relatos y alojamientos seleccionados por su compromiso ambiental y con la conservación de la selva."],
+  ["Read the forest with guides who reveal the relationships hidden beneath the canopy.", "Lee el bosque junto a guías que revelan las relaciones ocultas bajo el dosel."],
+  ["Move quietly along rainforest waterways and experience the landscape from the river.", "Avanza en silencio por los ríos de la selva y vive el paisaje desde el agua."],
+  ["Observe the extraordinary diversity of species that inhabit Ecuador's Amazon basin.", "Observa la extraordinaria diversidad de especies que habitan la cuenca amazónica de Ecuador."],
+  ["Include thoughtful experiences that place people and conservation within the same story.", "Incluye experiencias conscientes que sitúen a las personas y la conservación dentro de la misma historia."],
+  ["Nono opens onto a greener, quieter Ecuador: folded cloud-forest valleys, hummingbirds, local food and the rhythms of a small Andean village.", "Nono abre la puerta a un Ecuador más verde y tranquilo: valles de bosque nublado, colibríes, comida local y los ritmos de un pequeño pueblo andino."],
+  ["Two- and three-day inclusive tours depart from Quito and can bring together local encounters, cycling, horseback riding, hiking, birdwatching, a private bird sanctuary, food experiences and overnight stays at Villa Doris.", "Los tours inclusivos de dos y tres días salen de Quito y pueden reunir encuentros locales, ciclismo, cabalgatas, senderismo, observación de aves, un santuario privado, experiencias gastronómicas y noches en Villa Doris."],
+  ["Leave Quito for a compact journey that still makes space for the valley's slower rhythm.", "Deja Quito para vivir un viaje breve que aún deja espacio al ritmo pausado del valle."],
+  ["Cycle, ride on horseback or walk part of the hummingbird route toward the Tandayapa Valley.", "Pedalea, monta a caballo o camina parte de la ruta de colibríes hacia el valle de Tandayapa."],
+  ["Watch hummingbirds and visit a private bird sanctuary within the cloud-forest landscape.", "Observa colibríes y visita un santuario privado de aves en el paisaje del bosque nublado."],
+  ["Meet residents, enjoy local gastronomy and stay overnight at Villa Doris Country House.", "Conoce a los habitantes, disfruta la gastronomía local y pasa la noche en Villa Doris Country House."],
+  ["Villa Doris is surrounded by nature in the Choco Andino cloud forest, close to Quito and connected to the biodiversity, food and people of Nono.", "Villa Doris está rodeada de naturaleza en el bosque nublado del Chocó Andino, cerca de Quito y conectada con la biodiversidad, la gastronomía y la gente de Nono."],
+  ["The brochure presents Villa Doris as a place to begin or end an Ecuador journey: an expression of Ecuadorian hospitality with access to local gastronomy, excursions and the cloud-forest setting.", "El folleto presenta Villa Doris como un lugar para comenzar o terminar un viaje por Ecuador: una expresión de la hospitalidad ecuatoriana con acceso a gastronomía local, excursiones y al entorno del bosque nublado."],
+  ["Scroll to discover", "Desplázate para descubrir"], ["A balance between the highlights and the off-the-beaten-path gems of Ecuador.", "Un equilibrio entre los lugares destacados y las joyas poco conocidas de Ecuador."], ["in your trip", "en tu viaje"], ["Hero photograph:", "Fotografía principal:"]
+);
+
+function translateToSpanish(html) {
+  let translated = html;
+  for (const [from, to] of [...spanishTranslations].sort((a, b) => b[0].length - a[0].length)) translated = translated.split(from).join(to);
+  translated = translated.replace('<html lang="en">', '<html lang="es">');
+  return translated;
+}
+
 function lightbox() {
   return `<dialog class="lightbox" data-lightbox><button type="button" aria-label="Close image" data-lightbox-close>${icon("close")}</button><figure><img alt="" data-lightbox-image><figcaption data-lightbox-caption></figcaption></figure></dialog>`;
 }
 
-function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp" }) {
+function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
   const canonical = `${site.origin}${path}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -372,7 +439,7 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
     areaServed: ["Ecuador", "Galapagos Islands"],
     description: pages.about.description
   };
-  return `<!doctype html>
+  const rendered = `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -394,13 +461,16 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
   <script type="application/ld+json">${JSON.stringify(jsonLd).replaceAll("<", "\\u003c")}</script>
   <script src="/assets/app.js" type="module"></script>
 </head>
-<body data-page="${pageKey}">
-  ${nav(pageKey)}
+<body data-page="${pageKey}" data-locale="${locale}">
+  ${nav(pageKey, locale)}
   ${main}
-  ${footer()}
+  ${footer(locale)}
   ${lightbox()}
 </body>
 </html>`;
+  const localized = locale === "es" ? translateToSpanish(rendered).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : rendered;
+  if (locale !== "en") return localized;
+  return localized.replaceAll('href="/', 'href="/en/').replaceAll('content="/', 'content="/en/').replaceAll('href="/en/assets/', 'href="/assets/').replaceAll('href="/en/en/', 'href="/en/').replace('__LANGUAGE_PATH__', localizedPath(path, "es"));
 }
 
 const outputPages = [
@@ -426,9 +496,14 @@ await cp(join(src, "assets"), join(dist, "assets"), { recursive: true });
 await cp(join(src, "styles.css"), join(dist, "assets", "styles.css"));
 await cp(join(src, "app.js"), join(dist, "assets", "app.js"));
 await cp(join(root, ".openai"), join(dist, ".openai"), { recursive: true });
+await mkdir(join(dist, "en"), { recursive: true });
+await cp(join(src, "assets"), join(dist, "en", "assets"), { recursive: true });
+await cp(join(src, "styles.css"), join(dist, "en", "assets", "styles.css"));
+await cp(join(src, "app.js"), join(dist, "en", "assets", "app.js"));
 
 for (const page of outputPages) {
-  await writeRoute(page.path, baseHtml({ pageKey: page.key, title: page.title, description: page.description, path: page.path, main: page.main, image: page.image }));
+  await writeRoute(page.path, baseHtml({ pageKey: page.key, title: page.title, description: page.description, path: page.path, main: page.main, image: page.image, locale: "es" }));
+  await writeRoute(localizedPath(page.path, "en"), baseHtml({ pageKey: page.key, title: page.title, description: page.description, path: page.path, main: page.main, image: page.image, locale: "en" }));
 }
 
 const notFound = baseHtml({
@@ -438,7 +513,8 @@ const notFound = baseHtml({
   path: "/404.html",
   main: `<main id="main" class="not-found"><div class="shell"><span class="not-found__number">404</span><span class="eyebrow">The trail ends here</span><h1>This page has wandered off route.</h1><p>Return to the destination atlas or begin planning a new journey.</p><div><a class="button button--ink" href="/">Return home ${icon("arrow")}</a><a class="text-link" href="/destinations/">Explore destinations ${icon("diagonal")}</a></div></div></main>`
 });
-await writeFile(join(dist, "404.html"), notFound);
+await writeFile(join(dist, "404.html"), translateToSpanish(notFound));
+  await writeFile(join(dist, "en", "404.html"), notFound.replaceAll('href="/', 'href="/en/').replaceAll('content="/', 'content="/en/').replaceAll('href="/en/assets/', 'href="/assets/').replaceAll('href="/en/en/', 'href="/en/'));
 
 const sitemapRoutes = outputPages.filter(p => !["privacy", "terms"].includes(p.key)).map(p => `${site.origin}${p.path}`);
 await writeFile(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map(url => `  <url><loc>${url}</loc></url>`).join("\n")}\n</urlset>\n`);
