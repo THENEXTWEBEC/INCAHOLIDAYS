@@ -189,7 +189,7 @@ function homePage() {
 
     <section class="intro-section section" id="story">
       <div class="shell intro-grid">
-        <div class="intro-image reveal"><img src="/assets/images/about-local-connection.webp" alt="A traveler sharing a warm moment with an Indigenous woman in Ecuador" loading="lazy" decoding="async"><span>People before places</span></div>
+        <div class="intro-image"><img src="/assets/images/about-local-connection.webp" alt="A traveler sharing a warm moment with an Indigenous woman in Ecuador" loading="eager" decoding="async"><span>People before places</span></div>
         <div class="intro-copy">
           <span class="eyebrow reveal">Ecuador, known from within</span>
           <h2 class="reveal">The celebrated wonders. The quiet corners. The stories in between.</h2>
