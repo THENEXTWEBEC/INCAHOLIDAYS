@@ -132,22 +132,22 @@ export const villa = {
     ["Responsible travel", "The property is presented in the context of community development and responsible tourism."]
   ],
   gallery: [
-    ["villa-doris-aerial.webp", "Villa Doris embraced by the green Nono valley", "Between valley and cloud forest"],
-    ["villa-doris-terrace.webp", "The sunny terrace and main house at Villa Doris", "The house"],
-    ["villa-doris-garden.webp", "Flower garden and paths at Villa Doris", "Gardens in bloom"],
-    ["villa-doris-suite.webp", "Bright guest suite with garden views at Villa Doris", "Wake to the garden"],
-    ["villa-doris-dining.webp", "Dining room framed by windows and greenery", "Gather around the table"],
-    ["villa-doris-cottage.webp", "Stone cottage and red roof at Villa Doris", "Country character"],
-    ["villa-doris-living.webp", "Rustic living room with fireplace at Villa Doris", "A warm corner"],
-    ["villa-doris-bath.webp", "Bathroom with a freestanding tub and valley light", "Slow mornings"],
-    ["villa-doris-room-view.webp", "Guest room looking toward the Nono landscape", "A room with a view"],
-    ["villa-doris-lawn.webp", "Wide lawn and mature trees in the Villa Doris garden", "Room to breathe"],
-    ["villa-doris-patio.webp", "Garden patio tucked among the trees", "Tea beneath the trees"],
-    ["villa-doris-blue-bird.webp", "Blue bird among the branches near Villa Doris", "Wild neighbors"],
-    ["villa-doris-hummingbird.webp", "Hummingbird feeding from a pink flower in Nono", "Cloud-forest wings"],
-    ["villa-doris-valley.webp", "Green valley and mountain landscape surrounding Villa Doris", "The Nono valley"],
-    ["villa-doris-bedroom.webp", "Cozy bedroom with timber ceiling at Villa Doris", "Rest in the quiet"],
-    ["villa-doris-twin-room.webp", "Spacious twin room with timber beams and garden windows", "Space to share"]
+    ["villa-doris-aerial.webp", "Villa Doris embraced by the green Nono valley"],
+    ["villa-doris-terrace.webp", "The sunny terrace and main house at Villa Doris"],
+    ["villa-doris-garden.webp", "Flower garden and paths at Villa Doris"],
+    ["villa-doris-suite.webp", "Bright guest suite with garden views at Villa Doris"],
+    ["villa-doris-dining.webp", "Dining room framed by windows and greenery"],
+    ["villa-doris-cottage.webp", "Stone cottage and red roof at Villa Doris"],
+    ["villa-doris-living.webp", "Rustic living room with fireplace at Villa Doris"],
+    ["villa-doris-bath.webp", "Bathroom with a freestanding tub and valley light"],
+    ["villa-doris-room-view.webp", "Guest room looking toward the Nono landscape"],
+    ["villa-doris-lawn.webp", "Wide lawn and mature trees in the Villa Doris garden"],
+    ["villa-doris-patio.webp", "Garden patio tucked among the trees"],
+    ["villa-doris-blue-bird.webp", "Blue bird among the branches near Villa Doris"],
+    ["villa-doris-hummingbird.webp", "Hummingbird feeding from a pink flower in Nono"],
+    ["villa-doris-valley.webp", "Green valley and mountain landscape surrounding Villa Doris"],
+    ["villa-doris-bedroom.webp", "Cozy bedroom with timber ceiling at Villa Doris"],
+    ["villa-doris-twin-room.webp", "Spacious twin room with timber beams and garden windows"]
   ]
 };
 

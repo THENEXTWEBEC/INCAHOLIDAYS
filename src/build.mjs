@@ -151,10 +151,9 @@ function destinationTile(d, index) {
 
 function gallery(items, variant = "") {
   return `<div class="gallery-grid${variant ? ` gallery-grid--${variant}` : ""}">
-    ${items.map(([file, alt, caption], index) => `<button class="gallery-item gallery-item--${(index % 4) + 1} reveal" type="button" data-gallery-item data-src="/assets/images/${file}" data-alt="${escapeHtml(alt)}" data-caption="${escapeHtml(caption || alt)}" aria-label="Open image: ${escapeHtml(alt)}">
-      <img src="/assets/images/${file}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
-      <span class="gallery-item__number">${String(index + 1).padStart(2, "0")}</span>
-      ${caption ? `<span class="gallery-item__caption">${escapeHtml(caption)}</span>` : ""}
+    ${items.map(([file, alt], index) => `<button class="gallery-item gallery-item--${(index % 4) + 1} reveal" type="button" data-gallery-item data-src="/assets/images/${file}" data-alt="${escapeHtml(alt)}" aria-label="Open image: ${escapeHtml(alt)}">
+      <img src="/assets/images/${file}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">${variant === "villa" ? "" : `
+      <span class="gallery-item__number">${String(index + 1).padStart(2, "0")}</span>`}
     </button>`).join("")}
   </div>`;
 }
@@ -307,7 +306,7 @@ function villaPage() {
       </div>
       <div class="shell experience-list villa-highlights">${villa.highlights.map(([title,copy],index)=>`<article class="experience-row reveal"><span>${String(index+1).padStart(2,"0")}</span><h3>${title}</h3><p>${copy}</p>${icon(index === 0 ? "bird" : index === 1 ? "pin" : index === 2 ? "home" : "leaf")}</article>`).join("")}</div>
     </section>
-    <section class="gallery-section gallery-section--villa section"><div class="shell section-heading villa-gallery-heading"><div><span class="eyebrow reveal">Villa Doris, from within</span><h2 class="reveal">A place close to our hearts.</h2></div><p class="reveal">Walk through the house, gardens and valley that make Villa Doris feel like home. Select any photograph to see it in full.</p></div><div class="shell">${gallery(villa.gallery, "villa")}</div></section>
+    <section class="gallery-section gallery-section--villa section" aria-label="Villa Doris photo gallery"><div class="shell">${gallery(villa.gallery, "villa")}</div></section>
     ${finalCta("Stay at Villa Doris", "Begin or end your Ecuador journey in Nono.")}
   </main>`;
 }
@@ -436,7 +435,7 @@ function translateToSpanish(html) {
 }
 
 function lightbox() {
-  return `<dialog class="lightbox" data-lightbox><button class="lightbox__close" type="button" aria-label="Close image" data-lightbox-close>${icon("close")}</button><button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous image" data-lightbox-prev>${icon("arrow")}</button><figure><img alt="" data-lightbox-image><figcaption><span data-lightbox-caption></span><small data-lightbox-count></small></figcaption></figure><button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next image" data-lightbox-next>${icon("arrow")}</button></dialog>`;
+  return `<dialog class="lightbox" data-lightbox><button class="lightbox__close" type="button" aria-label="Close image" data-lightbox-close>${icon("close")}</button><button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous image" data-lightbox-prev>${icon("arrow")}</button><figure><img alt="" data-lightbox-image><small class="lightbox__count" data-lightbox-count></small></figure><button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next image" data-lightbox-next>${icon("arrow")}</button></dialog>`;
 }
 
 const spanishMeta = {
