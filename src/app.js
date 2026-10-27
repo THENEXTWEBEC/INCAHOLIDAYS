@@ -64,24 +64,41 @@ if (!reduceMotion) {
 const lightbox = document.querySelector("[data-lightbox]");
 const lightboxImage = document.querySelector("[data-lightbox-image]");
 const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+const lightboxCount = document.querySelector("[data-lightbox-count]");
+const galleryItems = [...document.querySelectorAll("[data-gallery-item]")];
+let activeGalleryIndex = 0;
 
 function closeLightbox() {
   lightbox?.close();
 }
 
-document.querySelectorAll("[data-gallery-item]").forEach(item => {
+function showGalleryImage(index) {
+  if (!lightboxImage || !lightboxCaption || !galleryItems.length) return;
+  activeGalleryIndex = (index + galleryItems.length) % galleryItems.length;
+  const item = galleryItems[activeGalleryIndex];
+  lightboxImage.src = item.dataset.src;
+  lightboxImage.alt = item.dataset.alt;
+  lightboxCaption.textContent = item.dataset.caption || item.dataset.alt;
+  if (lightboxCount) lightboxCount.textContent = `${String(activeGalleryIndex + 1).padStart(2, "0")} / ${String(galleryItems.length).padStart(2, "0")}`;
+}
+
+galleryItems.forEach((item, index) => {
   item.addEventListener("click", () => {
     if (!lightbox || !lightboxImage || !lightboxCaption) return;
-    lightboxImage.src = item.dataset.src;
-    lightboxImage.alt = item.dataset.alt;
-    lightboxCaption.textContent = item.dataset.alt;
+    showGalleryImage(index);
     lightbox.showModal();
   });
 });
 
 document.querySelector("[data-lightbox-close]")?.addEventListener("click", closeLightbox);
+document.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => showGalleryImage(activeGalleryIndex - 1));
+document.querySelector("[data-lightbox-next]")?.addEventListener("click", () => showGalleryImage(activeGalleryIndex + 1));
 lightbox?.addEventListener("click", event => {
   if (event.target === lightbox) closeLightbox();
+});
+lightbox?.addEventListener("keydown", event => {
+  if (event.key === "ArrowLeft") showGalleryImage(activeGalleryIndex - 1);
+  if (event.key === "ArrowRight") showGalleryImage(activeGalleryIndex + 1);
 });
 
 const form = document.querySelector("[data-trip-form]");

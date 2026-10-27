@@ -122,9 +122,9 @@ export const destinations = [
 ];
 
 export const villa = {
-  title: "A country house held by the landscape.",
-  intro: "Villa Doris is surrounded by nature in the Choco Andino cloud forest, close to Quito and connected to the biodiversity, food and people of Nono.",
-  detail: "The brochure presents Villa Doris as a place to begin or end an Ecuador journey: an expression of Ecuadorian hospitality with access to local gastronomy, excursions and the cloud-forest setting.",
+  title: "Our home in the cloud forest.",
+  intro: "Villa Doris is Inca Holidays' own country house in Nono, surrounded by the nature of the Choco Andino cloud forest and connected to the biodiversity, food and people of the valley.",
+  detail: "Because Villa Doris is ours, every stay feels personal. It is a place we know by heart and love to share: warm Ecuadorian hospitality, generous gardens, local flavors and the cloud forest just beyond the door.",
   highlights: [
     ["Nature at the door", "Gardens, mountain air and a landscape rich in birdlife surround the property."],
     ["Close to Quito", "The brochure places Villa Doris about a 30-minute drive from Quito."],
@@ -132,12 +132,22 @@ export const villa = {
     ["Responsible travel", "The property is presented in the context of community development and responsible tourism."]
   ],
   gallery: [
-    ["villa-exterior.webp", "Villa Doris stone and whitewashed exterior"],
-    ["villa-room.webp", "Guest room at Villa Doris"],
-    ["villa-aerial.webp", "Aerial view of Villa Doris and the surrounding valley"],
-    ["villa-detail.webp", "Window and floral detail at Villa Doris"],
-    ["villa-garden-seat.webp", "Garden seating beneath the trees at Villa Doris"],
-    ["villa-room-detail.webp", "Natural textures inside a Villa Doris guest room"]
+    ["villa-doris-aerial.webp", "Villa Doris embraced by the green Nono valley", "Between valley and cloud forest"],
+    ["villa-doris-terrace.webp", "The sunny terrace and main house at Villa Doris", "The house"],
+    ["villa-doris-garden.webp", "Flower garden and paths at Villa Doris", "Gardens in bloom"],
+    ["villa-doris-suite.webp", "Bright guest suite with garden views at Villa Doris", "Wake to the garden"],
+    ["villa-doris-dining.webp", "Dining room framed by windows and greenery", "Gather around the table"],
+    ["villa-doris-cottage.webp", "Stone cottage and red roof at Villa Doris", "Country character"],
+    ["villa-doris-living.webp", "Rustic living room with fireplace at Villa Doris", "A warm corner"],
+    ["villa-doris-bath.webp", "Bathroom with a freestanding tub and valley light", "Slow mornings"],
+    ["villa-doris-room-view.webp", "Guest room looking toward the Nono landscape", "A room with a view"],
+    ["villa-doris-lawn.webp", "Wide lawn and mature trees in the Villa Doris garden", "Room to breathe"],
+    ["villa-doris-patio.webp", "Garden patio tucked among the trees", "Tea beneath the trees"],
+    ["villa-doris-blue-bird.webp", "Blue bird among the branches near Villa Doris", "Wild neighbors"],
+    ["villa-doris-hummingbird.webp", "Hummingbird feeding from a pink flower in Nono", "Cloud-forest wings"],
+    ["villa-doris-valley.webp", "Green valley and mountain landscape surrounding Villa Doris", "The Nono valley"],
+    ["villa-doris-bedroom.webp", "Cozy bedroom with timber ceiling at Villa Doris", "Rest in the quiet"],
+    ["villa-doris-twin-room.webp", "Spacious twin room with timber beams and garden windows", "Space to share"]
   ]
 };
 
