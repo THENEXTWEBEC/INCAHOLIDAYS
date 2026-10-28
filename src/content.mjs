@@ -1,7 +1,7 @@
 export const site = {
   name: "Inca Holidays",
   tagline: "Tailor-made journeys through Ecuador and the Galapagos Islands",
-  origin: "https://thenextwebec.github.io/INCAHOLIDAYS",
+  origin: "https://incaholidays.com",
   email: "Info@incaholidays.com",
   emailHref: "incaholidays@yahoo.com",
   emailSecondary: "Incaholidays@yahoo.com",
