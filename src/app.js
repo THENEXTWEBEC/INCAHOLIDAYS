@@ -46,7 +46,7 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
   });
 }
 
-if (!reduceMotion) {
+if (!reduceMotion && !window.matchMedia("(pointer: coarse) and (max-width: 760px)").matches) {
   const parallaxItems = document.querySelectorAll("[data-parallax-media]");
   let ticking = false;
   const updateParallax = () => {
@@ -85,7 +85,7 @@ galleryItems.forEach((item, index) => {
   item.addEventListener("click", () => {
     if (!lightbox || !lightboxImage) return;
     showGalleryImage(index);
-    lightbox.showModal();
+    if (!lightbox.open) lightbox.showModal();
   });
 });
 
@@ -200,7 +200,7 @@ if (form) {
       return;
     }
 
-    if (form.elements.company_website.value) {
+    if (form.elements.company_website?.value) {
       form.reset();
       status.textContent = "Thank you. Your request has been prepared.";
       return;
