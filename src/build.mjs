@@ -95,7 +95,8 @@ function footer(locale = "es") {
       </div>
       <div>
         <h3>Contact</h3>
-        <a href="mailto:${site.email}">${site.email}</a>
+        <a href="mailto:${site.emailHref}">${site.email}</a>
+        <a href="mailto:${site.emailHref}">${site.emailSecondary}</a>
         <a href="tel:${site.phoneHref}">${site.phoneDisplay}</a>
         <a href="https://wa.me/${site.whatsappHref}" rel="noopener">WhatsApp ${site.whatsappDisplay}</a>
         <span>${site.location}</span>
@@ -335,7 +336,7 @@ function planPage() {
   return `<main id="main" class="plan-page">
     <section class="plan-intro"><div class="shell"><span class="eyebrow reveal">Plan your trip</span><h1 class="reveal">Tell us where your curiosity leads.</h1><p class="reveal">Share the outline of your trip. The details below will open a pre-filled email to Inca Holidays so you can review and send it from your own email account.</p></div></section>
     <section class="plan-form-section section" id="story"><div class="shell plan-grid">
-      <aside class="plan-aside reveal"><span class="eyebrow">Direct contact</span><h2>Prefer to talk first?</h2><p>Contact Inca Holidays in Quito through the details published in the brochure.</p><a href="mailto:${site.email}">${icon("mail")}<span><small>Email</small>${site.email}</span></a><a href="tel:${site.phoneHref}">${icon("phone")}<span><small>Phone</small>${site.phoneDisplay}</span></a><a href="https://wa.me/${site.whatsappHref}" rel="noopener">${icon("whatsapp")}<span><small>WhatsApp</small>${site.whatsappDisplay}</span></a><div class="aside-note">${icon("pin")}<span><small>Based in</small>${site.location}</span></div></aside>
+      <aside class="plan-aside reveal"><span class="eyebrow">Direct contact</span><h2>Prefer to talk first?</h2><p>Contact Inca Holidays in Quito through the details published in the brochure.</p><a href="mailto:${site.emailHref}">${icon("mail")}<span><small>Email</small>${site.email}</span></a><a href="mailto:${site.emailHref}">${icon("mail")}<span><small>Direct inbox</small>${site.emailSecondary}</span></a><a href="tel:${site.phoneHref}">${icon("phone")}<span><small>Phone</small>${site.phoneDisplay}</span></a><a href="https://wa.me/${site.whatsappHref}" rel="noopener">${icon("whatsapp")}<span><small>WhatsApp</small>${site.whatsappDisplay}</span></a><div class="aside-note">${icon("pin")}<span><small>Based in</small>${site.location}</span></div></aside>
       <form class="trip-form reveal" data-trip-form novalidate>
         <div class="form-step"><span>01</span><div><h2>About you</h2><p>Who should we contact about this journey?</p></div></div>
         <div class="form-row"><label>Full name <input type="text" name="name" autocomplete="name" required><span class="field-error"></span></label><label>Email <input type="email" name="email" autocomplete="email" required><span class="field-error"></span></label></div>
@@ -356,7 +357,7 @@ function planPage() {
 }
 
 function privacyPage() {
-  return `<main id="main" class="legal-page"><section class="legal-hero"><div class="shell"><span class="eyebrow">Website information</span><h1>Privacy notice</h1><p>Last reviewed for this website draft: October 26, 2026.</p></div></section><section class="legal-content section"><div class="shell legal-grid"><aside><a href="#enquiries">Trip enquiries</a><a href="#contact">Contact</a><a href="#choices">Your choices</a></aside><article><h2 id="enquiries">Trip enquiries</h2><p>The trip form prepares an email draft in your own email application. This website does not store the form details in a database. Your information is sent only when you choose to send the email to Inca Holidays.</p><h2 id="contact">Contact information</h2><p>Use <a href="mailto:${site.email}">${site.email}</a> for questions about information you have shared with Inca Holidays.</p><h2 id="choices">Your choices</h2><p>You can contact Inca Holidays directly without using the form. Do not include sensitive personal or payment information in an initial enquiry.</p><p class="legal-note">This notice describes the behavior of this website draft. It should be reviewed by the business before the final domain launch.</p></article></div></section></main>`;
+  return `<main id="main" class="legal-page"><section class="legal-hero"><div class="shell"><span class="eyebrow">Website information</span><h1>Privacy notice</h1><p>Last reviewed for this website draft: October 26, 2026.</p></div></section><section class="legal-content section"><div class="shell legal-grid"><aside><a href="#enquiries">Trip enquiries</a><a href="#contact">Contact</a><a href="#choices">Your choices</a></aside><article><h2 id="enquiries">Trip enquiries</h2><p>The trip form prepares an email draft in your own email application. This website does not store the form details in a database. Your information is sent only when you choose to send the email to Inca Holidays.</p><h2 id="contact">Contact information</h2><p>Use <a href="mailto:${site.emailHref}">${site.email}</a> or <a href="mailto:${site.emailHref}">${site.emailSecondary}</a> for questions about information you have shared with Inca Holidays.</p><h2 id="choices">Your choices</h2><p>You can contact Inca Holidays directly without using the form. Do not include sensitive personal or payment information in an initial enquiry.</p><p class="legal-note">This notice describes the behavior of this website draft. It should be reviewed by the business before the final domain launch.</p></article></div></section></main>`;
 }
 
 function termsPage() {

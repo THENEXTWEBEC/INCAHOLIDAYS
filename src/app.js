@@ -232,7 +232,7 @@ if (form) {
       "",
       isSpanish ? "Gracias." : "Thank you."
     ].join("\n");
-    const mailto = `mailto:info@incaholidays.com?subject=${encodeURIComponent(`Custom Ecuador itinerary request — ${data.get("name")}`)}&body=${encodeURIComponent(body)}`;
+    const mailto = `mailto:incaholidays@yahoo.com?subject=${encodeURIComponent(`Custom Ecuador itinerary request — ${data.get("name")}`)}&body=${encodeURIComponent(body)}`;
 
     window.setTimeout(() => {
       submit.disabled = false;
