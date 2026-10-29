@@ -64,7 +64,7 @@ function nav(pageKey, locale = "es") {
         <span class="menu-open">${icon("menu")}</span><span class="menu-close">${icon("close")}</span>
       </button>
     </div>
-    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" data-mobile-menu>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" data-mobile-menu>
       <a href="${localizedPath("/", locale)}">Home <span>00</span></a>
       <a href="${localizedPath("/destinations/", locale)}">Destinations <span>01–04</span></a>
       <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris <span>05</span></a>
