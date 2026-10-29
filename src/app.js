@@ -3,13 +3,29 @@ const isSpanish = document.body?.dataset.locale !== "en";
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let lockedScrollY = 0;
+let menuPreviouslyFocused = null;
 
 function setMenu(open) {
   if (!menuToggle || !mobileMenu) return;
+  if (open) {
+    menuPreviouslyFocused = document.activeElement;
+    lockedScrollY = window.scrollY;
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.position = "fixed";
+    document.body.style.width = "100%";
+  } else {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.width = "";
+    window.scrollTo(0, lockedScrollY);
+  }
   menuToggle.setAttribute("aria-expanded", String(open));
   menuToggle.setAttribute("aria-label", open ? (isSpanish ? "Cerrar menú" : "Close menu") : (isSpanish ? "Abrir menú" : "Open menu"));
   mobileMenu.classList.toggle("is-open", open);
   document.body.classList.toggle("menu-open", open);
+  if (open) mobileMenu.querySelector("a")?.focus();
+  else menuPreviouslyFocused?.focus();
 }
 
 menuToggle?.addEventListener("click", () => {
@@ -20,6 +36,18 @@ mobileMenu?.querySelectorAll("a").forEach(link => link.addEventListener("click",
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && document.body.classList.contains("menu-open")) setMenu(false);
+  if (event.key !== "Tab" || !document.body.classList.contains("menu-open")) return;
+  const focusable = [...mobileMenu.querySelectorAll("a, button")].filter(item => !item.hasAttribute("disabled"));
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 });
 
 function syncHeader() {
