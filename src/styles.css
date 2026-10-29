@@ -572,10 +572,10 @@ body[data-page="terms"] .site-header {
   .intro-copy h2, .section-heading h2 { font-size: clamp(2.8rem,12vw,4.8rem); }
   .intro-copy__body { margin-left: 0; }
   .split-heading, .atlas-intro, .about-hero__grid, .contact-band__grid, .legal-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .destination-grid { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 6vw 1rem; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
-  .destination-grid::-webkit-scrollbar { height: 2px; }
-  .destination-grid::-webkit-scrollbar-thumb { background: var(--clay); }
-  .destination-tile { min-width: 82vw; height: 34rem; scroll-snap-align: center; }
+  .destination-grid { display: grid; grid-template-columns: 1fr; width: 100%; gap: clamp(2.75rem, 10vw, 5rem); overflow: visible; padding: 0; scroll-snap-type: none; overscroll-behavior: initial; }
+  .destination-tile { width: calc(100% - clamp(1.25rem, 8vw, 3rem)); min-width: 0; height: 34rem; scroll-snap-align: none; }
+  .destination-tile:nth-child(odd) { justify-self: start; }
+  .destination-tile:nth-child(even) { justify-self: end; translate: 0 1.25rem; }
   .destination-tile__copy p { display: none; }
   .custom-grid { gap: 4rem; }
   .process-list li { grid-template-columns: 2rem 1fr; gap: .75rem; padding: 1.35rem 0; }
@@ -636,7 +636,7 @@ body[data-page="terms"] .site-header {
   .home-hero h1 { font-size: clamp(3.15rem, 15vw, 3.65rem); line-height: .88; }
   .page-hero h1, .about-hero__copy h1, .plan-intro h1 { font-size: clamp(3.1rem, 14.5vw, 4.8rem); line-height: .92; }
   .hero-index a { font-size: .55rem; }
-  .destination-tile { min-width: 86vw; }
+  .destination-tile { width: calc(100% - 1rem); min-width: 0; }
   .gallery-grid--villa { display: flex; width: 100vw; margin-left: calc((100vw - var(--shell)) / -2); padding: 0 6vw 1rem; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
   .gallery-grid--villa .gallery-item:nth-child(n) { min-width: 82vw; height: 31rem; scroll-snap-align: center; }
   .gallery-grid--villa .gallery-item:nth-child(2n) { min-width: 70vw; }
