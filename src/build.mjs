@@ -6,6 +6,7 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
+const assetVersion = "20261029-nav";
 
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
@@ -486,10 +487,10 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
   <meta property="og:image" content="${site.origin}${image}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/assets/images/brand-idol.png" type="image/png">
-  <link rel="preload" href="/assets/styles.css" as="style">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="preload" href="/assets/styles.css?v=${assetVersion}" as="style">
+  <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
   <script type="application/ld+json">${JSON.stringify(jsonLd).replaceAll("<", "\\u003c")}</script>
-  <script src="/assets/app.js" type="module"></script>
+  <script src="/assets/app.js?v=${assetVersion}" type="module"></script>
 </head>
 <body data-page="${pageKey}" data-locale="${locale}">
   ${nav(pageKey, locale)}
