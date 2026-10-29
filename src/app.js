@@ -90,6 +90,104 @@ if (!reduceMotion && !window.matchMedia("(pointer: coarse) and (max-width: 760px
   }, { passive: true });
 }
 
+const journey = document.querySelector("[data-journey-hero]");
+const landscapes = [...document.querySelectorAll("[data-landscape]")];
+const journeyCta = document.querySelector("[data-journey-cta]");
+const journeyCtaLabel = document.querySelector("[data-cta-label]");
+const routePath = document.querySelector(".journey-route path");
+const routeLabels = [...document.querySelectorAll(".journey-route span")];
+const sceneLabel = document.querySelector("[data-scene-label]");
+const sceneCount = document.querySelector("[data-scene-count]");
+const worlds = document.querySelector(".worlds-section");
+const worldTrack = document.querySelector(".worlds-track");
+const worldProgress = document.querySelector(".worlds-progress span");
+const memory = document.querySelector(".memory-section");
+
+if (journey && !reduceMotion) {
+  const sceneNames = isSpanish ? ["Chimborazo · 6.263 m", "Amazonía · Napo", "Costa · Chocó Andino", "Galápagos · Pacífico"] : ["Chimborazo · 6,263 m", "Amazon · Napo", "Coast · Chocó Andino", "Galápagos · Pacific"];
+  const labels = isSpanish ? ["Descubre Ecuador", "Diseña tu ruta", "Planifica tu viaje"] : ["Discover Ecuador", "Design your route", "Plan your trip"];
+  let scheduled = false;
+  const clamp01 = value => Math.max(0, Math.min(1, value));
+  const paintJourney = () => {
+    const bounds = journey.getBoundingClientRect();
+    const progress = clamp01(-bounds.top / Math.max(1, bounds.height - window.innerHeight));
+    const scene = Math.min(3, Math.floor(progress * 4));
+    const blend = progress * 4 - scene;
+    landscapes.forEach((layer, index) => {
+      const opacity = index === scene ? 1 - blend * .78 : index === scene + 1 ? blend : index < scene ? 0 : 0;
+      layer.style.opacity = String(Math.max(0, opacity));
+      layer.style.transform = `scale(${1.08 - progress * .06}) translate3d(${(index - scene) * progress * -1.3}%,${-progress * (index + 1) * 1.2}%,0)`;
+    });
+    journey.style.setProperty("--fg-x", `${-progress * 30}px`);
+    journey.querySelectorAll(".journey-copy h1 span, .journey-copy h1 em").forEach((word, index) => {
+      const fade = Math.max(0, (progress - .12 - index * .025) / .28);
+      word.style.transform = `translate3d(${index === 1 ? fade * 10 : 0}px,${fade * -28}px,0)`;
+      word.style.filter = `blur(${Math.min(5, fade * 5)}px)`;
+      word.style.opacity = String(Math.max(.45, 1 - fade * .5));
+    });
+    routePath?.style.setProperty("--route-draw", String(1200 * (1 - progress)));
+    routeLabels.forEach((label, index) => label.style.setProperty("--route-opacity", progress > index * .23 + .08 ? "1" : "0"));
+    if (journeyCtaLabel) journeyCtaLabel.textContent = progress < .34 ? labels[0] : progress < .7 ? labels[1] : labels[2];
+    if (sceneLabel) sceneLabel.textContent = sceneNames[scene];
+    if (sceneCount) sceneCount.textContent = `0${scene + 1} / 04`;
+    scheduled = false;
+  };
+  const scheduleJourney = () => { if (scheduled) return; scheduled = true; requestAnimationFrame(paintJourney); };
+  window.addEventListener("scroll", scheduleJourney, { passive: true });
+  window.addEventListener("resize", scheduleJourney, { passive: true });
+  scheduleJourney();
+}
+
+if (worlds && worldTrack && !reduceMotion && !window.matchMedia("(max-width: 760px)").matches) {
+  let scheduled = false;
+  const paintWorlds = () => {
+    const bounds = worlds.getBoundingClientRect();
+    const distance = Math.max(1, worlds.offsetHeight - window.innerHeight);
+    const progress = Math.max(0, Math.min(1, -bounds.top / distance));
+    const travel = Math.max(0, worldTrack.scrollWidth - window.innerWidth * .86);
+    worldTrack.style.setProperty("--worlds-x", `${-travel * progress}px`);
+    worldProgress?.style.setProperty("--progress", `${progress * 100}%`);
+    scheduled = false;
+  };
+  const schedule = () => { if (scheduled) return; scheduled = true; requestAnimationFrame(paintWorlds); };
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule, { passive: true });
+  schedule();
+}
+
+if (!reduceMotion && memory) {
+  let scheduled = false;
+  const paintMemory = () => {
+    const bounds = memory.getBoundingClientRect();
+    memory.style.setProperty("--memory-y", `${Math.max(-24, Math.min(24, (bounds.top - window.innerHeight) * -.035))}px`);
+    scheduled = false;
+  };
+  const schedule = () => { if (scheduled) return; scheduled = true; requestAnimationFrame(paintMemory); };
+  window.addEventListener("scroll", schedule, { passive: true });
+  schedule();
+}
+
+const expeditionStops = document.querySelectorAll(".expedition-stop");
+if (reduceMotion || !("IntersectionObserver" in window)) expeditionStops.forEach(stop => stop.classList.add("is-active"));
+else {
+  const stopObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add("is-active");
+  }), { threshold: .45 });
+  expeditionStops.forEach(stop => stopObserver.observe(stop));
+}
+
+document.querySelectorAll(".compass-cta").forEach(button => {
+  if (reduceMotion || window.matchMedia("(pointer: coarse)").matches) return;
+  button.addEventListener("pointermove", event => {
+    const rect = button.getBoundingClientRect();
+    const dx = event.clientX - (rect.left + rect.width / 2);
+    const dy = event.clientY - (rect.top + rect.height / 2);
+    button.style.transform = `translate(${dx * .08}px,${dy * .08}px)`;
+    button.querySelector(".icon")?.style.setProperty("transform", `rotate(${Math.atan2(dy, dx) * 180 / Math.PI}deg)`);
+  });
+  button.addEventListener("pointerleave", () => { button.style.transform = ""; button.querySelector(".icon")?.style.removeProperty("transform"); });
+});
+
 const lightbox = document.querySelector("[data-lightbox]");
 const lightboxImage = document.querySelector("[data-lightbox-image]");
 const lightboxCount = document.querySelector("[data-lightbox-count]");

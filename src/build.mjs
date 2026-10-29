@@ -6,7 +6,7 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261029-destinations";
+const assetVersion = "20261029-immersion";
 
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
@@ -174,80 +174,26 @@ function finalCta(kicker = "Your journey, made personal", title = "Tell us what 
 
 function homePage() {
   return `<main id="main">
-    <section class="home-hero">
-      <div class="home-hero__media" data-parallax-media>${picture("hero-andes", [1200, 2400], "Cotopaxi volcano rising above Ecuador's Andean landscape", { priority: true, position: "50% 50%", ratio: .667 })}</div>
-      <div class="home-hero__wash"></div>
-      <div class="home-hero__content shell">
-        <span class="eyebrow light reveal">Private journeys through Ecuador & Galapagos</span>
-        <h1 class="reveal"><span>Travel deeper</span><em>into Ecuador.</em></h1>
-        <p class="reveal">Cultural encounters, soft adventure and tailor-made routes for independent travelers and small groups.</p>
-        <div class="hero-actions reveal"><a class="button button--light" href="/plan-your-trip/">Plan your trip ${icon("arrow")}</a><a class="text-link light" href="/destinations/">Explore destinations ${icon("diagonal")}</a></div>
-      </div>
-      <div class="hero-index shell" aria-label="Featured destinations">
-        ${destinations.map(d => `<a href="/destinations/${d.slug}/"><span>${d.number}</span>${d.name}</a>`).join("")}
-      </div>
-      <span class="photo-credit">Hero photograph: Andres Medina / Unsplash</span>
-    </section>
-
-    <section class="intro-section section" id="story">
-      <div class="shell intro-grid">
-        <div class="intro-image"><img src="/assets/images/about-local-connection.webp" alt="A traveler sharing a warm moment with an Indigenous woman in Ecuador" loading="eager" decoding="async"><span>People before places</span></div>
-        <div class="intro-copy">
-          <span class="eyebrow reveal">Ecuador, known from within</span>
-          <h2 class="reveal">The celebrated wonders. The quiet corners. The stories in between.</h2>
-          <div class="intro-copy__body reveal"><p>Inca Holidays creates cultural and soft-adventure experiences that balance Ecuador's highlights with the less-known places that make a journey feel personal.</p><a class="text-link" href="/about/">Meet Inca Holidays ${icon("arrow")}</a></div>
-        </div>
+    <section class="journey-hero" data-journey-hero>
+      <div class="journey-stage">
+        <div class="journey-sky" aria-hidden="true"></div>
+        <div class="journey-image journey-image--andes" data-landscape="0">${picture("hero-andes", [1200,2400], "Chimborazo above the Andean páramo", {priority:true, position:"50% 52%"})}</div>
+        <div class="journey-image journey-image--amazon" data-landscape="1">${picture("hero-amazon", [1200,2400], "Rainforest canopy in Ecuador", {position:"50% 45%"})}</div>
+        <div class="journey-image journey-image--coast" data-landscape="2">${picture("hero-nono", [1200,2200], "Green Ecuadorian cloud forest", {position:"50% 50%"})}</div>
+        <div class="journey-image journey-image--islands" data-landscape="3">${picture("hero-galapagos", [1200,2400], "Volcanic shores of Galápagos", {position:"50% 46%"})}</div>
+        <div class="journey-shade"></div><div class="journey-foreground" aria-hidden="true"></div>
+        <div class="journey-copy shell"><span class="eyebrow light">A medida · Ecuador y Galápagos</span><h1><span>Travel</span> <span>deeper</span><em>into Ecuador.</em></h1><p>Cultural encounters, soft adventure and considered routes for independent travelers and small groups.</p><div class="journey-actions"><a class="button button--light compass-cta" href="/plan-your-trip/" data-journey-cta><span data-cta-label>Discover Ecuador</span>${icon("compass")}</a><a class="text-link light" href="#worlds">Explore destinations ${icon("diagonal")}</a></div></div>
+        <div class="journey-route" aria-hidden="true"><svg viewBox="0 0 1000 150" preserveAspectRatio="none"><path d="M0 118 C120 118 112 44 250 64 S390 139 500 78 650 26 742 80 890 129 1000 26"/></svg><span>Altitude</span><span>Culture</span><span>Nature</span><span>Ocean</span></div>
+        <div class="journey-caption"><span data-scene-label>Chimborazo · 6,263 m</span><span data-scene-count>01 / 04</span></div>
       </div>
     </section>
-
-    <section class="destinations-section section">
-      <div class="shell section-heading split-heading">
-        <div><span class="eyebrow reveal">Four distinct worlds</span><h2 class="reveal">Choose a direction.<br>We will shape the route.</h2></div>
-        <p class="reveal">From volcanic islands to cloud forest, each region offers a different way into Ecuador.</p>
-      </div>
-      <div class="shell destination-grid">${destinations.map(destinationTile).join("")}</div>
-    </section>
-
-    <section class="custom-section section">
-      <div class="shell custom-grid">
-        <div class="custom-copy reveal">
-          <span class="eyebrow light">Tailor-made by design</span>
-          <h2>No fixed formula.<br>One considered journey.</h2>
-          <p>Start with the landscapes and experiences that draw you in. Inca Holidays brings them into a balanced itinerary, with the duration and pace adapted to your trip.</p>
-          <a class="button button--light" href="/plan-your-trip/">Start planning ${icon("arrow")}</a>
-        </div>
-        <ol class="process-list">
-          <li class="reveal"><span>01</span><div><h3>Tell us what moves you</h3><p>Share your dates, interests, group and preferred rhythm.</p></div>${icon("compass")}</li>
-          <li class="reveal"><span>02</span><div><h3>Shape the route together</h3><p>Balance signature places with quieter, authentic experiences.</p></div>${icon("route")}</li>
-          <li class="reveal"><span>03</span><div><h3>Travel with local knowledge</h3><p>Arrive with a journey built around Ecuador, not around a template.</p></div>${icon("leaf")}</li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="experience-section section">
-      <div class="shell section-heading"><span class="eyebrow reveal">A richer way to travel</span><h2 class="reveal">Small moments make the distance worthwhile.</h2></div>
-      <div class="experience-collage shell">
-        <figure class="experience-collage__large reveal"><img src="/assets/images/amazon-macaw.webp" alt="Scarlet macaw in the Ecuadorian Amazon" loading="lazy"><figcaption>Wildlife that rewards patience</figcaption></figure>
-        <blockquote class="experience-quote reveal">${icon("quote")}<p>“A balance between the highlights and the off-the-beaten-path gems of Ecuador.”</p><cite>Inca Holidays brochure</cite></blockquote>
-        <figure class="experience-collage__small reveal"><img src="/assets/images/andes-festival.webp" alt="Traditional dancing in Ecuador's highlands" loading="lazy"><figcaption>Culture with context</figcaption></figure>
-      </div>
-    </section>
-
-    <section class="villa-feature section">
-      <div class="shell villa-feature__grid">
-        <div class="villa-feature__media reveal"><img src="/assets/images/hero-villa-1600.webp" srcset="/assets/images/hero-villa-1200.webp 1200w, /assets/images/hero-villa-1600.webp 1600w" sizes="(max-width: 800px) 100vw, 58vw" alt="Villa Doris country house in the green landscape of Nono" loading="lazy"><span>Nono · Choco Andino</span></div>
-        <div class="villa-feature__copy reveal"><span class="eyebrow">Stay close to nature</span><h2>Villa Doris</h2><p>A country house surrounded by the biodiversity and village life of Nono, presented in the brochure as a welcoming place to begin or end an Ecuador journey.</p><a class="button button--ink" href="/villa-doris/">Discover Villa Doris ${icon("arrow")}</a></div>
-      </div>
-    </section>
-
-    <section class="responsibility-section">
-      <div class="shell responsibility-grid">
-        <div class="responsibility-symbol reveal">${icon("leaf", "icon icon--xl")}</div>
-        <div class="reveal"><span class="eyebrow light">Travel with care</span><h2>Nature, hospitality and community belong in the same story.</h2></div>
-        <p class="reveal">The brochure places responsible travel at the heart of Amazon lodging choices and Villa Doris's relationship with its local community. That perspective guides how these journeys are presented.</p>
-      </div>
-    </section>
-    ${finalCta()}
+    <section class="worlds-section" id="worlds"><div class="worlds-sticky"><div class="worlds-heading"><span class="eyebrow">One country, four worlds</span><h2>Follow the feeling.</h2></div><div class="worlds-track">
+      ${[["andes","hero-andes-1200.webp","Andes","Cotopaxi · 4,897 m"],["amazon","hero-amazon-1200.webp","Amazonía","Napo · Ecuador"],["nono","hero-nono-1200.webp","Costa y bosque nublado","Chocó Andino · 0°"],["galapagos","hero-galapagos-1200.webp","Galápagos","0° 45′ S · Pacífico"]].map(([slug,img,title,coord],i)=>`<article class="world-panel"><img src="/assets/images/${img}" alt="${title}, Ecuador" loading="lazy"><div class="world-panel__meta"><span>0${i+1} / ECUADOR</span><span>${coord}</span></div><h3>${title}</h3><a href="/destinations/${slug === "amazon" ? "amazon" : slug}/">Explore ${title} ${icon("diagonal")}</a></article>`).join("")}
+    </div><div class="worlds-progress"><span></span></div></div></section>
+    <section class="expedition-section"><div class="shell"><span class="eyebrow">A route that finds its own rhythm</span><h2>From the highlands<br>to the living ocean.</h2><div class="expedition-route"><div class="expedition-line"></div>${[["01","Quito","Begin with stories, colors and a table set for you."],["02","Andes","Cross high valleys at a pace that leaves room to stop."],["03","Amazonía","Follow waterways into a world that moves to its own time."],["04","Galápagos","End where ancient islands meet the open Pacific."]].map(([n,t,d])=>`<article class="expedition-stop"><span class="expedition-number">${n}</span><div><h3>${t}</h3><p>${d}</p></div><span class="expedition-pin">${icon("pin")}</span></article>`).join("")}</div></div></section>
+    <section class="intent-section"><div class="shell"><span class="eyebrow light">Travel with intention</span><h2>Made personal,<br>at every turn.</h2><div class="intent-list"><p><span>01</span><strong>Small groups</strong><i>Space to notice more.</i></p><p><span>02</span><strong>Local hosts</strong><i>People who make a place mean something.</i></p><p><span>03</span><strong>Your own pace</strong><i>Room for the unplanned.</i></p></div></div></section>
+    <section class="memory-section"><img src="/assets/images/amazon-community.webp" alt="A shared moment with a local host in Ecuador" loading="lazy"><div class="memory-shade"></div><blockquote><span class="eyebrow light">A memory to carry</span><p>“A balance between the highlights and the off-the-beaten-path gems of Ecuador.”</p><cite>— Inca Holidays brochure</cite></blockquote></section>
+    <section class="journey-close"><div class="contour-lines"></div><span class="eyebrow light">Ecuador, at your own pace</span><h2>Your Ecuador<br>starts here.</h2><a class="button button--light compass-cta" href="/plan-your-trip/">Plan your trip ${icon("compass")}</a></section>
   </main>`;
 }
 
@@ -366,6 +312,13 @@ function termsPage() {
 }
 
 const spanishTranslations = [
+  ["A measure · Ecuador and Galápagos", "A medida · Ecuador y Galápagos"], ["<span>Travel</span> <span>deeper</span>", "<span>Viaja</span> <span>más profundo</span>"], ["into Ecuador.", "por Ecuador."],
+  ["Cultural encounters, soft adventure and considered routes for independent travelers and small groups.", "Encuentros culturales, aventura suave y rutas pensadas para viajeros independientes y grupos pequeños."],
+  ["Chimborazo above the Andean páramo", "El Chimborazo sobre el páramo andino"], ["Rainforest canopy in Ecuador", "Dosel de la selva ecuatoriana"], ["Green Ecuadorian cloud forest", "Bosque nublado ecuatoriano"], ["Volcanic shores of Galápagos", "Costas volcánicas de Galápagos"], ["A shared moment with a local host in Ecuador", "Un momento compartido con un anfitrión local en Ecuador"], ["We felt welcomed into the real Ecuador, one thoughtful moment at a time.", "Nos sentimos bienvenidos al Ecuador auténtico, un momento especial a la vez."],
+  ["Chimborazo · 6,263 m", "Chimborazo · 6.263 m"], ["Cotopaxi · 4,897 m", "Cotopaxi · 4.897 m"], ["Napo · Ecuador", "Napo · Ecuador"], ["Chocó Andino · 0°", "Chocó Andino · 0°"], ["0° 45′ S · Pacific", "0° 45′ S · Pacífico"], ["01 / ECUADOR", "01 / ECUADOR"], ["02 / ECUADOR", "02 / ECUADOR"], ["03 / ECUADOR", "03 / ECUADOR"], ["04 / ECUADOR", "04 / ECUADOR"],
+  ["One country, four worlds", "Un país, cuatro mundos"], ["Follow the feeling.", "Sigue lo que te mueve."], ["Amazonía", "Amazonía"], ["Coast and cloud forest", "Costa y bosque nublado"], ["Coast", "Costa"], ["Explore Amazonía", "Explora Amazonía"], ["Explore Coast and cloud forest", "Explora Costa y bosque nublado"],
+  ["A route that finds its own rhythm", "Una ruta que encuentra su propio ritmo"], ["From the highlands<br>to the living ocean.", "De los Andes<br>al océano vivo."], ["Begin with stories, colors and a table set for you.", "Empieza entre historias, colores y una mesa compartida."], ["Cross high valleys at a pace that leaves room to stop.", "Cruza valles altos a un ritmo que deja espacio para detenerse."], ["Follow waterways into a world that moves to its own time.", "Sigue los ríos hacia un mundo que vive a su propio ritmo."], ["End where ancient islands meet the open Pacific.", "Termina donde islas antiguas se encuentran con el Pacífico."],
+  ["Travel with intention", "Viajar con intención"], ["Made personal,<br>at every turn.", "Hecho a tu medida,<br>en cada paso."], ["Small groups", "Grupos pequeños"], ["Space to notice more.", "Espacio para descubrir más."], ["Local hosts", "Anfitriones locales"], ["People who make a place mean something.", "Personas que dan sentido a cada lugar."], ["Your own pace", "Tu propio ritmo"], ["Room for the unplanned.", "Espacio para lo inesperado."], ["A memory to carry", "Un recuerdo para llevar"], ["— Inca Holidays traveler", "— Viajero de Inca Holidays"], ["Ecuador, at your own pace", "Ecuador, a tu propio ritmo"], ["Your Ecuador<br>starts here.", "Tu Ecuador<br>empieza aquí."], ["Discover Ecuador", "Descubre Ecuador"], ["Design your route", "Diseña tu ruta"], ["Altitude", "Altura"], ["Culture", "Cultura"], ["Nature", "Naturaleza"], ["Ocean", "Océano"],
   ["Tailor-made journeys through Ecuador and the Galapagos Islands", "Viajes a medida por Ecuador y las islas Galápagos"],
   ["Private journeys through Ecuador & Galapagos", "Viajes privados por Ecuador y Galápagos"],
   ["Destinations", "Destinos"], ["About", "Nosotros"], ["Plan your trip", "Planifica tu viaje"], ["Home", "Inicio"], ["Explore destinations", "Explora los destinos"],
