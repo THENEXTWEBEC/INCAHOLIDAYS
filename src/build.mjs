@@ -6,7 +6,7 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261029-immersion";
+const assetVersion = "20261029-immersion2";
 
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
