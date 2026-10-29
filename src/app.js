@@ -22,6 +22,7 @@ function setMenu(open) {
   }
   menuToggle.setAttribute("aria-expanded", String(open));
   menuToggle.setAttribute("aria-label", open ? (isSpanish ? "Cerrar menú" : "Close menu") : (isSpanish ? "Abrir menú" : "Open menu"));
+  mobileMenu.setAttribute("aria-hidden", String(!open));
   mobileMenu.classList.toggle("is-open", open);
   document.body.classList.toggle("menu-open", open);
   if (open) mobileMenu.querySelector("a")?.focus();
