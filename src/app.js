@@ -176,6 +176,18 @@ else {
   expeditionStops.forEach(stop => stopObserver.observe(stop));
 }
 
+const fullInfoToggle = document.querySelector("[data-expand-full-info]");
+const fullInfoSections = [...document.querySelectorAll(".full-copy__section")];
+fullInfoToggle?.addEventListener("click", () => {
+  const shouldOpen = fullInfoToggle.getAttribute("aria-expanded") !== "true";
+  fullInfoSections.forEach(section => { section.open = shouldOpen; });
+  fullInfoToggle.setAttribute("aria-expanded", String(shouldOpen));
+  const label = fullInfoToggle.querySelector("span");
+  if (label) label.textContent = shouldOpen
+    ? (isSpanish ? "Ocultar información" : "Hide full information")
+    : (isSpanish ? "Ver información completa" : "View full information");
+});
+
 document.querySelectorAll(".compass-cta").forEach(button => {
   if (reduceMotion || window.matchMedia("(pointer: coarse)").matches) return;
   button.addEventListener("pointermove", event => {
