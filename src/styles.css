@@ -756,3 +756,57 @@ body[data-page="terms"] .site-header {
   .program-day { padding-right: 3.5rem !important; }
   .program-day__toggle { width: 2.2rem; height: 2.2rem; }
 }
+
+/* Itinerary cards: expanded day details stay in their own flow. */
+.lodge-programs > details {
+  margin: 0 0 1.25rem;
+  padding: 0 1.4rem;
+  border: 1px solid #aab5a5;
+  background: rgba(255, 253, 248, .42);
+}
+.lodge-programs > details:last-child { border-bottom: 1px solid #aab5a5; }
+.lodge-programs > details > summary { font-weight: 600; }
+.lodge-programs > details > ol { margin: 0; padding: 0 0 1.1rem; }
+.program-day {
+  display: grid;
+  grid-template-columns: minmax(4.5rem, 90px) minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 1rem;
+  row-gap: .75rem;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(170, 181, 165, .72);
+}
+.program-day:first-child { border-top: 0; }
+.program-day > strong { grid-column: 1; grid-row: 1; }
+.program-day > p { grid-column: 2; grid-row: 1; }
+.program-day__detail {
+  position: static;
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  border: 0 !important;
+}
+.program-day__detail[open] {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
+}
+.program-day__detail[open] .program-day__toggle { margin-left: auto; }
+.program-day__copy {
+  width: 100%;
+  margin: .75rem 0 0;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgba(164, 116, 56, .45);
+  background: rgba(255, 253, 248, .7);
+}
+@media (max-width: 700px) {
+  .lodge-programs > details { padding-inline: 1rem; }
+  .program-day {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    column-gap: .75rem;
+  }
+  .program-day__detail,
+  .program-day__detail[open] { grid-column: 1 / -1; grid-row: 2; }
+  .program-day__detail:not([open]) .program-day__toggle { margin-left: auto; }
+  .program-day__detail[open] .program-day__toggle { margin-left: auto; }
+}
