@@ -503,12 +503,24 @@ function completeCopy(pageKey, locale) {
   const sections = sets[pageKey];
   if (!sections) return "";
   const es = locale === "es";
-  const formatted = (text) => text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
+  const formatted = (text) => {
+    const lines = text.split(/\n/).map(line => line.trim()).filter(Boolean);
+    const consumed = new Set();
+    return lines.map((line, index) => {
+      if (consumed.has(index)) return "";
     const safe = escapeHtml(line);
-    if (/^(Day|Día) [1-9]:/.test(line)) return `<h4>${safe}</h4>`;
+    if (/^(Day|Día) [1-9]+:/i.test(line)) {
+      const following = [];
+      for (let cursor = index + 1; cursor < lines.length && !/^(Day|Día) [1-9]+:/i.test(lines[cursor]) && !(lines[cursor].length < 100 && /^(Amazon|Aves|Aventura|Selva|Nono|Ecoruta|Un día|A day|Grand Ocean|Yacht|Huasquila|La Selva|Sani Lodge|[1-3]\. )/i.test(lines[cursor])); cursor++) { following.push(lines[cursor]); consumed.add(cursor); }
+      const full = following.join(" ");
+      const summary = full.match(/^.{1,180}?(?:[.!?](?:\s|$)|$)/)?.[0] || full.slice(0, 180);
+      const detailId = `program-day-${index}`;
+      return `<article class="program-day"><div class="program-day__summary"><div><strong>${safe}</strong><p>${escapeHtml(summary)}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}" aria-controls="${detailId}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy" id="${detailId}"><p>${escapeHtml(full)}</p></div></details></div></article>`;
+    }
     if (line.length < 100 && /^(Nuestros valores|Nuestra historia|La casa principal|En los jardines|Información útil|Inversión local|Experiencias comunitarias|Bosque nativo|Menor consumo|Limpieza más amable|Recarga en lugar|Muebles con|Del productor|Cruceros por|Ejemplo de itinerario|Aventuras amazónicas|Huasquila Amazon|Programa amazónico|Aves y fotografía|Aventura amazónica|Selva profunda|Nono y la Ecoruta|Ecoruta del Colibrí|Un día entre|Our Values|Our story|The main house|In the gardens|Good to know|Opening Hours|Amazon Adventures & Lodges|Galápagos Cruises|Sample Itinerary|Grand Ocean Spray|Yacht Catamaran Anahi|1\. Huasquila Lodge|La Selva Eco-Lodge|Sani Lodge|Amazon program|Amazon Tour|Birding & Photography|Amazon Adventure Experience|Deep Jungle Experience|A day in the clouds|2\. Nono|3\. Eco-route|Investing where|Community experiences|Growing native forest|Respect|Low energy|Gentler cleaning|Refill|Furniture|From producers)/i.test(line)) return `<h3>${safe}</h3>`;
     return `<p>${safe}</p>`;
-  }).join("");
+    }).join("");
+  };
   return `<section class="full-copy section" id="full-information" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><div><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Información completa." : "Full information."}</h2><p>${es ? "Lee primero lo esencial y abre cada bloque cuando quieras conocer el programa, la casa, los valores y las experiencias con más calma." : "Start with the essentials, then open each section whenever you want the full story, itinerary details and practical information."}</p></div><button class="button button--ink full-copy__toggle" type="button" data-expand-full-info aria-expanded="false"><span>${es ? "Ver información completa" : "View full information"}</span>${icon("chevron")}</button></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}${icon("plus")}</summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
 }
 

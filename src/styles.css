@@ -818,3 +818,37 @@ body[data-page="terms"] .site-header {
 .program-day__down { display: none; }
 .program-day__detail[open] .program-day__right { display: none; }
 .program-day__detail[open] .program-day__down { display: block; }
+
+/* Itinerary day cards stay in document flow so expanded copy cannot overlap another day. */
+.program-day {
+  position: static;
+  display: block;
+  min-width: 0;
+  margin: .65rem 0;
+  padding: 1rem 1.1rem !important;
+  border: 1px solid #c3cbbd;
+  border-radius: .8rem;
+  background: rgba(255,255,255,.38);
+}
+.program-day__summary {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: start;
+  gap: 1rem;
+}
+.program-day__summary > div:first-child { min-width: 0; }
+.program-day__summary > div:first-child > strong { display: block; margin-bottom: .4rem; }
+.program-day__summary p { line-height: 1.65; overflow-wrap: anywhere; }
+.program-day__detail { position: static; grid-column: 2; grid-row: 1; }
+.program-day__detail[open] { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
+.program-day__toggle { width: 2.75rem; min-width: 2.75rem; height: 2.75rem; min-height: 2.75rem; padding: 0; aspect-ratio: 1; border-radius: 50%; background: #fffdf8; color: #20382b; }
+.program-day__detail[open] .program-day__toggle { background: #20382b; color: #fffdf8; }
+.program-day__toggle .icon { width: 1.1rem; height: 1.1rem; }
+.program-day__detail[open] .program-day__toggle { margin-left: auto; }
+.program-day__copy { margin: .85rem 0 0; padding: 1rem 1.1rem; border: 1px solid #d3d9ce; border-left: 3px solid #a47438; border-radius: .55rem; background: #fffdf8; }
+.program-day__copy p { line-height: 1.75; }
+@media (max-width: 560px) {
+  .program-day { padding: .85rem !important; }
+  .program-day__summary { gap: .7rem; }
+  .program-day__toggle { width: 2.5rem; min-width: 2.5rem; height: 2.5rem; min-height: 2.5rem; }
+}

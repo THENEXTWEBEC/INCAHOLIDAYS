@@ -193,9 +193,11 @@ document.querySelectorAll(".program-day__detail").forEach(detail => {
   if (!toggle) return;
   toggle.innerHTML = `<svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${isSpanish ? "Ver información completa" : "View full information"}</span>`;
   const updateLabel = () => {
-    toggle.title = detail.open
+    const label = detail.open
       ? (isSpanish ? "Cerrar detalle del día" : "Close day details")
       : (isSpanish ? "Abrir detalle del día" : "Open day details");
+    toggle.title = label;
+    toggle.setAttribute("aria-label", label);
   };
   updateLabel();
   detail.addEventListener("toggle", updateLabel);
