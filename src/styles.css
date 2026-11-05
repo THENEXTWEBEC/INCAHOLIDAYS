@@ -414,6 +414,19 @@ body[data-page="terms"] .site-header {
 .about-statement__grid { display: grid; grid-template-columns: .45fr 1fr .7fr; gap: clamp(2rem,5vw,6rem); }
 .about-statement h2 { font-family: var(--serif); font-size: clamp(3rem,5.7vw,6rem); font-weight: 400; line-height: .96; letter-spacing: -.045em; }
 .about-statement__grid > div p { margin-bottom: 1.2rem; color: var(--ink-soft); }
+.about-visual-story { background: var(--paper); }
+.about-visual-story__heading { display: grid; grid-template-columns: .45fr 1fr; gap: clamp(2rem,5vw,6rem); align-items: start; margin-bottom: 3.5rem; }
+.about-visual-story__heading .eyebrow { padding-top: .7rem; }
+.about-visual-story__heading h2 { max-width: 13ch; margin: 0; font: 400 clamp(3rem,5.5vw,5.6rem)/.96 var(--serif); letter-spacing: -.045em; }
+.about-visual-story__grid { display: grid; grid-template-columns: 1.25fr .75fr; grid-template-rows: repeat(2, minmax(12rem, 19rem)); gap: 1rem; }
+.about-photo { position: relative; min-width: 0; margin: 0; overflow: hidden; background: var(--forest); }
+.about-photo--culture { grid-row: 1 / 3; }
+.about-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+.about-photo--culture img { object-position: center; }
+.about-photo--community img { object-position: center 36%; }
+.about-photo::after { content: ""; position: absolute; inset: 35% 0 0; background: linear-gradient(transparent, rgba(12,25,20,.64)); pointer-events: none; }
+.about-photo figcaption { position: absolute; z-index: 1; bottom: 1.25rem; left: 1.5rem; color: white; font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.about-photo:hover img { transform: scale(1.035); }
 .values-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); }
 .values-grid article { min-height: 25rem; padding: clamp(2rem,4vw,4rem); background: var(--ivory-deep); display: flex; flex-direction: column; }
 .values-grid article > span { font-size: .68rem; letter-spacing: .12em; }
@@ -612,6 +625,10 @@ body[data-page="terms"] .site-header {
   .about-hero { padding: 9rem 0 5rem; }
   .about-hero__copy h1 { font-size: clamp(3.7rem,15vw,6rem); }
   .about-hero__image { max-width: 90%; margin-top: 2rem; }
+  .about-visual-story__heading { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2rem; }
+  .about-visual-story__grid { grid-template-columns: 1fr 1fr; grid-template-rows: minmax(17rem, 58vw) minmax(13rem, 42vw); gap: .65rem; }
+  .about-photo--culture { grid-column: 1 / -1; grid-row: auto; }
+  .about-photo figcaption { left: .9rem; bottom: .9rem; font-size: .58rem; }
   .values-grid { grid-template-columns: 1fr; }
   .values-grid article { min-height: 21rem; }
   .plan-intro { padding: 10rem 0 4rem; }

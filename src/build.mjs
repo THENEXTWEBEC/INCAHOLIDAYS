@@ -326,6 +326,16 @@ function aboutPage() {
       </div>
     </section>
     <section class="about-statement section" id="story"><div class="shell about-statement__grid"><span class="eyebrow reveal">What guides the work</span><h2 class="reveal">Know the wonders.<br>Know the corners.<br>Know the secrets.</h2><div class="reveal"><p>We design journeys around nature, culture, gastronomy, photography, birding and hiking, connecting celebrated landscapes with lesser-known corners of Ecuador.</p><p>That approach is especially suited to travelers who want nature, culture and soft adventure without losing the human scale of the journey.</p></div></div></section>
+    <section class="about-visual-story section" aria-label="People, culture and wildlife in Ecuador">
+      <div class="shell">
+        <div class="about-visual-story__heading reveal"><span class="eyebrow">People, culture and place</span><h2>Every journey begins with connection.</h2></div>
+        <div class="about-visual-story__grid">
+          <figure class="about-photo about-photo--culture reveal"><img src="/assets/images/andes-festival.webp" alt="Traditional dance in an Andean community" loading="lazy" decoding="async"><figcaption>Culture · Andes</figcaption></figure>
+          <figure class="about-photo about-photo--community reveal"><img src="/assets/images/amazon-community.webp" alt="Community member in the Ecuadorian Amazon" loading="lazy" decoding="async"><figcaption>Community · Amazonía</figcaption></figure>
+          <figure class="about-photo about-photo--wildlife reveal"><img src="/assets/images/galapagos-seal.webp" alt="Sea lion and pup on a Galápagos beach" loading="lazy" decoding="async"><figcaption>Wildlife · Galápagos</figcaption></figure>
+        </div>
+      </div>
+    </section>
     <section class="values-section section section--muted"><div class="shell values-grid">
       <article class="reveal"><span>01</span>${icon("compass","icon icon--lg")}<h3>Designed, not packaged</h3><p>The itinerary begins with your interests, duration and preferred pace.</p></article>
       <article class="reveal"><span>02</span>${icon("route","icon icon--lg")}<h3>Highlights and hidden corners</h3><p>Signature places are balanced with quieter routes and local context.</p></article>
@@ -397,6 +407,15 @@ const spanishTranslations = [
   ["Privacy notice", "Aviso de privacidad"], ["Website information", "Información del sitio"], ["Trip enquiries", "Consultas de viaje"], ["Your choices", "Tus opciones"], ["Contact information", "Información de contacto"], ["Website terms", "Términos del sitio web"], ["Plain-language terms for this website draft.", "Términos claros para este borrador del sitio web."], ["Travel information", "Información de viaje"], ["Enquiries are not bookings", "Las consultas no son reservas"], ["Photography", "Fotografía"], ["Page not found", "Página no encontrada"], ["The trail ends here", "El sendero termina aquí"], ["This page has wandered off route.", "Esta página se ha desviado de la ruta."], ["Return to the destination atlas or begin planning a new journey.", "Vuelve al atlas de destinos o comienza a planificar un nuevo viaje."], ["Return home", "Volver al inicio"], ["Explore destinations", "Explora los destinos"],
   ["Galapagos", "Galápagos"], ["Andes & Highlands", "Andes y tierras altas"], ["Amazon Rainforest", "Selva amazónica"], ["Nono Cloud Forest", "Bosque nublado de Nono"], ["Cruises & island hopping", "Cruceros y rutas entre islas"], ["Volcanoes, heritage & living culture", "Volcanes, patrimonio y cultura viva"], ["Biodiversity & conservation", "Biodiversidad y conservación"], ["A hidden Andean paradise", "Un paraíso andino escondido"], ["Wildlife encounters shaped around your pace.", "Encuentros con la fauna al ritmo que elijas."], ["Where altitude reveals a living history.", "Donde la altura revela una historia viva."], ["Enter one of the planet's richest ecosystems.", "Entra en uno de los ecosistemas más ricos del planeta."], ["Cloud forest, hummingbirds and village life.", "Bosque nublado, colibríes y vida de pueblo."], ["Cruises and island-hopping journeys amid volcanic landscapes and endemic wildlife.", "Cruceros y viajes entre islas, entre paisajes volcánicos y fauna endémica."], ["Snow-capped volcanoes, colonial haciendas, markets and communities across Ecuador's highlands.", "Volcanes nevados, haciendas coloniales, mercados y comunidades en las tierras altas de Ecuador."], ["Guided jungle walks, quiet canoe rides, birdwatching and cultural experiences in the rainforest.", "Caminatas guiadas por la selva, paseos tranquilos en canoa, observación de aves y experiencias culturales en la Amazonía."], ["Two- and three-day journeys from Quito into a natural and cultural landscape in the Andean cloud forest.", "Viajes de dos y tres días desde Quito hacia un paisaje natural y cultural en el bosque nublado andino."], ["The Galapagos Islands reward unhurried exploration.", "Las islas Galápagos recompensan la exploración sin prisa."], ["Volcanic landscapes", "Paisajes volcánicos"], ["Colonial haciendas", "Haciendas coloniales"], ["Markets & heritage", "Mercados y patrimonio"], ["Local cultures", "Culturas locales"], ["Guided walks", "Caminatas guiadas"], ["Canoe journeys", "Viajes en canoa"], ["Wildlife & birds", "Fauna y aves"], ["Cultural connection", "Conexión cultural"], ["Two or three days", "Dos o tres días"], ["Active exploration", "Exploración activa"], ["Birdlife", "Vida de aves"], ["Local life", "Vida local"], ["Cruises", "Cruceros"], ["Island hopping", "Ruta entre islas"], ["Endemic wildlife", "Fauna endémica"], ["Flexible duration", "Duración flexible"]
 ];
+
+spanishTranslations.push(
+  ["People, culture and place", "Personas, cultura y territorio"],
+  ["People, culture and wildlife in Ecuador", "Personas, cultura y fauna de Ecuador"],
+  ["Every journey begins with connection.", "Cada viaje comienza con una conexión."],
+  ["Culture · Andes", "Cultura · Andes"],
+  ["Community · Amazonía", "Comunidad · Amazonía"],
+  ["Wildlife · Galápagos", "Fauna · Galápagos"]
+);
 
 spanishTranslations.push(
   ["Our home in the cloud forest.", "Nuestra casa en el bosque nublado."],
