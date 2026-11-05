@@ -10,36 +10,6 @@ const assetVersion = "20261105-language";
 const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
 const fullContentEs = JSON.parse(await readFile(join(src, "full-content-es.json"), "utf8"));
 
-function amazonSource(locale = "en") {
-  const content = locale === "es" ? fullContentEs : fullContent;
-  if (content["Amazon Rainforest"]) return content["Amazon Rainforest"];
-  const combined = content["Galápagos Islands"] || "";
-  const start = combined.indexOf("Amazon Rainforest");
-  const end = combined.indexOf("Galápagos Islands", start + 1);
-  return start >= 0 ? combined.slice(start, end >= 0 ? end : combined.length) : "";
-}
-
-function itineraryDays(locale, heading, count) {
-  const source = amazonSource(locale);
-  const start = source.indexOf(heading);
-  if (start < 0) return Array.from({ length: count }, () => "");
-  const nextProgram = ["Amazon program", "Birding & Photography", "Amazon Adventure Experience", "Deep Jungle Experience", "La Selva Eco-Lodge", "Sani Lodge", "Galápagos Islands"]
-    .map(label => source.indexOf(label, start + heading.length))
-    .filter(index => index >= 0)
-    .sort((a, b) => a - b)[0];
-  const chunk = source.slice(start, nextProgram || source.length);
-  const dayPattern = locale === "es" ? /Día\s+(\d+)\s*:\s*([^\n]*)/g : /Day\s+(\d+)\s*:\s*([^\n]*)/g;
-  const matches = [...chunk.matchAll(dayPattern)];
-  return Array.from({ length: count }, (_, index) => {
-    const match = matches[index];
-    if (!match) return "";
-    const bodyStart = match.index + match[0].length;
-    const bodyEnd = matches[index + 1]?.index ?? chunk.length;
-    const body = chunk.slice(bodyStart, bodyEnd).trim().replace(/\s+/g, " ");
-    return `${match[2].trim()}${body ? ` ${body}` : ""}`.trim();
-  });
-}
-
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
@@ -63,8 +33,7 @@ const iconPaths = {
   people: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 2-7 6-7s6 3 6 7M15 6c3 0 5 2 5 5M16 14c3 0 5 2 5 6"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   close: '<path d="m6 6 12 12M18 6 6 18"/>',
-  quote: '<path d="M7 10H4c0-4 2-6 6-7v2c-2 1-3 2-3 5v7H2v-7h5Zm12 0h-3c0-4 2-6 6-7v2c-2 1-3 2-3 5v7h-5v-7h5Z"/>',
-  plus: '<path d="M12 5v14M5 12h14"/>'
+  quote: '<path d="M7 10H4c0-4 2-6 6-7v2c-2 1-3 2-3 5v7H2v-7h5Zm12 0h-3c0-4 2-6 6-7v2c-2 1-3 2-3 5v7h-5v-7h5Z"/>'
 };
 
 function icon(name, className = "icon") {
@@ -257,19 +226,7 @@ function amazonLodges(locale = "en") {
     { name: "La Selva Eco-Lodge", tag: es ? "Lagunas · dosel · bienestar" : "Lagoons · canopy · wellbeing", photos: 9, prefix: "selva", intro: es ? "Vuela de Quito a El Coca y continúa por el río hasta un refugio junto a la laguna Garzacocha." : "Fly from Quito to El Coca and continue along the river to a lodge beside Garzacocha lagoon.", programs: [[es ? "Programa amazónico · 4 días / 3 noches" : "Amazon program · 4 days / 3 nights", es ? ["Viaje en canoa, caminata al atardecer y exploración nocturna de la laguna.", "Torre de observación, lagunas y caminata nocturna; tiempo para kayak, yoga o masaje.", "Saladero de loros, comunidad Pilchi y sendero Coto.", "Traslado por río a El Coca y vuelo a Quito."] : ["Travel by canoe, walk at sunset and explore the lagoon after dark.", "Visit the observation tower and lakes, then walk at night; enjoy kayaking, yoga or a massage.", "Visit a parrot clay lick and the Pilchi community, then explore the Coto Trail.", "Return by river to El Coca for your flight to Quito."]], [es ? "Programa amazónico · 5 días / 4 noches" : "Amazon program · 5 days / 4 nights", es ? ["Llegada y sendero Matapalo Charapa; canoa nocturna.", "Torre de observación, lagunas y caminata nocturna.", "Saladero de loros, comunidad Pilchi y sendero Coto.", "Parque Nacional Yasuní y recorrido en canoa por Morete Yaku.", "Regreso a El Coca y vuelo a Quito."] : ["Arrive, explore the Matapalo Charapa Trail and paddle at night.", "Explore the observation tower and lakes, followed by a night walk.", "Visit the parrot clay lick, Pilchi community and Coto Trail.", "Discover Yasuní National Park and paddle Morete Yaku Creek.", "Return to El Coca and fly to Quito."]]] },
     { name: "Sani Lodge", tag: es ? "Aves · bosque inundado · cultura kichwa" : "Birds · flooded forest · Kichwa culture", photos: 9, prefix: "sani", intro: es ? "Desde El Coca, navega por el río Napo y el bosque inundado hasta la laguna Challwacocha." : "From El Coca, follow the Napo River and a flooded forest to Challwacocha lagoon.", programs: [[es ? "Aves y fotografía · 4 días / 3 noches" : "Birding & photography · 4 days / 3 nights", es ? ["Viaje por el Napo y bosque inundado; salida nocturna.", "Observación desde la torre y sendero Chorongo.", "Saladeros de loros en Yasuní o exploración de islas fluviales.", "Observación al amanecer y regreso a El Coca."] : ["Travel along the Napo and flooded forest; explore at night.", "Birdwatch from the canopy tower and along the Chorongo Trail.", "Visit parrot clay licks in Yasuní or explore river islands.", "Sunrise birdwatching and return to El Coca."]], [es ? "Aventura amazónica · 4 días / 3 noches" : "Amazon adventure · 4 days / 3 nights", es ? ["Llegada por el Napo y búsqueda nocturna de caimanes.", "Torre de observación, bosque primario y caminata nocturna.", "Yasuní y encuentro cultural con Sani Warmi.", "Canoa al amanecer y regreso a El Coca."] : ["Arrive via the Napo and search for caimans at night.", "Visit the canopy tower, primary forest and take a night walk.", "Discover Yasuní and meet the Sani Warmi women’s organization.", "Paddle at sunrise and return to El Coca."]], [es ? "Selva profunda · 5 días / 4 noches" : "Deep jungle · 5 days / 4 nights", es ? ["Llegada por el río y salida nocturna.", "Torre del dosel y caminatas por el bosque.", "Saladero de loros y cultura kichwa.", "Excursión de día completo por el sendero Chorongo Largo.", "Canoa al amanecer y regreso a El Coca."] : ["Arrive by river and explore at night.", "Visit the canopy tower and walk in the forest.", "Discover the parrot clay lick and Kichwa culture.", "Spend a full day exploring the Chorongo Largo Trail.", "Paddle at sunrise and return to El Coca."]]] }
   ];
-  const sourceHeadings = es ? {
-    huasquila: ["Tour amazónico: 4 días / 3 noches"],
-    selva: ["Programa amazónico: 4 días / 3 noches", "Programa amazónico: 5 días / 4 noches"],
-    sani: ["Aves y fotografía: 4 días / 3 noches", "Aventura amazónica: 4 días / 3 noches", "Selva profunda: 5 días / 4 noches"]
-  } : {
-    huasquila: ["Amazon Tour"],
-    selva: ["Amazon program (4 days / 3 nights)", "Amazon program (5 days / 4 nights)"],
-    sani: ["Birding & Photography", "Amazon Adventure Experience", "Deep Jungle Experience"]
-  };
-  lodges.forEach(lodge => {
-    lodge.programs = lodge.programs.map(([title, days], index) => [title, days, itineraryDays(locale, sourceHeadings[lodge.prefix][index], days.length)]);
-  });
-  return `<section class="lodge-journey section"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "Encuentra tu propio ritmo en la Amazonía." : "Find your own rhythm in the Amazon."}</h2><p>${es ? "Cada lodge cuenta una historia distinta. Explora sus imágenes y descubre el itinerario que mejor se adapta a ti." : "Each lodge tells a different story. Explore its photographs and find the journey that fits you."}</p></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p></div></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.webp" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p><div class="lodge-programs">${l.programs.map(([title,days,details])=>`<details><summary>${title}${icon("plus")}</summary><ol>${days.map((day,n)=>`<li class="program-day"><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Ver información completa del día" : "View full day information"}">${icon("plus")}<span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${details?.[n] || day}</p></div></details></li>`).join("")}</ol></details>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
+  return `<section class="lodge-journey section"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "Encuentra tu propio ritmo en la Amazonía." : "Find your own rhythm in the Amazon."}</h2><p>${es ? "Cada lodge cuenta una historia distinta. Explora sus imágenes y descubre el itinerario que mejor se adapta a ti." : "Each lodge tells a different story. Explore its photographs and find the journey that fits you."}</p></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p></div></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.webp" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p><div class="lodge-programs">${l.programs.map(([title,days])=>`<details><summary>${title}${icon("plus")}</summary><ol>${days.map((day,n)=>`<li class="program-day"><div class="program-day__summary"><div><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${day}</p></div></details></div></li>`).join("")}</ol></details>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
 }
 
 function destinationPage(d, locale = "en") {
@@ -503,25 +460,26 @@ function completeCopy(pageKey, locale) {
   const sections = sets[pageKey];
   if (!sections) return "";
   const es = locale === "es";
+  let dayCardId = 0;
   const formatted = (text) => {
     const lines = text.split(/\n/).map(line => line.trim()).filter(Boolean);
     const consumed = new Set();
     return lines.map((line, index) => {
-      if (consumed.has(index)) return "";
+    if (consumed.has(index)) return "";
     const safe = escapeHtml(line);
     if (/^(Day|Día) [1-9]+:/i.test(line)) {
       const following = [];
       for (let cursor = index + 1; cursor < lines.length && !/^(Day|Día) [1-9]+:/i.test(lines[cursor]) && !(lines[cursor].length < 100 && /^(Amazon|Aves|Aventura|Selva|Nono|Ecoruta|Un día|A day|Grand Ocean|Yacht|Huasquila|La Selva|Sani Lodge|[1-3]\. )/i.test(lines[cursor])); cursor++) { following.push(lines[cursor]); consumed.add(cursor); }
       const full = following.join(" ");
       const summary = full.match(/^.{1,180}?(?:[.!?](?:\s|$)|$)/)?.[0] || full.slice(0, 180);
-      const detailId = `program-day-${index}`;
+      const detailId = `program-day-${pageKey}-${dayCardId++}`;
       return `<article class="program-day"><div class="program-day__summary"><div><strong>${safe}</strong><p>${escapeHtml(summary)}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}" aria-controls="${detailId}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy" id="${detailId}"><p>${escapeHtml(full)}</p></div></details></div></article>`;
     }
     if (line.length < 100 && /^(Nuestros valores|Nuestra historia|La casa principal|En los jardines|Información útil|Inversión local|Experiencias comunitarias|Bosque nativo|Menor consumo|Limpieza más amable|Recarga en lugar|Muebles con|Del productor|Cruceros por|Ejemplo de itinerario|Aventuras amazónicas|Huasquila Amazon|Programa amazónico|Aves y fotografía|Aventura amazónica|Selva profunda|Nono y la Ecoruta|Ecoruta del Colibrí|Un día entre|Our Values|Our story|The main house|In the gardens|Good to know|Opening Hours|Amazon Adventures & Lodges|Galápagos Cruises|Sample Itinerary|Grand Ocean Spray|Yacht Catamaran Anahi|1\. Huasquila Lodge|La Selva Eco-Lodge|Sani Lodge|Amazon program|Amazon Tour|Birding & Photography|Amazon Adventure Experience|Deep Jungle Experience|A day in the clouds|2\. Nono|3\. Eco-route|Investing where|Community experiences|Growing native forest|Respect|Low energy|Gentler cleaning|Refill|Furniture|From producers)/i.test(line)) return `<h3>${safe}</h3>`;
     return `<p>${safe}</p>`;
     }).join("");
   };
-  return `<section class="full-copy section" id="full-information" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><div><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Información completa." : "Full information."}</h2><p>${es ? "Lee primero lo esencial y abre cada bloque cuando quieras conocer el programa, la casa, los valores y las experiencias con más calma." : "Start with the essentials, then open each section whenever you want the full story, itinerary details and practical information."}</p></div><button class="button button--ink full-copy__toggle" type="button" data-expand-full-info aria-expanded="false"><span>${es ? "Ver información completa" : "View full information"}</span>${icon("chevron")}</button></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}${icon("plus")}</summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
+  return `<section class="full-copy section" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Más para tu viaje." : "More for your journey."}</h2></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
 }
 
 function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
