@@ -76,8 +76,8 @@ export const destinations = [
     short: "Guided jungle walks, quiet canoe rides, birdwatching and cultural experiences in the rainforest.",
     intro: "The Ecuadorian Amazon is an invitation to pay attention: to birds above the canopy, water moving beside a canoe and the extraordinary density of life within the forest.",
     detail: "Journeys can include guided jungle walks, tranquil canoe rides, wildlife and bird watching, storytelling and selected lodging considered for its environmental credibility and commitment to preserving the rainforest ecosystem.",
-    hero: "hero-amazon",
-    heroWidths: [1200, 2400],
+    hero: "hero-amazon-river.jpg",
+    heroWidths: [],
     heroPosition: "50% 50%",
     accent: "forest",
     experiences: [
@@ -92,7 +92,7 @@ export const destinations = [
       ["amazon-community.webp", "Community member in the Ecuadorian Amazon"],
       ["amazon-culture.webp", "Traditional cooking in a rainforest community"]
     ],
-    credit: "Hero photograph: Alexander Van Steenberge / Unsplash"
+    credit: ""
   },
   {
     slug: "nono",

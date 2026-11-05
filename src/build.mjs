@@ -149,6 +149,9 @@ function footer(locale = "es") {
 }
 
 function picture(base, widths, alt, options = {}) {
+  if (/\.(?:jpe?g|png|webp)$/i.test(base)) {
+    return `<img src="/assets/images/${base}" alt="${escapeHtml(alt)}" width="1600" height="900" ${options.priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" style="--media-position:${options.position || "50% 50%"}">`;
+  }
   const largest = widths.at(-1);
   const srcset = widths.map(width => `/assets/images/${base}-${width}.webp ${width}w`).join(", ");
   return `<picture>
@@ -210,7 +213,7 @@ function homePage() {
       <div class="journey-stage">
         <div class="journey-sky" aria-hidden="true"></div>
         <div class="journey-image journey-image--andes" data-landscape="0">${picture("hero-andes", [1200,2400], "Chimborazo above the Andean páramo", {priority:true, position:"50% 52%"})}</div>
-        <div class="journey-image journey-image--amazon" data-landscape="1">${picture("hero-amazon", [1200,2400], "Rainforest canopy in Ecuador", {position:"50% 45%"})}</div>
+        <div class="journey-image journey-image--amazon" data-landscape="1">${picture("hero-amazon-river.jpg", [], "Amazon rainforest and river at dawn in Ecuador", {position:"50% 45%"})}</div>
         <div class="journey-image journey-image--coast" data-landscape="2">${picture("hero-nono", [1200,2200], "Green Ecuadorian cloud forest", {position:"50% 50%"})}</div>
         <div class="journey-image journey-image--islands" data-landscape="3">${picture("hero-galapagos", [1200,2400], "Volcanic shores of Galápagos", {position:"50% 46%"})}</div>
         <div class="journey-shade"></div><div class="journey-foreground" aria-hidden="true"></div>
@@ -220,7 +223,7 @@ function homePage() {
       </div>
     </section>
     <section class="worlds-section" id="worlds"><div class="worlds-sticky"><div class="worlds-heading"><span class="eyebrow">One country, four worlds</span><h2>Follow the feeling.</h2></div><div class="worlds-track">
-      ${[["andes","hero-andes-1200.webp","Andes","Cotopaxi · 4,897 m"],["amazon","hero-amazon-1200.webp","Amazonía","Napo · Ecuador"],["nono","hero-nono-1200.webp","Costa y bosque nublado","Chocó Andino · 0°"],["galapagos","hero-galapagos-1200.webp","Galápagos","0° 45′ S · Pacífico"]].map(([slug,img,title,coord],i)=>`<article class="world-panel"><img src="/assets/images/${img}" alt="${title}, Ecuador" loading="lazy"><div class="world-panel__meta"><span>0${i+1} / ECUADOR</span><span>${coord}</span></div><h3>${title}</h3><a href="/destinations/${slug === "amazon" ? "amazon" : slug}/">Explore ${title} ${icon("diagonal")}</a></article>`).join("")}
+      ${[["andes","hero-andes-1200.webp","Andes","Cotopaxi · 4,897 m"],["amazon","hero-amazon-river.jpg","Amazonía","Napo · Ecuador"],["nono","hero-nono-1200.webp","Costa y bosque nublado","Chocó Andino · 0°"],["galapagos","hero-galapagos-1200.webp","Galápagos","0° 45′ S · Pacífico"]].map(([slug,img,title,coord],i)=>`<article class="world-panel"><img src="/assets/images/${img}" alt="${title}, Ecuador" loading="lazy"><div class="world-panel__meta"><span>0${i+1} / ECUADOR</span><span>${coord}</span></div><h3>${title}</h3><a href="/destinations/${slug === "amazon" ? "amazon" : slug}/">Explore ${title} ${icon("diagonal")}</a></article>`).join("")}
     </div><div class="worlds-progress"><span></span></div></div></section>
     <section class="expedition-section"><div class="shell"><span class="eyebrow">A route that finds its own rhythm</span><h2>From the highlands<br>to the living ocean.</h2><div class="expedition-route"><div class="expedition-line"></div>${[["01","Quito","Begin with stories, colors and a table set for you."],["02","Andes","Cross high valleys at a pace that leaves room to stop."],["03","Amazonía","Follow waterways into a world that moves to its own time."],["04","Galápagos","End where ancient islands meet the open Pacific."]].map(([n,t,d])=>`<article class="expedition-stop"><span class="expedition-number">${n}</span><div><h3>${t}</h3><p>${d}</p></div><span class="expedition-pin">${icon("pin")}</span></article>`).join("")}</div></div></section>
     <section class="intent-section"><div class="shell"><span class="eyebrow light">Travel with intention</span><h2>Made personal,<br>at every turn.</h2><div class="intent-list"><p><span>01</span><strong>Small groups</strong><i>Space to notice more.</i></p><p><span>02</span><strong>Local hosts</strong><i>People who make a place mean something.</i></p><p><span>03</span><strong>Your own pace</strong><i>Room for the unplanned.</i></p></div></div></section>
@@ -579,7 +582,7 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
 const outputPages = [
   { key: "home", ...pages.home, main: homePage() },
   { key: "destinations", ...pages.destinations, main: destinationsPage(), image: "/assets/images/hero-galapagos-1200.webp" },
-  ...destinations.map(d => ({ key: `destination-${d.slug}`, path: `/destinations/${d.slug}/`, title: `${d.name} tailor-made journeys`, description: d.short, main: destinationPage(d), mainEs: destinationPage(d, "es"), image: `/assets/images/${d.hero}-1200.webp` })),
+  ...destinations.map(d => ({ key: `destination-${d.slug}`, path: `/destinations/${d.slug}/`, title: `${d.name} tailor-made journeys`, description: d.short, main: destinationPage(d), mainEs: destinationPage(d, "es"), image: `/assets/images/${d.hero.includes(".") ? d.hero : `${d.hero}-1200.webp`}` })),
   { key: "villa", ...pages.villa, main: villaPage(), image: "/assets/images/hero-villa-1200.webp" },
   { key: "about", ...pages.about, main: aboutPage(), image: "/assets/images/about-local-connection.webp" },
   { key: "plan", ...pages.plan, main: planPage() },
