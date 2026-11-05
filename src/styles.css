@@ -822,6 +822,24 @@ body[data-page="terms"] .site-header {
 .program-day__detail[open] > summary.program-day__toggle,
 .full-copy__section .program-day__detail[open] > summary.program-day__toggle { margin-left: auto; background: #20382b; color: #fffdf8; }
 .program-day__detail > summary.program-day__toggle .icon { flex: none; }
+.lodge-programs > details {
+  margin: 0 0 1.2rem;
+  padding: .15rem 1.3rem 1rem;
+  border: 1px solid #b8c1b2;
+  border-radius: 1rem;
+  background: rgba(255,253,248,.58);
+  box-shadow: 0 8px 24px rgba(35,55,43,.06);
+}
+.lodge-programs > details > summary { padding-block: 1.25rem; font-weight: 600; }
+.lodge-programs > details > ol { margin: 0; padding: .25rem 0 .5rem; }
+.lodge-programs li.program-day { margin: .55rem 0; padding: 1.1rem 1.2rem !important; border: 1px solid #d5dbd0; border-radius: .8rem; background: #fffdf8; }
+.program-day__summary > div:first-child > strong { color: #a47438; font-size: .78rem; letter-spacing: .09em; text-transform: uppercase; }
+.program-day__summary p { max-width: 62ch; }
+.program-day__copy { color: #294033; }
+@media (max-width: 560px) {
+  .lodge-programs > details { padding-inline: .75rem; border-radius: .75rem; }
+  .lodge-programs li.program-day { padding: .85rem !important; }
+}
 @media (max-width: 560px) {
   .program-day__detail > summary.program-day__toggle,
   .full-copy__section .program-day__detail > summary.program-day__toggle { width: 2.5rem; min-width: 2.5rem; height: 2.5rem; min-height: 2.5rem; }
