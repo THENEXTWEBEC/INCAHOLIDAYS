@@ -188,6 +188,18 @@ fullInfoToggle?.addEventListener("click", () => {
     : (isSpanish ? "Ver información completa" : "View full information");
 });
 
+document.querySelectorAll(".program-day__detail").forEach(detail => {
+  const toggle = detail.querySelector(".program-day__toggle");
+  if (!toggle) return;
+  const updateLabel = () => {
+    toggle.title = detail.open
+      ? (isSpanish ? "Cerrar detalle del día" : "Close day details")
+      : (isSpanish ? "Abrir detalle del día" : "Open day details");
+  };
+  updateLabel();
+  detail.addEventListener("toggle", updateLabel);
+});
+
 document.querySelectorAll(".compass-cta").forEach(button => {
   if (reduceMotion || window.matchMedia("(pointer: coarse)").matches) return;
   button.addEventListener("pointermove", event => {

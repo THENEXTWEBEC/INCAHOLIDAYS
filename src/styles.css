@@ -810,3 +810,7 @@ body[data-page="terms"] .site-header {
   .program-day__detail:not([open]) .program-day__toggle { margin-left: auto; }
   .program-day__detail[open] .program-day__toggle { margin-left: auto; }
 }
+
+.program-day__toggle { border-radius: 999px; background: transparent; }
+.program-day__detail[open] .program-day__toggle { background: #20382b; color: #fffdf8; }
+.program-day__toggle .icon { width: 1.1rem; height: 1.1rem; }
