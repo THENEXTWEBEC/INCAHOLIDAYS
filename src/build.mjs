@@ -6,7 +6,8 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261105-amazon";
+const assetVersion = "20261105-complete";
+const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
 
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
@@ -96,7 +97,7 @@ function footer(locale = "es") {
       </div>
       <div>
         <h3>Contact</h3>
-        <a href="mailto:${site.emailHref}">${site.email}</a>
+        <a href="mailto:${site.email}">${site.email}</a>
         <a href="mailto:${site.emailHref}">${site.emailSecondary}</a>
         <a href="tel:${site.phoneHref}">${site.phoneDisplay}</a>
         <a href="https://wa.me/${site.whatsappHref}" rel="noopener">WhatsApp ${site.whatsappDisplay}</a>
@@ -294,7 +295,7 @@ function planPage() {
   return `<main id="main" class="plan-page">
     <section class="plan-intro"><div class="shell"><span class="eyebrow reveal">Plan your trip</span><h1 class="reveal">Tell us where your curiosity leads.</h1><p class="reveal">Share the outline of your trip. The details below will open a pre-filled email to Inca Holidays so you can review and send it from your own email account.</p></div></section>
     <section class="plan-form-section section" id="story"><div class="shell plan-grid">
-      <aside class="plan-aside reveal"><span class="eyebrow">Direct contact</span><h2>Prefer to talk first?</h2><p>Contact Inca Holidays in Quito through the details published in the brochure.</p><a href="mailto:${site.emailHref}">${icon("mail")}<span><small>Email</small>${site.email}</span></a><a href="mailto:${site.emailHref}">${icon("mail")}<span><small>Direct inbox</small>${site.emailSecondary}</span></a><a href="tel:${site.phoneHref}">${icon("phone")}<span><small>Phone</small>${site.phoneDisplay}</span></a><a href="https://wa.me/${site.whatsappHref}" rel="noopener">${icon("whatsapp")}<span><small>WhatsApp</small>${site.whatsappDisplay}</span></a><div class="aside-note">${icon("pin")}<span><small>Based in</small>${site.location}</span></div></aside>
+      <aside class="plan-aside reveal"><span class="eyebrow">Direct contact</span><h2>Prefer to talk first?</h2><p>Contact Inca Holidays in Quito through the details published in the brochure.</p><a href="mailto:${site.email}">${icon("mail")}<span><small>Email</small>${site.email}</span></a><a href="mailto:${site.emailHref}">${icon("mail")}<span><small>Direct inbox</small>${site.emailSecondary}</span></a><a href="tel:${site.phoneHref}">${icon("phone")}<span><small>Phone</small>${site.phoneDisplay}</span></a><a href="https://wa.me/${site.whatsappHref}" rel="noopener">${icon("whatsapp")}<span><small>WhatsApp</small>${site.whatsappDisplay}</span></a><div class="aside-note">${icon("pin")}<span><small>Based in</small>${site.location}</span></div></aside>
       <form class="trip-form reveal" data-trip-form novalidate>
         <div class="form-step"><span>01</span><div><h2>About you</h2><p>Who should we contact about this journey?</p></div></div>
         <div class="form-row"><label>Full name <input type="text" name="name" autocomplete="name" required><span class="field-error"></span></label><label>Email <input type="email" name="email" autocomplete="email" required><span class="field-error"></span></label></div>
@@ -315,7 +316,7 @@ function planPage() {
 }
 
 function privacyPage() {
-  return `<main id="main" class="legal-page"><section class="legal-hero"><div class="shell"><span class="eyebrow">Website information</span><h1>Privacy notice</h1><p>Last reviewed for this website draft: October 26, 2026.</p></div></section><section class="legal-content section"><div class="shell legal-grid"><aside><a href="#enquiries">Trip enquiries</a><a href="#contact">Contact</a><a href="#choices">Your choices</a></aside><article><h2 id="enquiries">Trip enquiries</h2><p>The trip form prepares an email draft in your own email application. This website does not store the form details in a database. Your information is sent only when you choose to send the email to Inca Holidays.</p><h2 id="contact">Contact information</h2><p>Use <a href="mailto:${site.emailHref}">${site.email}</a> or <a href="mailto:${site.emailHref}">${site.emailSecondary}</a> for questions about information you have shared with Inca Holidays.</p><h2 id="choices">Your choices</h2><p>You can contact Inca Holidays directly without using the form. Do not include sensitive personal or payment information in an initial enquiry.</p><p class="legal-note">This notice describes the behavior of this website draft. It should be reviewed by the business before the final domain launch.</p></article></div></section></main>`;
+  return `<main id="main" class="legal-page"><section class="legal-hero"><div class="shell"><span class="eyebrow">Website information</span><h1>Privacy notice</h1><p>Last reviewed for this website draft: October 26, 2026.</p></div></section><section class="legal-content section"><div class="shell legal-grid"><aside><a href="#enquiries">Trip enquiries</a><a href="#contact">Contact</a><a href="#choices">Your choices</a></aside><article><h2 id="enquiries">Trip enquiries</h2><p>The trip form prepares an email draft in your own email application. This website does not store the form details in a database. Your information is sent only when you choose to send the email to Inca Holidays.</p><h2 id="contact">Contact information</h2><p>Use <a href="mailto:${site.email}">${site.email}</a> or <a href="mailto:${site.emailHref}">${site.emailSecondary}</a> for questions about information you have shared with Inca Holidays.</p><h2 id="choices">Your choices</h2><p>You can contact Inca Holidays directly without using the form. Do not include sensitive personal or payment information in an initial enquiry.</p><p class="legal-note">This notice describes the behavior of this website draft. It should be reviewed by the business before the final domain launch.</p></article></div></section></main>`;
 }
 
 function termsPage() {
@@ -419,6 +420,30 @@ const spanishMeta = {
   404: { title: "Página no encontrada", description: "La página solicitada no se encuentra disponible." }
 };
 
+// The supplied English copy is preserved in full, including every day of each itinerary.
+function completeCopy(pageKey, locale) {
+  const sets = {
+    home: [["Home y About us", "Our story", "Nuestra historia"]],
+    about: [["Home y About us", "Our story and values", "Nuestra historia y valores"], ["Sustainability", "Sustainability", "Sostenibilidad"]],
+    villa: [["Villa Doris Guest House", "Villa Doris: our story and the house", "Villa Doris: nuestra historia y la casa"], ["Villa Doris Experiences:", "Villa Doris experiences", "Experiencias en Villa Doris"]],
+    "destination-nono": [["Villa Doris Experiences:", "Nono and the hummingbird route", "Nono y la ruta del colibrí"]],
+    "destination-amazon": [["Amazon Rainforest", "Amazon lodges and complete itineraries", "Lodges de la Amazonía e itinerarios completos"]],
+    "destination-galapagos": [["Galápagos Islands", "Galápagos islands and cruises", "Islas Galápagos y cruceros"]],
+    "destination-andes": [["Ecuadorian Andes", "The Ecuadorian Andes", "Los Andes ecuatorianos"]],
+    plan: [["Contact us / Plan Your Trip With Us", "Contact and opening hours", "Contacto y horarios"]]
+  };
+  const sections = sets[pageKey];
+  if (!sections) return "";
+  const es = locale === "es";
+  const formatted = (text) => text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
+    const safe = escapeHtml(line);
+    if (/^Day [1-9]:/.test(line)) return `<h4>${safe}</h4>`;
+    if (line.length < 100 && /^(Our Values|Our story|The main house|In the gardens|Good to know|Opening Hours|Amazon Adventures & Lodges|Galápagos Cruises|Sample Itinerary|Grand Ocean Spray|Yacht Catamaran Anahi|1\. Huasquila Lodge|La Selva Eco-Lodge|Sani Lodge|Amazon program|Amazon Tour|Birding & Photography|Amazon Adventure Experience|Deep Jungle Experience|A day in the clouds|2\. Nono|3\. Eco-route|Investing where|Community experiences|Growing native forest|Respect|Low energy|Gentler cleaning|Refill|Furniture|From producers)/i.test(line)) return `<h3>${safe}</h3>`;
+    return `<p>${safe}</p>`;
+  }).join("");
+  return `<section class="full-copy section" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Más para tu viaje." : "More for your journey."}</h2>${es ? '<p>El contenido detallado está disponible a continuación en inglés, tal como fue proporcionado.</p>' : ''}</div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="en">${formatted(fullContent[key])}</div></details>`).join("")}</div></section>`;
+}
+
 function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
   const localizedMeta = locale === "es" ? (spanishMeta[pageKey] || { title, description }) : { title, description };
   const canonicalPath = locale === "en" ? localizedPath(path, "en") : path;
@@ -434,6 +459,8 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
     areaServed: ["Ecuador", "Galapagos Islands"],
     description: locale === "es" ? spanishMeta.about.description : pages.about.description
   };
+  const copy = completeCopy(pageKey, locale);
+  main = main.includes('<section class="final-cta">') ? main.replace('<section class="final-cta">', `${copy}<section class="final-cta">`) : main.replace("</main>", `${copy}</main>`);
   const rendered = `<!doctype html>
 <html lang="en">
 <head>
