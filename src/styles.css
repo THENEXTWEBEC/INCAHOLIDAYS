@@ -797,3 +797,32 @@ body[data-page="terms"] .site-header {
 .program-day__copy p { margin: 0; line-height: 1.75; }
 .program-day__toggle:focus-visible { outline: 3px solid #a47438; outline-offset: 4px; }
 @media (max-width: 560px) { .program-day { padding: .85rem !important; } .program-day__summary { gap: .7rem; } .program-day__toggle { width: 2.5rem; min-width: 2.5rem; height: 2.5rem; min-height: 2.5rem; } }
+
+/* Override the lodge list grid and the full-copy accordion's broad summary rules. */
+.lodge-programs li.program-day { display: block; width: 100%; }
+.full-copy .program-day { display: block; width: 100%; }
+.program-day__detail > summary.program-day__toggle,
+.full-copy__section .program-day__detail > summary.program-day__toggle {
+  display: grid;
+  place-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 2.75rem;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: #fffdf8;
+  color: #20382b;
+  line-height: 1;
+}
+.program-day__detail[open] > summary.program-day__toggle,
+.full-copy__section .program-day__detail[open] > summary.program-day__toggle { margin-left: auto; background: #20382b; color: #fffdf8; }
+.program-day__detail > summary.program-day__toggle .icon { flex: none; }
+@media (max-width: 560px) {
+  .program-day__detail > summary.program-day__toggle,
+  .full-copy__section .program-day__detail > summary.program-day__toggle { width: 2.5rem; min-width: 2.5rem; height: 2.5rem; min-height: 2.5rem; }
+}
