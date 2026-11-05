@@ -6,8 +6,9 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261105-spacing";
+const assetVersion = "20261105-language";
 const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
+const fullContentEs = JSON.parse(await readFile(join(src, "full-content-es.json"), "utf8"));
 
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
@@ -393,6 +394,30 @@ spanishTranslations.push(
   ["Scroll to discover", "Desplázate para descubrir"], ["A balance between the highlights and the off-the-beaten-path gems of Ecuador.", "Un equilibrio entre los lugares destacados y las joyas poco conocidas de Ecuador."], ["in your trip", "en tu viaje"], ["Hero photograph:", "Fotografía principal:"]
 );
 
+spanishTranslations.push(
+  ["We design journeys around nature, culture, gastronomy, photography, birding and hiking, connecting celebrated landscapes with lesser-known corners of Ecuador.", "Diseñamos viajes de naturaleza, cultura, gastronomía, fotografía, observación de aves y caminatas, conectando paisajes conocidos con rincones menos explorados del Ecuador."],
+  ["That approach is especially suited to travelers who want nature, culture and soft adventure without losing the human scale of the journey.", "Esta forma de viajar es ideal para quienes buscan naturaleza, cultura y aventura suave sin perder la cercanía humana."],
+  ["The itinerary begins with your interests, duration and preferred pace.", "El itinerario comienza con tus intereses, la duración y el ritmo que prefieres."],
+  ["Signature places are balanced with quieter routes and local context.", "Combinamos lugares emblemáticos con rutas tranquilas y conocimiento local."],
+  ["Conservation and community matter in the choices described by the brochure.", "La conservación y las comunidades forman parte de nuestras decisiones."],
+  ["The trip form prepares an email draft in your own email application. This website does not store the form details in a database. Your information is sent only when you choose to send the email to Inca Holidays.", "El formulario prepara un borrador en tu propia aplicación de correo. Este sitio no guarda los datos en una base de datos; la información se envía solo cuando decides enviar el correo a Inca Holidays."],
+  ["for questions about information you have shared with Inca Holidays.", "para consultas sobre la información que hayas compartido con Inca Holidays."],
+  ["You can contact Inca Holidays directly without using the form. Do not include sensitive personal or payment information in an initial enquiry.", "Puedes contactar a Inca Holidays directamente sin usar el formulario. No incluyas información personal sensible ni datos de pago en una consulta inicial."],
+  ["This notice describes the behavior of this website draft. It should be reviewed by the business before the final domain launch.", "Este aviso describe el funcionamiento del sitio y debe ser revisado por la empresa."],
+  ["The website introduces the destinations and experiences documented in the Inca Holidays brochure. It does not display prices, live availability, confirmed bookings or automatic reservations.", "El sitio presenta los destinos y experiencias de Inca Holidays. No muestra precios, disponibilidad en tiempo real, reservas confirmadas ni reservas automáticas."],
+  ["Submitting or emailing a trip request begins a conversation. A booking exists only after Inca Holidays provides and confirms the relevant commercial terms directly with you.", "Enviar una solicitud de viaje inicia una conversación. La reserva existe únicamente cuando Inca Holidays proporciona y confirma contigo las condiciones comerciales correspondientes."],
+  ["Destination photography is illustrative of the documented regions. Villa Doris photography is drawn from verified property material supplied through the brochure and the existing Inca Holidays website.", "Las fotografías de destinos ilustran las regiones presentadas. Las imágenes de Villa Doris proceden de material verificado de la propiedad facilitado en el folleto y el sitio existente."],
+  ["These draft terms should be reviewed by the business before the final domain launch.", "Estas condiciones deben ser revisadas por la empresa."],
+  ["I agree to use these details to prepare and send an enquiry to Inca Holidays.", "Acepto usar estos datos para preparar y enviar una consulta a Inca Holidays."],
+  ["Tell us about your interests, pace, mobility needs, celebrations or anything else that would help shape the route.", "Cuéntanos tus intereses, ritmo, necesidades de movilidad, celebraciones o cualquier otro detalle que ayude a diseñar tu viaje."],
+  ["Last reviewed for this website draft: October 26, 2026.", "Última revisión de este borrador: 26 de octubre de 2026."],
+  ["— Inca Holidays brochure", "— Folleto de Inca Holidays"],
+  ["Primary navigation", "Navegación principal"], ["Mobile navigation", "Navegación móvil"], ["Continue to the story", "Continuar a la historia"], ["Destinations of interest", "Destinos de interés"], ["Direct inbox", "Correo alternativo"], ["Switch to English", "Cambiar a inglés"], ["Inca Holidays home", "Inicio de Inca Holidays"], ["Villa Doris photo gallery", "Galería de fotos de Villa Doris"],
+  ["Use <a href=", "Usa <a href="], ["> or <a href=", "> o <a href="], ["Enquiries", "Consultas"], ["Imagery", "Imágenes"]
+);
+
+spanishTranslations.push(...[["A traveler and an Indigenous Ecuadorian woman sharing a warm moment", "Una viajera y una mujer indígena ecuatoriana comparten un momento"], ["Andean waterfall surrounded by cloud forest", "Cascada andina rodeada de bosque nublado"], ["Colorful woven textiles from Ecuador's highlands", "Tejidos coloridos de los Andes ecuatorianos"], ["Community member in the Ecuadorian Amazon", "Integrante de una comunidad de la Amazonía ecuatoriana"], ["Galápagos flamingo feeding in shallow water", "Flamenco de Galápagos alimentándose en aguas poco profundas"], ["Giant tortoises beneath island woodland", "Tortugas gigantes bajo los árboles de las islas"], ["Giant tortoise in the Galápagos highlands", "Tortuga gigante en la parte alta de Galápagos"], ["Historic church in Ecuador's Andean region", "Iglesia histórica en los Andes ecuatorianos"], ["Hummingbird in the Andean cloud forest", "Colibrí en el bosque nublado andino"], ["Marine iguana on the volcanic shore", "Iguana marina en la costa volcánica"], ["Painted village wall in Nono", "Mural en el pueblo de Nono"], ["Scarlet macaw in Ecuador's Amazon rainforest", "Guacamayo rojo en la Amazonía ecuatoriana"], ["Sea lion and pup on a Galápagos beach", "Lobo marino y su cría en una playa de Galápagos"], ["The green valley and village of Nono", "El valle verde y el pueblo de Nono"], ["Toucan perched in tropical forest", "Tucán posado en el bosque tropical"], ["Traditional architecture in Nono", "Arquitectura tradicional de Nono"], ["Traditional cooking in a rainforest community", "Cocina tradicional en una comunidad amazónica"], ["Traditional dance in an Andean community", "Danza tradicional en una comunidad andina"], ["Villa Doris country house in Nono, Ecuador", "Casa de campo Villa Doris en Nono, Ecuador"], ["Villa Doris within the green Andean landscape", "Villa Doris en el verde paisaje andino"]]);
+
 function translateToSpanish(html) {
   let translated = html;
   for (const [from, to] of [...spanishTranslations].sort((a, b) => b[0].length - a[0].length)) translated = translated.split(from).join(to);
@@ -437,11 +462,11 @@ function completeCopy(pageKey, locale) {
   const es = locale === "es";
   const formatted = (text) => text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
     const safe = escapeHtml(line);
-    if (/^Day [1-9]:/.test(line)) return `<h4>${safe}</h4>`;
-    if (line.length < 100 && /^(Our Values|Our story|The main house|In the gardens|Good to know|Opening Hours|Amazon Adventures & Lodges|Galápagos Cruises|Sample Itinerary|Grand Ocean Spray|Yacht Catamaran Anahi|1\. Huasquila Lodge|La Selva Eco-Lodge|Sani Lodge|Amazon program|Amazon Tour|Birding & Photography|Amazon Adventure Experience|Deep Jungle Experience|A day in the clouds|2\. Nono|3\. Eco-route|Investing where|Community experiences|Growing native forest|Respect|Low energy|Gentler cleaning|Refill|Furniture|From producers)/i.test(line)) return `<h3>${safe}</h3>`;
+    if (/^(Day|Día) [1-9]:/.test(line)) return `<h4>${safe}</h4>`;
+    if (line.length < 100 && /^(Nuestros valores|Nuestra historia|La casa principal|En los jardines|Información útil|Inversión local|Experiencias comunitarias|Bosque nativo|Menor consumo|Limpieza más amable|Recarga en lugar|Muebles con|Del productor|Cruceros por|Ejemplo de itinerario|Aventuras amazónicas|Huasquila Amazon|Programa amazónico|Aves y fotografía|Aventura amazónica|Selva profunda|Nono y la Ecoruta|Ecoruta del Colibrí|Un día entre|Our Values|Our story|The main house|In the gardens|Good to know|Opening Hours|Amazon Adventures & Lodges|Galápagos Cruises|Sample Itinerary|Grand Ocean Spray|Yacht Catamaran Anahi|1\. Huasquila Lodge|La Selva Eco-Lodge|Sani Lodge|Amazon program|Amazon Tour|Birding & Photography|Amazon Adventure Experience|Deep Jungle Experience|A day in the clouds|2\. Nono|3\. Eco-route|Investing where|Community experiences|Growing native forest|Respect|Low energy|Gentler cleaning|Refill|Furniture|From producers)/i.test(line)) return `<h3>${safe}</h3>`;
     return `<p>${safe}</p>`;
   }).join("");
-  return `<section class="full-copy section" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Más para tu viaje." : "More for your journey."}</h2>${es ? '<p>El contenido detallado está disponible a continuación en inglés, tal como fue proporcionado.</p>' : ''}</div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="en">${formatted(fullContent[key])}</div></details>`).join("")}</div></section>`;
+  return `<section class="full-copy section" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Más para tu viaje." : "More for your journey."}</h2></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
 }
 
 function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
@@ -490,7 +515,8 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
   ${lightbox()}
 </body>
 </html>`;
-  const localized = locale === "es" ? translateToSpanish(rendered).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : rendered;
+  const englishRendered = pageKey === "home" ? rendered.replaceAll("A medida · Ecuador y Galápagos", "Tailor-made · Ecuador and Galápagos").replaceAll("Costa y bosque nublado", "Coast and cloud forest").replaceAll("Costa · Chocó Andino", "Coast · Chocó Andino") : rendered;
+  const localized = locale === "es" ? translateToSpanish(rendered).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : englishRendered;
   if (locale !== "en") return localized;
   return localized.replaceAll('href="/', 'href="/en/').replaceAll('content="/', 'content="/en/').replaceAll('href="/en/assets/', 'href="/assets/').replaceAll('href="/en/en/', 'href="/en/').replace('__LANGUAGE_PATH__', localizedPath(path, "es"));
 }
