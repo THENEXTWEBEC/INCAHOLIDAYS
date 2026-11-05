@@ -6,7 +6,7 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261105-complete";
+const assetVersion = "20261105-spacing";
 const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
 
 const escapeHtml = (value = "") => String(value)
