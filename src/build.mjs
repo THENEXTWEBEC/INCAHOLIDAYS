@@ -503,6 +503,7 @@ function translateToSpanish(html) {
   let translated = html;
   for (const [from, to] of [...spanishTranslations].sort((a, b) => b[0].length - a[0].length)) translated = translated.split(from).join(to);
   translated = translated.replaceAll("Contactoo", "Contacto").replaceAll("Contactoa", "Contacta");
+  translated = translated.replaceAll("Grand Océano Spray", "Grand Ocean Spray");
   translated = translated.replace('<html lang="en">', '<html lang="es">');
   return translated;
 }
