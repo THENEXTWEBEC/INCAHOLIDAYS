@@ -277,15 +277,16 @@ function destinationPage(d, locale = "en") {
   return `<main id="main">
     ${pageHero({ eyebrow: `${d.number} · ${d.eyebrow}`, title: d.title, copy: d.short, hero: d.hero, widths: d.heroWidths, position: d.heroPosition, alt: `${d.name}, Ecuador`, credit: d.credit })}
     <section class="destination-story section" id="story">
-      <div class="shell story-grid">
+      <div class="shell story-grid story-grid--destination">
         <div class="story-index reveal"><span>${d.number}</span><div></div><small>${d.name}</small></div>
         <div class="story-lead reveal"><span class="eyebrow">The experience</span><h2>${d.intro}</h2></div>
-        <div class="story-detail reveal"><p>${d.detail}</p><a class="text-link" href="/plan-your-trip/?destination=${d.slug}">Include ${d.name} in your trip ${icon("arrow")}</a></div>
+        <div class="story-detail reveal"><p>${d.detail}</p><a class="text-link" href="/plan-your-trip/?destination=${d.slug}">Plan your trip ${icon("arrow")}</a></div>
+        <figure class="story-visual reveal"><img src="/assets/images/${(d.storyImage || d.gallery[0])[0]}" alt="${escapeHtml((d.storyImage || d.gallery[0])[1])}" loading="lazy" decoding="async"></figure>
       </div>
     </section>
     <!--full-copy-->
     <section class="experience-list-section section section--muted">
-      <div class="shell section-heading split-heading"><div><span class="eyebrow reveal">Ways to explore</span><h2 class="reveal">Designed around<br>how you travel.</h2></div><p class="reveal">These are the ingredients documented in the Inca Holidays brochure. Your itinerary can bring them together in a way that suits your time and interests.</p></div>
+      <div class="shell section-heading"><span class="eyebrow reveal">Ways to explore</span><h2 class="reveal">Explore your way.</h2></div>
       <div class="shell experience-list">
         ${d.experiences.map(([title,copy],index)=>`<article class="experience-row reveal"><span>${String(index+1).padStart(2,"0")}</span><h3>${title}</h3><p>${copy}</p>${icon(index % 2 ? "route" : "compass")}</article>`).join("")}
       </div>
@@ -410,6 +411,7 @@ const spanishTranslations = [
 ];
 
 spanishTranslations.push(
+  ["Explore your way.", "Explora a tu manera."],
   ["People, culture and place", "Personas, cultura y territorio"],
   ["People, culture and wildlife in Ecuador", "Personas, cultura y fauna de Ecuador"],
   ["People and nature in Nono", "Personas y naturaleza en Nono"],
@@ -476,6 +478,14 @@ spanishTranslations.push(
 );
 
 spanishTranslations.push(
+  ["Wildlife, island by island.", "Fauna, isla por isla."],
+  ["Cruise volcanic shores and meet the archipelago's remarkable wildlife at your own pace.", "Recorre costas volcánicas y descubre la fauna de las islas a tu ritmo."],
+  ["Beyond the peaks.", "Más allá de las cumbres."],
+  ["Volcanoes, markets and living traditions across Ecuador's highlands.", "Volcanes, mercados y tradiciones vivas de los Andes ecuatorianos."],
+  ["Where the forest leads.", "Donde te lleva la selva."],
+  ["Travel by canoe and trail with local guides, wildlife and carefully chosen lodges.", "Recorre ríos y senderos con guías locales, fauna y lodges seleccionados."],
+  ["A village in the clouds.", "Un pueblo entre las nubes."],
+  ["Hummingbirds, village life and forest trails, about an hour from Quito.", "Colibríes, vida de pueblo y senderos a aproximadamente una hora de Quito."],
   ["We design journeys around nature, culture, gastronomy, photography, birding and hiking, connecting celebrated landscapes with lesser-known corners of Ecuador.", "Diseñamos viajes de naturaleza, cultura, gastronomía, fotografía, observación de aves y caminatas, conectando paisajes conocidos con rincones menos explorados del Ecuador."],
   ["That approach is especially suited to travelers who want nature, culture and soft adventure without losing the human scale of the journey.", "Esta forma de viajar es ideal para quienes buscan naturaleza, cultura y aventura suave sin perder la cercanía humana."],
   ["The itinerary begins with your interests, duration and preferred pace.", "El itinerario comienza con tus intereses, la duración y el ritmo que prefieres."],

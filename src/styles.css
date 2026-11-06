@@ -345,6 +345,18 @@ body[data-page="terms"] .site-header {
 .story-lead h2 { margin-top: 1.3rem; font-family: var(--serif); font-size: clamp(2.7rem,4.5vw,5.1rem); font-weight: 400; line-height: 1.02; letter-spacing: -.045em; }
 .story-detail { padding-top: 3rem; }
 .story-detail p { margin-bottom: 2rem; color: var(--ink-soft); }
+.story-grid--destination {
+  grid-template-columns: minmax(7rem, .25fr) minmax(0, 1fr) minmax(18rem, .78fr);
+  grid-template-areas: "index lead visual" ". detail visual";
+  gap: 1.5rem clamp(2rem, 4.2vw, 5.5rem);
+}
+.story-grid--destination .story-index { grid-area: index; }
+.story-grid--destination .story-lead { grid-area: lead; }
+.story-grid--destination .story-lead h2 { max-width: 12ch; font-size: clamp(3.2rem, 5.2vw, 5.7rem); line-height: .98; }
+.story-grid--destination .story-detail { grid-area: detail; padding-top: 0; max-width: 32rem; }
+.story-grid--destination .story-detail p { max-width: 34ch; margin-bottom: 1.4rem; font-size: clamp(1.1rem, 1.5vw, 1.35rem); line-height: 1.5; }
+.story-visual { grid-area: visual; align-self: stretch; overflow: hidden; aspect-ratio: 4 / 3; }
+.story-visual img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
 .experience-list { border-top: 1px solid var(--line); }
 .experience-row { display: grid; grid-template-columns: 3rem .6fr 1fr 2.5rem; gap: 2rem; align-items: center; padding: 2rem 0; border-bottom: 1px solid var(--line); }
@@ -555,6 +567,10 @@ body[data-page="terms"] .site-header {
   .story-index { max-width: 12rem; }
   .story-lead h2 { max-width: 16ch; }
   .story-detail { padding-top: 0; max-width: 40rem; margin-left: auto; }
+  .story-grid--destination { grid-template-columns: minmax(0, 1fr) minmax(0, .85fr); grid-template-areas: "index visual" "lead visual" "detail visual"; gap: 1.25rem 2.5rem; }
+  .story-grid--destination .story-lead h2 { margin-top: 0; font-size: clamp(3rem, 6vw, 4.5rem); }
+  .story-grid--destination .story-detail { margin-left: 0; }
+  .story-visual { aspect-ratio: 3 / 4; }
   .about-hero__grid { grid-template-columns: 1fr .7fr; gap: 3rem; }
   .about-statement__grid > div { max-width: 42rem; margin-left: auto; }
   .plan-aside { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; }
@@ -563,6 +579,10 @@ body[data-page="terms"] .site-header {
 
 @media (max-width: 760px) {
   :root { --shell: min(calc(100vw - (var(--gutter) * 2)), 620px); }
+  .story-grid--destination { grid-template-columns: 1fr; grid-template-areas: "index" "lead" "detail" "visual"; gap: 1.35rem; }
+  .story-grid--destination .story-lead h2 { font-size: clamp(3rem, 12vw, 4.5rem); }
+  .story-grid--destination .story-detail p { max-width: 30ch; }
+  .story-visual { margin-top: .75rem; aspect-ratio: 4 / 3; }
   body { font-size: 15px; }
   .button { max-width: 100%; white-space: nowrap; text-align: center; }
   .section { padding-block: 5.5rem; }
