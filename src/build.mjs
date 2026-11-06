@@ -284,6 +284,7 @@ function destinationPage(d, locale = "en") {
         <div class="story-detail reveal"><p>${d.detail}</p><a class="text-link" href="/plan-your-trip/?destination=${d.slug}">Include ${d.name} in your trip ${icon("arrow")}</a></div>
       </div>
     </section>
+    <!--full-copy-->
     <section class="experience-list-section section section--muted">
       <div class="shell section-heading split-heading"><div><span class="eyebrow reveal">Ways to explore</span><h2 class="reveal">Designed around<br>how you travel.</h2></div><p class="reveal">These are the ingredients documented in the Inca Holidays brochure. Your itinerary can bring them together in a way that suits your time and interests.</p></div>
       <div class="shell experience-list">
@@ -305,6 +306,7 @@ function villaPage() {
     <section class="destination-story section" id="story">
       <div class="shell story-grid"><div class="story-index reveal"><span>05</span><div></div><small>Villa Doris</small></div><div class="story-lead reveal"><span class="eyebrow">A stay with context</span><h2>${villa.intro}</h2></div><div class="story-detail reveal"><p>${villa.detail}</p><a class="text-link" href="/plan-your-trip/?destination=villa-doris">Ask about Villa Doris ${icon("arrow")}</a></div></div>
     </section>
+    <!--full-copy-->
     <section class="villa-landscape section section--muted">
       <div class="shell villa-landscape__grid">
         <div class="villa-landscape__image reveal"><img src="/assets/images/villa-landscape.webp" alt="Villa Doris within the green Andean landscape" loading="lazy"></div>
@@ -411,6 +413,9 @@ const spanishTranslations = [
 spanishTranslations.push(
   ["People, culture and place", "Personas, cultura y territorio"],
   ["People, culture and wildlife in Ecuador", "Personas, cultura y fauna de Ecuador"],
+  ["Programs & activities", "Programas y actividades"],
+  ["Find your itinerary", "Encuentra tu itinerario"],
+  ["Destination programs and activities", "Programas y actividades por destino"],
   ["Every journey begins with connection.", "Cada viaje comienza con una conexión."],
   ["Culture · Andes", "Cultura · Andes"],
   ["Community · Amazonía", "Comunidad · Amazonía"],
@@ -524,6 +529,7 @@ function completeCopy(pageKey, locale) {
   const sections = sets[pageKey];
   if (!sections) return "";
   const es = locale === "es";
+  const isDestination = pageKey.startsWith("destination-") || pageKey === "villa";
   let dayCardId = 0;
   const formatted = (text) => {
     const lines = text.split(/\n/).map(line => line.trim()).filter(Boolean);
@@ -543,7 +549,10 @@ function completeCopy(pageKey, locale) {
     return `<p>${safe}</p>`;
     }).join("");
   };
-  return `<section class="full-copy section" aria-label="${es ? "Información completa" : "Full information"}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${es ? "Descubre todos los detalles" : "Discover all the details"}</span><h2>${es ? "Más para tu viaje." : "More for your journey."}</h2></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
+  const sectionTitle = isDestination ? (es ? "Programas y actividades" : "Programs & activities") : (es ? "Más para tu viaje." : "More for your journey.");
+  const sectionEyebrow = isDestination ? (es ? "Encuentra tu itinerario" : "Find your itinerary") : (es ? "Descubre todos los detalles" : "Discover all the details");
+  const sectionLabel = isDestination ? (es ? "Programas y actividades por destino" : "Destination programs and activities") : (es ? "Información completa" : "Full information");
+  return `<section class="full-copy section" aria-label="${sectionLabel}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${sectionEyebrow}</span><h2>${sectionTitle}</h2></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
 }
 
 function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
@@ -562,7 +571,11 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
     description: locale === "es" ? spanishMeta.about.description : pages.about.description
   };
   const copy = completeCopy(pageKey, locale);
-  main = main.includes('<section class="final-cta">') ? main.replace('<section class="final-cta">', `${copy}<section class="final-cta">`) : main.replace("</main>", `${copy}</main>`);
+  main = main.includes("<!--full-copy-->")
+    ? main.replace("<!--full-copy-->", copy)
+    : main.includes('<section class="final-cta">')
+      ? main.replace('<section class="final-cta">', `${copy}<section class="final-cta">`)
+      : main.replace("</main>", `${copy}</main>`);
   const rendered = `<!doctype html>
 <html lang="en">
 <head>
