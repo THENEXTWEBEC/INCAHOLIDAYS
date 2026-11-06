@@ -125,8 +125,8 @@ export const destinations = [
 
 export const villa = {
   title: "Our home in the cloud forest.",
-  intro: "Villa Doris is Inca Holidays' own country house in Nono, surrounded by the nature of the Choco Andino cloud forest and connected to the biodiversity, food and people of the valley.",
-  detail: "Because Villa Doris is ours, every stay feels personal. It is a place we know by heart and love to share: warm Ecuadorian hospitality, generous gardens, local flavors and the cloud forest just beyond the door.",
+  intro: "A peaceful home in the Chocó Andino cloud forest.",
+  detail: "Villa Doris is our country house in Nono, near Quito. Enjoy local food, quiet gardens and forest trails.",
   highlights: [
     ["Nature at the door", "Gardens, mountain air and a landscape rich in birdlife surround the property."],
     ["Close to Quito", "The brochure places Villa Doris about a 30-minute drive from Quito."],

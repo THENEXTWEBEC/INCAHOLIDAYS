@@ -302,15 +302,15 @@ function destinationPage(d, locale = "en") {
 
 function villaPage() {
   return `<main id="main">
-    ${pageHero({ eyebrow: "Nono · Choco Andino cloud forest", title: villa.title, copy: "Our own country house, shared with the warmth and care we would offer invited friends.", hero: "hero-villa", widths: [1200,1600], position: "50% 46%", alt: "Villa Doris country house in Nono, Ecuador" })}
+    ${pageHero({ eyebrow: "Nono · Choco Andino cloud forest", title: villa.title, copy: "A quiet country house in Nono, just beyond Quito.", hero: "hero-villa", widths: [1200,1600], position: "50% 46%", alt: "Villa Doris country house in Nono, Ecuador" })}
     <section class="destination-story section" id="story">
-      <div class="shell story-grid"><div class="story-index reveal"><span>05</span><div></div><small>Villa Doris</small></div><div class="story-lead reveal"><span class="eyebrow">A stay with context</span><h2>${villa.intro}</h2></div><div class="story-detail reveal"><p>${villa.detail}</p><a class="text-link" href="/plan-your-trip/?destination=villa-doris">Ask about Villa Doris ${icon("arrow")}</a></div></div>
+      <div class="shell story-grid"><div class="story-index reveal"><span>05</span><div></div><small>Villa Doris</small></div><div class="story-lead reveal"><span class="eyebrow">A peaceful stay</span><h2>${villa.intro}</h2></div><div class="story-detail reveal"><p>${villa.detail}</p><a class="text-link" href="/plan-your-trip/?destination=villa-doris">Ask about Villa Doris ${icon("arrow")}</a></div></div>
     </section>
     <!--full-copy-->
     <section class="villa-landscape section section--muted">
       <div class="shell villa-landscape__grid">
         <div class="villa-landscape__image reveal"><img src="/assets/images/villa-landscape.webp" alt="Villa Doris within the green Andean landscape" loading="lazy"></div>
-        <div class="villa-landscape__copy reveal"><span class="eyebrow">Cloud-forest setting</span><h2>Close to Quito.<br>Surrounded by another rhythm.</h2><p>Villa Doris sits in the Choco Andino cloud forest, about a 30-minute drive from Quito. Close enough to reach with ease, it feels like a quieter world and a natural beginning or final chapter for an Ecuador journey.</p>${icon("home", "icon icon--xl")}</div>
+        <div class="villa-landscape__copy reveal"><span class="eyebrow">Cloud-forest setting</span><h2>A peaceful escape,<br>close to Quito.</h2><p>Villa Doris sits in the Chocó Andino cloud forest, 30 minutes from Quito. Explore local trails, then unwind in the garden.</p>${icon("home", "icon icon--xl")}</div>
       </div>
       <div class="shell experience-list villa-highlights">${villa.highlights.map(([title,copy],index)=>`<article class="experience-row reveal"><span>${String(index+1).padStart(2,"0")}</span><h3>${title}</h3><p>${copy}</p>${icon(index === 0 ? "bird" : index === 1 ? "pin" : index === 2 ? "home" : "leaf")}</article>`).join("")}</div>
     </section>
@@ -413,6 +413,12 @@ const spanishTranslations = [
 spanishTranslations.push(
   ["People, culture and place", "Personas, cultura y territorio"],
   ["People, culture and wildlife in Ecuador", "Personas, cultura y fauna de Ecuador"],
+  ["A peaceful home in the Chocó Andino cloud forest.", "Un refugio tranquilo en el bosque nublado del Chocó Andino."],
+  ["Villa Doris is our country house in Nono, near Quito. Enjoy local food, quiet gardens and forest trails.", "Villa Doris es nuestra casa de campo en Nono, cerca de Quito. Disfruta la comida local, los jardines y los senderos del bosque."],
+  ["A quiet country house in Nono, just beyond Quito.", "Una casa de campo tranquila en Nono, cerca de Quito."],
+  ["A peaceful stay", "Una estancia tranquila"],
+  ["A peaceful escape,<br>close to Quito.", "Un refugio tranquilo,<br>cerca de Quito."],
+  ["Villa Doris sits in the Chocó Andino cloud forest, 30 minutes from Quito. Explore local trails, then unwind in the garden.", "Villa Doris está en el bosque nublado del Chocó Andino, a 30 minutos de Quito. Explora los senderos y descansa en el jardín."],
   ["Programs & activities", "Programas y actividades"],
   ["Find your itinerary", "Encuentra tu itinerario"],
   ["Destination programs and activities", "Programas y actividades por destino"],
