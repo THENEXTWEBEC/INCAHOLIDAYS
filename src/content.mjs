@@ -5,8 +5,6 @@ export const site = {
   email: "Info@incaholidays.com",
   emailHref: "incaholidays@yahoo.com",
   emailSecondary: "Incaholidays@yahoo.com",
-  phoneDisplay: "+593 2 241 6283",
-  phoneHref: "+59322416283",
   whatsappDisplay: "+593 996189559",
   whatsappHref: "593996189559",
   location: "Quito, Ecuador"
@@ -100,15 +98,15 @@ export const destinations = [
     name: "Nono Cloud Forest",
     eyebrow: "A hidden Andean paradise",
     title: "Cloud forest, hummingbirds and village life.",
-    short: "Two- and three-day journeys from Quito into a natural and cultural landscape in the Andean cloud forest.",
+    short: "Day tours, a two-day escape and a four-day journey from Quito into the Andean cloud forest.",
     intro: "Nono opens onto a greener, quieter Ecuador: folded cloud-forest valleys, hummingbirds, local food and the rhythms of a small Andean village.",
-    detail: "Two- and three-day inclusive tours depart from Quito and can bring together local encounters, cycling, horseback riding, hiking, birdwatching, a private bird sanctuary, food experiences and overnight stays at Villa Doris.",
+    detail: "Choose a day tour, two days and one night, or four days and three nights. Explore Nono, Zuro Loma and the hummingbird route, with stays at Villa Doris on the overnight journeys.",
     hero: "hero-nono",
     heroWidths: [1200, 2200],
     heroPosition: "50% 52%",
     accent: "jade",
     experiences: [
-      ["Two or three days", "Leave Quito for a compact journey that still makes space for the valley's slower rhythm."],
+      ["One, two or four days", "Choose a day among the clouds or stay longer to explore the hummingbird route."],
       ["Active exploration", "Cycle, ride on horseback or walk part of the hummingbird route toward the Tandayapa Valley."],
       ["Birdlife", "Watch hummingbirds and visit a private bird sanctuary within the cloud-forest landscape."],
       ["Local life", "Meet residents, enjoy local gastronomy and stay overnight at Villa Doris Country House."]
@@ -129,7 +127,7 @@ export const villa = {
   detail: "Villa Doris is our country house in Nono, near Quito. Enjoy local food, quiet gardens and forest trails.",
   highlights: [
     ["Nature at the door", "Gardens, mountain air and a landscape rich in birdlife surround the property."],
-    ["Close to Quito", "The brochure places Villa Doris about a 30-minute drive from Quito."],
+    ["Close to Quito", "Nono is about an hour from Quito."],
     ["Local hospitality", "The stay connects guests with Ecuadorian hospitality, food and nearby experiences."],
     ["Responsible travel", "The property is presented in the context of community development and responsible tourism."]
   ],
