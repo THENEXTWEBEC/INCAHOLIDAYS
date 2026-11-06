@@ -132,12 +132,11 @@ export const villa = {
     ["Responsible travel", "The property is presented in the context of community development and responsible tourism."]
   ],
   gallery: [
-    ["villa-doris-aerial.webp", "Villa Doris embraced by the green Nono valley"],
+    ["villa-doris-cottage.webp", "Stone cottage and red roof at Villa Doris"],
     ["villa-doris-terrace.webp", "The sunny terrace and main house at Villa Doris"],
     ["villa-doris-garden.webp", "Flower garden and paths at Villa Doris"],
     ["villa-doris-suite.webp", "Bright guest suite with garden views at Villa Doris"],
     ["villa-doris-dining.webp", "Dining room framed by windows and greenery"],
-    ["villa-doris-cottage.webp", "Stone cottage and red roof at Villa Doris"],
     ["villa-doris-living.webp", "Rustic living room with fireplace at Villa Doris"],
     ["villa-doris-bath.webp", "Bathroom with a freestanding tub and valley light"],
     ["villa-doris-room-view.webp", "Guest room looking toward the Nono landscape"],
