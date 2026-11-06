@@ -413,6 +413,13 @@ const spanishTranslations = [
 spanishTranslations.push(
   ["People, culture and place", "Personas, cultura y territorio"],
   ["People, culture and wildlife in Ecuador", "Personas, cultura y fauna de Ecuador"],
+  ["People and nature in Nono", "Personas y naturaleza en Nono"],
+  ["Woman in the countryside near Nono", "Mujer en el campo cerca de Nono"],
+  ["Traveler watching nature in the countryside", "Persona observando la naturaleza en el campo"],
+  ["Squirrel on a branch", "Ardilla en una rama"],
+  ["Local life", "Vida local"],
+  ["Birdwatching", "Observación de aves"],
+  ["Local wildlife", "Fauna local"],
   ["A peaceful home in the Chocó Andino cloud forest.", "Un refugio tranquilo en el bosque nublado del Chocó Andino."],
   ["Villa Doris is our country house in Nono, near Quito. Enjoy local food, quiet gardens and forest trails.", "Villa Doris es nuestra casa de campo en Nono, cerca de Quito. Disfruta la comida local, los jardines y los senderos del bosque."],
   ["A quiet country house in Nono, just beyond Quito.", "Una casa de campo tranquila en Nono, cerca de Quito."],
@@ -558,7 +565,16 @@ function completeCopy(pageKey, locale) {
   const sectionTitle = isDestination ? (es ? "Programas y actividades" : "Programs & activities") : (es ? "Más para tu viaje." : "More for your journey.");
   const sectionEyebrow = isDestination ? (es ? "Encuentra tu itinerario" : "Find your itinerary") : (es ? "Descubre todos los detalles" : "Discover all the details");
   const sectionLabel = isDestination ? (es ? "Programas y actividades por destino" : "Destination programs and activities") : (es ? "Información completa" : "Full information");
-  return `<section class="full-copy section" aria-label="${sectionLabel}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${sectionEyebrow}</span><h2>${sectionTitle}</h2></div>${sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("")}</div></section>`;
+  const sectionContent = sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("");
+  const villaPhotos = pageKey === "villa" ? `<aside class="villa-program-photos" aria-label="${es ? "Personas y naturaleza en Nono" : "People and nature in Nono"}">
+    <figure class="villa-program-photo villa-program-photo--host"><img src="/assets/images/villa-doris-local-woman.jpg" alt="Woman in the countryside near Nono" loading="lazy" decoding="async"><figcaption>${es ? "Vida local" : "Local life"}</figcaption></figure>
+    <figure class="villa-program-photo villa-program-photo--birding"><img src="/assets/images/villa-doris-birdwatcher.jpg" alt="Traveler watching nature in the countryside" loading="lazy" decoding="async"><figcaption>${es ? "Observación de aves" : "Birdwatching"}</figcaption></figure>
+    <figure class="villa-program-photo villa-program-photo--wildlife"><img src="/assets/images/villa-doris-squirrel.jpg" alt="Squirrel on a branch" loading="lazy" decoding="async"><figcaption>${es ? "Fauna local" : "Local wildlife"}</figcaption></figure>
+  </aside>` : "";
+  const content = pageKey === "villa"
+    ? `<div class="full-copy__villa-layout"><div class="full-copy__villa-content"><div class="full-copy__intro"><span class="eyebrow">${sectionEyebrow}</span><h2>${sectionTitle}</h2></div><div class="full-copy__villa-sections">${sectionContent}</div></div>${villaPhotos}</div>`
+    : `<div class="full-copy__intro"><span class="eyebrow">${sectionEyebrow}</span><h2>${sectionTitle}</h2></div>${sectionContent}`;
+  return `<section class="full-copy section" aria-label="${sectionLabel}"><div class="shell">${content}</div></section>`;
 }
 
 function baseHtml({ pageKey, title, description, path, main, image = "/assets/images/hero-andes-1200.webp", locale = "es" }) {
