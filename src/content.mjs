@@ -75,7 +75,7 @@ export const destinations = [
     short: "Canoe journeys, forest trails and encounters with local guides.",
     intro: "Where the forest leads.",
     detail: "Travel by canoe and trail with local guides, wildlife and carefully chosen lodges.",
-    hero: "hero-amazon-river.jpg",
+    hero: "hero-amazon-river.webp",
     heroWidths: [],
     heroPosition: "50% 50%",
     accent: "forest",

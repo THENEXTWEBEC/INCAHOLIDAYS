@@ -107,12 +107,22 @@ if (journey && !reduceMotion) {
   const sceneNames = isSpanish ? ["Chimborazo · 6.263 m", "Amazonía · Napo", "Costa · Chocó Andino", "Galápagos · Pacífico"] : ["Chimborazo · 6,263 m", "Amazon · Napo", "Coast · Chocó Andino", "Galápagos · Pacific"];
   const labels = isSpanish ? ["Descubre Ecuador", "Diseña tu ruta", "Planifica tu viaje"] : ["Discover Ecuador", "Design your route", "Plan your trip"];
   let scheduled = false;
+  const loadLandscape = index => {
+    const image = landscapes[index]?.querySelector("img[data-src]");
+    if (!image) return;
+    if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+    image.src = image.dataset.src;
+    delete image.dataset.src;
+    delete image.dataset.srcset;
+  };
   const clamp01 = value => Math.max(0, Math.min(1, value));
   const paintJourney = () => {
     const bounds = journey.getBoundingClientRect();
     const progress = clamp01(-bounds.top / Math.max(1, bounds.height - window.innerHeight));
     const scene = Math.min(3, Math.floor(progress * 4));
     const blend = progress * 4 - scene;
+    if (progress > .02) loadLandscape(scene + 1);
+    if (scene > 0) loadLandscape(scene);
     landscapes.forEach((layer, index) => {
       const opacity = index === scene ? 1 - blend * .78 : index === scene + 1 ? blend : index < scene ? 0 : 0;
       layer.style.opacity = String(Math.max(0, opacity));

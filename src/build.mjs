@@ -6,7 +6,7 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261106-villa-photo-story";
+const assetVersion = "20261109-faster-images";
 const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
 const fullContentEs = JSON.parse(await readFile(join(src, "full-content-es.json"), "utf8"));
 
@@ -84,7 +84,7 @@ function nav(pageKey, locale = "es") {
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="header-inner">
       <a class="brand" href="/" aria-label="Inca Holidays home">
-        <img src="/assets/images/brand-idol.png" width="46" height="62" alt="" aria-hidden="true">
+        <img src="/assets/images/brand-idol.webp" width="46" height="62" alt="" aria-hidden="true">
         <span><strong>Inca Holidays</strong><small>Ecuador · Galapagos</small></span>
       </a>
       <nav class="desktop-nav" aria-label="Primary navigation">
@@ -118,7 +118,7 @@ function footer(locale = "es") {
     </div>
     <div class="footer-grid shell">
       <div class="footer-brand">
-        <img src="/assets/images/brand-idol.png" width="66" height="89" alt="Inca Holidays ceremonial gold figure">
+        <img src="/assets/images/brand-idol.webp" width="66" height="89" alt="Inca Holidays ceremonial gold figure" loading="lazy" decoding="async">
         <p>Tailor-made cultural and soft-adventure journeys for independent travelers and small groups.</p>
       </div>
       <div>
@@ -149,12 +149,12 @@ function footer(locale = "es") {
 
 function picture(base, widths, alt, options = {}) {
   if (/\.(?:jpe?g|png|webp)$/i.test(base)) {
-    return `<img src="/assets/images/${base}" alt="${escapeHtml(alt)}" width="1600" height="900" ${options.priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" style="--media-position:${options.position || "50% 50%"}">`;
+    return `<img ${options.deferred ? "data-src" : "src"}="/assets/images/${base}" alt="${escapeHtml(alt)}" width="1600" height="900" ${options.priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" style="--media-position:${options.position || "50% 50%"}">`;
   }
   const largest = widths.at(-1);
   const srcset = widths.map(width => `/assets/images/${base}-${width}.webp ${width}w`).join(", ");
   return `<picture>
-    <img src="/assets/images/${base}-${largest}.webp" srcset="${srcset}" sizes="${options.sizes || "100vw"}" alt="${escapeHtml(alt)}" width="${largest}" height="${Math.round(largest * (options.ratio || .667))}" ${options.priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" style="--media-position:${options.position || "50% 50%"}">
+    <img ${options.deferred ? "data-src" : "src"}="/assets/images/${base}-${largest}.webp" ${options.deferred ? "data-srcset" : "srcset"}="${srcset}" sizes="${options.sizes || "100vw"}" alt="${escapeHtml(alt)}" width="${largest}" height="${Math.round(largest * (options.ratio || .667))}" ${options.priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" style="--media-position:${options.position || "50% 50%"}">
   </picture>`;
 }
 
@@ -212,9 +212,9 @@ function homePage() {
       <div class="journey-stage">
         <div class="journey-sky" aria-hidden="true"></div>
         <div class="journey-image journey-image--andes" data-landscape="0">${picture("hero-andes", [1200,2400], "Chimborazo above the Andean páramo", {priority:true, position:"50% 52%"})}</div>
-        <div class="journey-image journey-image--amazon" data-landscape="1">${picture("hero-amazon-river.jpg", [], "Amazon rainforest and river at dawn in Ecuador", {position:"50% 45%"})}</div>
-        <div class="journey-image journey-image--coast" data-landscape="2">${picture("hero-nono", [1200,2200], "Green Ecuadorian cloud forest", {position:"50% 50%"})}</div>
-        <div class="journey-image journey-image--islands" data-landscape="3">${picture("hero-galapagos", [1200,2400], "Volcanic shores of Galápagos", {position:"50% 46%"})}</div>
+        <div class="journey-image journey-image--amazon" data-landscape="1">${picture("hero-amazon-river.webp", [], "Amazon rainforest and river at dawn in Ecuador", {position:"50% 45%", deferred:true})}</div>
+        <div class="journey-image journey-image--coast" data-landscape="2">${picture("hero-nono", [1200,2200], "Green Ecuadorian cloud forest", {position:"50% 50%", deferred:true})}</div>
+        <div class="journey-image journey-image--islands" data-landscape="3">${picture("hero-galapagos", [1200,2400], "Volcanic shores of Galápagos", {position:"50% 46%", deferred:true})}</div>
         <div class="journey-shade"></div><div class="journey-foreground" aria-hidden="true"></div>
         <div class="journey-copy shell"><span class="eyebrow light">A medida · Ecuador y Galápagos</span><h1><span>Travel</span> <span>deeper</span><em>into Ecuador.</em></h1><p>Cultural encounters, soft adventure and considered routes for independent travelers and small groups.</p><div class="journey-actions"><a class="button button--light compass-cta" href="/plan-your-trip/" data-journey-cta><span data-cta-label>Discover Ecuador</span>${icon("compass")}</a><a class="text-link light" href="#worlds">Explore destinations ${icon("diagonal")}</a></div></div>
         <div class="journey-route" aria-hidden="true"><svg viewBox="0 0 1000 150" preserveAspectRatio="none"><path d="M0 118 C120 118 112 44 250 64 S390 139 500 78 650 26 742 80 890 129 1000 26"/></svg><span>Altitude</span><span>Culture</span><span>Nature</span><span>Ocean</span></div>
@@ -222,7 +222,7 @@ function homePage() {
       </div>
     </section>
     <section class="worlds-section" id="worlds"><div class="worlds-sticky"><div class="worlds-heading"><span class="eyebrow">One country, four worlds</span><h2>Follow the feeling.</h2></div><div class="worlds-track">
-      ${[["andes","hero-andes-1200.webp","Andes","Cotopaxi · 4,897 m"],["amazon","hero-amazon-river.jpg","Amazonía","Napo · Ecuador"],["nono","hero-nono-1200.webp","Costa y bosque nublado","Chocó Andino · 0°"],["galapagos","hero-galapagos-1200.webp","Galápagos","0° 45′ S · Pacífico"]].map(([slug,img,title,coord],i)=>`<article class="world-panel"><img src="/assets/images/${img}" alt="${title}, Ecuador" loading="lazy"><div class="world-panel__meta"><span>0${i+1} / ECUADOR</span><span>${coord}</span></div><h3>${title}</h3><a href="/destinations/${slug === "amazon" ? "amazon" : slug}/">Explore ${title} ${icon("diagonal")}</a></article>`).join("")}
+      ${[["andes","hero-andes-1200.webp","Andes","Cotopaxi · 4,897 m"],["amazon","hero-amazon-river.webp","Amazonía","Napo · Ecuador"],["nono","hero-nono-1200.webp","Costa y bosque nublado","Chocó Andino · 0°"],["galapagos","hero-galapagos-1200.webp","Galápagos","0° 45′ S · Pacífico"]].map(([slug,img,title,coord],i)=>`<article class="world-panel"><img src="/assets/images/${img}" alt="${title}, Ecuador" loading="lazy" decoding="async"><div class="world-panel__meta"><span>0${i+1} / ECUADOR</span><span>${coord}</span></div><h3>${title}</h3><a href="/destinations/${slug === "amazon" ? "amazon" : slug}/">Explore ${title} ${icon("diagonal")}</a></article>`).join("")}
     </div><div class="worlds-progress"><span></span></div></div></section>
     <section class="expedition-section"><div class="shell"><span class="eyebrow">A route that finds its own rhythm</span><h2>From the highlands<br>to the living ocean.</h2><div class="expedition-route"><div class="expedition-line"></div>${[["01","Quito","Begin with stories, colors and a table set for you."],["02","Andes","Cross high valleys at a pace that leaves room to stop."],["03","Amazonía","Follow waterways into a world that moves to its own time."],["04","Galápagos","End where ancient islands meet the open Pacific."]].map(([n,t,d])=>`<article class="expedition-stop"><span class="expedition-number">${n}</span><div><h3>${t}</h3><p>${d}</p></div><span class="expedition-pin">${icon("pin")}</span></article>`).join("")}</div></div></section>
     <section class="intent-section"><div class="shell"><span class="eyebrow light">Travel with intention</span><h2>Made personal,<br>at every turn.</h2><div class="intent-list"><p><span>01</span><strong>Small groups</strong><i>Space to notice more.</i></p><p><span>02</span><strong>Local hosts</strong><i>People who make a place mean something.</i></p><p><span>03</span><strong>Your own pace</strong><i>Room for the unplanned.</i></p></div></div></section>
@@ -578,9 +578,9 @@ function completeCopy(pageKey, locale) {
   const sectionLabel = isDestination ? (es ? "Programas y actividades por destino" : "Destination programs and activities") : (es ? "Información completa" : "Full information");
   const sectionContent = sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("");
   const villaPhotos = pageKey === "villa" ? `<aside class="villa-program-photos" aria-label="${es ? "Personas y naturaleza en Nono" : "People and nature in Nono"}">
-    <figure class="villa-program-photo villa-program-photo--host"><img src="/assets/images/villa-doris-local-woman.jpg" alt="Woman in the countryside near Nono" loading="lazy" decoding="async"><figcaption>${es ? "Vida local" : "Local life"}</figcaption></figure>
-    <figure class="villa-program-photo villa-program-photo--birding"><img src="/assets/images/villa-doris-birdwatcher.jpg" alt="Traveler watching nature in the countryside" loading="lazy" decoding="async"><figcaption>${es ? "Observación de aves" : "Birdwatching"}</figcaption></figure>
-    <figure class="villa-program-photo villa-program-photo--wildlife"><img src="/assets/images/villa-doris-squirrel.jpg" alt="Squirrel on a branch" loading="lazy" decoding="async"><figcaption>${es ? "Fauna local" : "Local wildlife"}</figcaption></figure>
+    <figure class="villa-program-photo villa-program-photo--host"><img src="/assets/images/villa-doris-local-woman.webp" alt="Woman in the countryside near Nono" loading="lazy" decoding="async"><figcaption>${es ? "Vida local" : "Local life"}</figcaption></figure>
+    <figure class="villa-program-photo villa-program-photo--birding"><img src="/assets/images/villa-doris-birdwatcher.webp" alt="Traveler watching nature in the countryside" loading="lazy" decoding="async"><figcaption>${es ? "Observación de aves" : "Birdwatching"}</figcaption></figure>
+    <figure class="villa-program-photo villa-program-photo--wildlife"><img src="/assets/images/villa-doris-squirrel.webp" alt="Squirrel on a branch" loading="lazy" decoding="async"><figcaption>${es ? "Fauna local" : "Local wildlife"}</figcaption></figure>
   </aside>` : "";
   const content = pageKey === "villa"
     ? `<div class="full-copy__villa-layout"><div class="full-copy__villa-content"><div class="full-copy__intro"><span class="eyebrow">${sectionEyebrow}</span><h2>${sectionTitle}</h2></div><div class="full-copy__villa-sections">${sectionContent}</div></div>${villaPhotos}</div>`
@@ -625,8 +625,7 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${site.origin}${image}">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/assets/images/brand-idol.png" type="image/png">
-  <link rel="preload" href="/assets/styles.css?v=${assetVersion}" as="style">
+  <link rel="icon" href="/assets/images/favicon-64.png" type="image/png">
   <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
   <script type="application/ld+json">${JSON.stringify(jsonLd).replaceAll("<", "\\u003c")}</script>
   <script src="/assets/app.js?v=${assetVersion}" type="module"></script>
@@ -668,9 +667,6 @@ await cp(join(src, "styles.css"), join(dist, "assets", "styles.css"));
 await cp(join(src, "app.js"), join(dist, "assets", "app.js"));
 await cp(join(root, ".openai"), join(dist, ".openai"), { recursive: true });
 await mkdir(join(dist, "en"), { recursive: true });
-await cp(join(src, "assets"), join(dist, "en", "assets"), { recursive: true });
-await cp(join(src, "styles.css"), join(dist, "en", "assets", "styles.css"));
-await cp(join(src, "app.js"), join(dist, "en", "assets", "app.js"));
 
 for (const page of outputPages) {
   await writeRoute(page.path, baseHtml({ pageKey: page.key, title: page.title, description: page.description, path: page.path, main: page.mainEs || page.main, image: page.image, locale: "es" }));
