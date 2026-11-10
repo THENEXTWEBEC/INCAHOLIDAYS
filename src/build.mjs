@@ -185,6 +185,47 @@ function destinationTile(d, index) {
   </article>`;
 }
 
+function destinationProgramLabel(d, locale = "es") {
+  if (locale === "en") {
+    return {
+      galapagos: "Cruises and island hopping",
+      andes: "Andean routes and living culture",
+      amazon: "Amazon lodges and complete itineraries",
+      nono: "Nono and the hummingbird route"
+    }[d.slug];
+  }
+  return {
+    galapagos: "Cruceros y rutas entre islas",
+    andes: "Rutas andinas y cultura viva",
+    amazon: "Lodges e itinerarios completos de la Amazonía",
+    nono: "Nono y la ruta del colibrí"
+  }[d.slug];
+}
+
+function destinationSequence(d, index, locale = "es") {
+  const es = locale === "es";
+  const galleryItems = d.gallery.slice(0, 3);
+  return `<article class="destination-sequence reveal" id="${d.slug}">
+    <div class="destination-sequence__number">${d.number}</div>
+    <div class="destination-sequence__destination">
+      <span class="eyebrow">${es ? "Destino" : "Destination"}</span>
+      <h2>${d.name}</h2>
+      <p>${d.short}</p>
+      <a class="text-link" href="${localizedPath(`/destinations/${d.slug}/`, locale)}">${es ? "Ver destino" : "Explore destination"} ${icon("arrow")}</a>
+    </div>
+    <div class="destination-sequence__program">
+      <span class="eyebrow">${es ? "Programa" : "Program"}</span>
+      <h3>${destinationProgramLabel(d, locale)}</h3>
+      <p>${es ? "Consulta el itinerario completo y adapta la duración a tu viaje." : "Open the complete itinerary and adapt the duration to your journey."}</p>
+      <a class="text-link" href="${localizedPath(`/destinations/${d.slug}/`, locale)}#story">${es ? "Ver programas" : "View programs"} ${icon("diagonal")}</a>
+    </div>
+    <div class="destination-sequence__images">
+      <span class="eyebrow">${es ? "Imágenes" : "Images"}</span>
+      <div class="destination-sequence__gallery">${galleryItems.map(([file, alt]) => `<button type="button" data-gallery-item data-src="/assets/images/${file}" data-alt="${escapeHtml(alt)}" aria-label="${es ? "Abrir imagen" : "Open image"}: ${escapeHtml(alt)}"><img src="/assets/images/${file}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async"></button>`).join("")}</div>
+    </div>
+  </article>`;
+}
+
 function gallery(items, variant = "") {
   return `<div class="gallery-grid${variant ? ` gallery-grid--${variant}` : ""}">
     ${items.map(([file, alt], index) => `<button class="gallery-item gallery-item--${(index % 4) + 1} reveal" type="button" data-gallery-item data-src="/assets/images/${file}" data-alt="${escapeHtml(alt)}" aria-label="Open image: ${escapeHtml(alt)}">
@@ -231,20 +272,13 @@ function homePage() {
   </main>`;
 }
 
-function destinationsPage() {
+function destinationsPage(locale = "en") {
   return `<main id="main">
     ${pageHero({ eyebrow: "Ecuador in four directions", title: "One country. Four worlds.", copy: "Islands, highlands, rainforest and cloud forest, shaped into your journey.", hero: "hero-galapagos", widths: [1200,2400], position: "50% 44%", alt: "Giant tortoise in the Galapagos highlands", credit: "Hero photograph: Bjarn Bronsveld / Unsplash" })}
     <section class="atlas-section section" id="story">
-      <div class="shell atlas-intro"><span class="eyebrow reveal">The destination atlas</span><p class="reveal">Four distinct regions. Endless ways to explore.</p></div>
-      <div class="shell atlas-list">
-        ${destinations.map(d => `<article class="atlas-row reveal">
-          <a href="/destinations/${d.slug}/">
-            <span class="atlas-row__number">${d.number}</span>
-            <div class="atlas-row__image">${picture(d.hero,d.heroWidths,`${d.name}, Ecuador`,{position:d.heroPosition,sizes:"(max-width: 760px) 100vw, 35vw",ratio:.68})}</div>
-            <div class="atlas-row__copy"><span>${d.eyebrow}</span><h2>${d.name}</h2><p>${d.short}</p></div>
-            <span class="atlas-row__arrow">${icon("diagonal")}</span>
-          </a>
-        </article>`).join("")}
+      <div class="shell atlas-intro"><span class="eyebrow reveal">The destination atlas</span><h2 class="reveal">Destino, programa e imágenes.</h2><p class="reveal">Recorre cada región de Ecuador en su propio bloque, con la información esencial en el mismo lugar.</p></div>
+      <div class="shell destination-sequence-list">
+        ${destinations.map((d, index) => destinationSequence(d, index, locale)).join("")}
       </div>
     </section>
     ${finalCta("Combine regions", "Let Ecuador unfold one landscape at a time.")}
@@ -648,7 +682,7 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
 
 const outputPages = [
   { key: "home", ...pages.home, main: homePage() },
-  { key: "destinations", ...pages.destinations, main: destinationsPage(), image: "/assets/images/hero-galapagos-1200.webp" },
+  { key: "destinations", ...pages.destinations, main: destinationsPage("en"), mainEs: destinationsPage("es"), image: "/assets/images/hero-galapagos-1200.webp" },
   ...destinations.map(d => ({ key: `destination-${d.slug}`, path: `/destinations/${d.slug}/`, title: `${d.name} tailor-made journeys`, description: d.short, main: destinationPage(d), mainEs: destinationPage(d, "es"), image: `/assets/images/${d.hero.includes(".") ? d.hero : `${d.hero}-1200.webp`}` })),
   { key: "villa", ...pages.villa, main: villaPage(), image: "/assets/images/hero-villa-1200.webp" },
   { key: "about", ...pages.about, main: aboutPage(), image: "/assets/images/about-local-connection.webp" },
