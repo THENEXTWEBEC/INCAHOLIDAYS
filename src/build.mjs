@@ -1,4 +1,6 @@
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { execFile as execFileCallback } from "node:child_process";
+import { promisify } from "node:util";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { destinations, pages, site, villa } from "./content.mjs";
@@ -9,6 +11,12 @@ const dist = join(root, "dist");
 const assetVersion = "20261110-destination-order";
 const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
 const fullContentEs = JSON.parse(await readFile(join(src, "full-content-es.json"), "utf8"));
+
+const execFile = promisify(execFileCallback);
+async function copyTree(from, to) {
+  await mkdir(to, { recursive: true });
+  await execFile("/bin/cp", ["-R", `${from}/.`, to]);
+}
 
 function amazonSource(locale = "en") {
   const content = locale === "es" ? fullContentEs : fullContent;
@@ -89,6 +97,7 @@ function nav(pageKey, locale = "es") {
       </a>
       <nav class="desktop-nav" aria-label="Primary navigation">
         <a href="${localizedPath("/destinations/", locale)}" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
+        <a href="${localizedPath("/yacht-anahi/", locale)}" ${pageKey === "yacht" ? 'aria-current="page"' : ""}>Yacht Anahi</a>
         <a href="${localizedPath("/villa-doris/", locale)}" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
         <a href="${localizedPath("/about/", locale)}" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
       </nav>
@@ -100,8 +109,9 @@ function nav(pageKey, locale = "es") {
     <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" data-mobile-menu>
       <a href="${localizedPath("/", locale)}">Home <span>00</span></a>
       <a href="${localizedPath("/destinations/", locale)}">Destinations <span>01–04</span></a>
-      <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris <span>05</span></a>
-      <a href="${localizedPath("/about/", locale)}">About <span>06</span></a>
+      <a href="${localizedPath("/yacht-anahi/", locale)}">Yacht Anahi <span>05</span></a>
+      <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris <span>06</span></a>
+      <a href="${localizedPath("/about/", locale)}">About <span>07</span></a>
       <a href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("diagonal")}</a>
     </nav>
   </header>`;
@@ -124,6 +134,7 @@ function footer(locale = "es") {
       <div>
         <h3>Explore</h3>
         ${destinations.map(d => `<a href="${localizedPath(`/destinations/${d.slug}/`, locale)}">${d.name}</a>`).join("")}
+        <a href="${localizedPath("/yacht-anahi/", locale)}">Yacht Anahi</a>
         <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris</a>
       </div>
       <div>
@@ -317,7 +328,28 @@ function galapagosCruise(locale = "en") {
     ["grand-ocean-spray-dining.jpg", es ? "Comedor del Grand Ocean Spray" : "Grand Ocean Spray dining room"],
     ["grand-ocean-spray-stern.jpg", es ? "Popa del Grand Ocean Spray" : "Grand Ocean Spray stern"]
   ];
-  return `<section class="cruise-journey section"><div class="shell"><div class="cruise-heading"><span class="eyebrow">${es ? "Programa · Galápagos" : "Program · Galápagos"}</span><h2>Grand Ocean Spray</h2><p>${es ? "Un catamarán de última generación para recorrer las islas con comodidad, privacidad y sofisticación." : "A state-of-the-art catamaran for exploring the islands with comfort, privacy and sophistication."}</p></div><div class="cruise-program"><span class="lodge-section-label">${es ? "Itinerario" : "Itinerary"}</span><h3>${es ? "Cruceros de 3, 4 o 7 noches" : "3-, 4- or 7-night cruises"}</h3><p>${es ? "Los itinerarios dependen de las fechas de salida, disponibilidad y condiciones meteorológicas. Consulta las opciones para tus fechas." : "Itineraries depend on departure dates, availability and weather conditions. Ask about the options for your dates."}</p><a class="text-link" href="/plan-your-trip/?destination=galapagos">${es ? "Consultar disponibilidad" : "Check availability"} ${icon("arrow")}</a></div><div class="cruise-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span></div>${gallery(images, "cruise")}</div></section>`;
+  return `<section class="cruise-journey section"><div class="shell"><a class="anahi-feature reveal" href="${localizedPath("/yacht-anahi/", locale)}"><div class="anahi-feature__image"><img src="/assets/images/yacht-anahi-exterior.png" alt="${es ? "Yacht Anahi navegando por Galápagos" : "Yacht Anahi sailing through the Galápagos"}" loading="lazy" decoding="async"></div><div class="anahi-feature__copy"><span class="eyebrow">${es ? "A bordo · nuevo" : "On board · featured"}</span><h2>Yacht Anahi</h2><p>${es ? "Una forma cercana y luminosa de vivir las islas: fauna, costas volcánicas y noches tranquilas sobre el Pacífico." : "A close, light-filled way to experience the islands: wildlife, volcanic shores and quiet nights on the Pacific."}</p><span class="text-link">${es ? "Conocer el yate" : "Discover the yacht"} ${icon("arrow")}</span></div></a><div class="cruise-heading"><span class="eyebrow">${es ? "Programa · Galápagos" : "Program · Galápagos"}</span><h2>Grand Ocean Spray</h2><p>${es ? "Un catamarán de última generación para recorrer las islas con comodidad, privacidad y sofisticación." : "A state-of-the-art catamaran for exploring the islands with comfort, privacy and sophistication."}</p></div><div class="cruise-program"><span class="lodge-section-label">${es ? "Itinerario" : "Itinerary"}</span><h3>${es ? "Cruceros de 3, 4 o 7 noches" : "3-, 4- or 7-night cruises"}</h3><p>${es ? "Los itinerarios dependen de las fechas de salida, disponibilidad y condiciones meteorológicas. Consulta las opciones para tus fechas." : "Itineraries depend on departure dates, availability and weather conditions. Ask about the options for your dates."}</p><a class="text-link" href="/plan-your-trip/?destination=galapagos">${es ? "Consultar disponibilidad" : "Check availability"} ${icon("arrow")}</a></div><div class="cruise-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span></div>${gallery(images, "cruise")}</div></section>`;
+}
+
+function yachtAnahiPage(locale = "en") {
+  const es = locale === "es";
+  const galleryItems = [
+    ["yacht-anahi-blue-footed-boobies.jpg", es ? "Piqueros de patas azules en Galápagos" : "Blue-footed boobies in the Galápagos"],
+    ["yacht-anahi-sea-lions.jpg", es ? "Lobos marinos descansando en la playa" : "Sea lions resting on a Galápagos beach"],
+    ["yacht-anahi-kicker-rock.jpg", es ? "Kicker Rock frente a la costa de San Cristóbal" : "Kicker Rock off the coast of San Cristóbal"],
+    ["yacht-anahi-galapagos-islets.jpg", es ? "Islas volcánicas y bahías de Galápagos" : "Volcanic islands and bays in the Galápagos"],
+    ["yacht-anahi-marine-iguana.jpg", es ? "Iguana marina sobre la roca volcánica" : "Marine iguana on volcanic rock"],
+    ["yacht-anahi-punta-suarez.jpg", es ? "Lobos marinos en Punta Suárez" : "Sea lions at Punta Suárez"]
+  ];
+  return `<main id="main">
+    ${pageHero({ eyebrow: es ? "Galápagos · Yacht Anahi" : "Galápagos · Yacht Anahi", title: es ? "Las islas, a tu ritmo." : "The islands, at your pace.", copy: es ? "Descubre la fauna, las costas volcánicas y el silencio del Pacífico desde una base cómoda sobre el agua." : "Discover wildlife, volcanic shores and the quiet of the Pacific from a comfortable base on the water.", hero: "yacht-anahi-exterior.png", widths: [], position: "50% 52%", alt: es ? "Yacht Anahi navegando por las islas Galápagos" : "Yacht Anahi sailing through the Galápagos" })}
+    <section class="anahi-intro section" id="story"><div class="shell anahi-intro__grid"><div class="anahi-intro__index"><span>05</span><small>${es ? "Una forma distinta de navegar" : "A different way to sail"}</small></div><div class="anahi-intro__lead"><span class="eyebrow">${es ? "El viaje" : "The journey"}</span><h2>${es ? "Cada día abre una nueva orilla." : "Every day opens onto a new shore."}</h2></div><div class="anahi-intro__detail"><p>${es ? "Yacht Anahi combina la libertad de moverse entre islas con la calma de tener siempre un lugar propio al que regresar. Baja a tierra para encontrarte con la vida silvestre y vuelve al barco para mirar el horizonte." : "Yacht Anahi combines the freedom of moving between islands with the ease of having a place of your own to return to. Step ashore for wildlife encounters, then come back on board to watch the horizon."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Consultar un itinerario" : "Ask about an itinerary"} ${icon("arrow")}</a></div></div></section>
+    <section class="anahi-rhythm section section--muted"><div class="shell"><div class="section-heading anahi-rhythm__heading"><span class="eyebrow">${es ? "El ritmo a bordo" : "Life on board"}</span><h2>${es ? "Comodidad para mirar más lejos." : "Comfort that lets you look farther."}</h2></div><div class="anahi-rhythm__grid"><article><span>01</span><h3>${es ? "Días de fauna" : "Wildlife-led days"}</h3><p>${es ? "Piqueros, lobos marinos, iguanas marinas y aves únicas aparecen en las islas y junto a la costa." : "Boobies, sea lions, marine iguanas and singular birdlife appear on the islands and along the coast."}</p></article><article><span>02</span><h3>${es ? "Noches tranquilas" : "Quiet nights"}</h3><p>${es ? "Después de una jornada de exploración, regresa a una cabina fresca, luminosa y hecha para descansar." : "After a day of exploring, return to a cool, light-filled cabin made for resting."}</p></article><article><span>03</span><h3>${es ? "Isla por isla" : "Island by island"}</h3><p>${es ? "La ruta cambia con el paisaje: playas blancas, roca volcánica, bahías azules y horizontes abiertos." : "The route changes with the landscape: white beaches, volcanic rock, blue bays and open horizons."}</p></article></div></div></section>
+    <section class="anahi-cabins section"><div class="shell anahi-cabins__grid"><div class="anahi-cabins__copy"><span class="eyebrow">${es ? "El espacio" : "The space"}</span><h2>${es ? "Un lugar al que da gusto volver." : "A place you will want to return to."}</h2><p>${es ? "Las cabinas combinan líneas limpias, luz natural y detalles suaves para que el descanso también forme parte de la expedición." : "The cabins pair clean lines, natural light and quiet details, making rest part of the expedition too."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Planificar Galápagos" : "Plan the Galápagos"} ${icon("arrow")}</a></div><figure class="anahi-cabin anahi-cabin--twin reveal"><img src="/assets/images/yacht-anahi-double-cabin.png" alt="${es ? "Cabina twin convertible de Yacht Anahi" : "Yacht Anahi convertible twin cabin"}" loading="lazy" decoding="async"><figcaption>${es ? "Cabina convertible twin" : "Convertible twin cabin"}</figcaption></figure><figure class="anahi-cabin anahi-cabin--suite reveal"><img src="/assets/images/yacht-anahi-triple-suite.png" alt="${es ? "Suite triple de Yacht Anahi" : "Yacht Anahi triple suite"}" loading="lazy" decoding="async"><figcaption>${es ? "Suite triple" : "Triple suite"}</figcaption></figure></div></section>
+    <section class="anahi-wildlife section section--deep"><div class="shell anahi-wildlife__grid"><figure class="anahi-wildlife__image reveal"><img src="/assets/images/yacht-anahi-marine-iguana.jpg" alt="${es ? "Iguana marina de Galápagos sobre una roca" : "Galápagos marine iguana resting on rock"}" loading="lazy" decoding="async"></figure><div class="anahi-wildlife__copy"><span class="eyebrow light">${es ? "La vida silvestre" : "The wildlife"}</span><h2>${es ? "La naturaleza no está lejos." : "Nature is never far away."}</h2><p>${es ? "En Galápagos, el encuentro comienza antes de llegar a tierra: una silueta en el agua, unas alas sobre la cubierta, una iguana quieta sobre la lava." : "In the Galápagos, the encounter begins before you reach shore: a shape in the water, wings above the deck, an iguana still on the lava."}</p><a class="text-link light" href="${localizedPath("/destinations/galapagos/", locale)}">${es ? "Explorar Galápagos" : "Explore the Galápagos"} ${icon("diagonal")}</a></div></div></section>
+    <section class="gallery-section section anahi-gallery" aria-label="${es ? "Galería de Yacht Anahi y Galápagos" : "Yacht Anahi and Galápagos gallery"}"><div class="shell section-heading"><span class="eyebrow reveal">${es ? "En tierra y en el agua" : "On shore and at sea"}</span><h2 class="reveal">${es ? "Mira más de cerca." : "Look closer."}</h2></div><div class="shell">${gallery(galleryItems, "anahi")}</div></section>
+    ${finalCta(es ? "Tu viaje a Galápagos" : "Your Galápagos journey", es ? "Deja que las islas marquen el ritmo." : "Let the islands set the pace.")}
+  </main>`;
 }
 
 function destinationPage(d, locale = "en") {
@@ -579,6 +611,7 @@ const spanishMeta = {
   "destination-amazon": { title: "Viajes a medida por la Amazonía", description: "Caminatas guiadas, paseos en canoa, observación de aves y experiencias culturales en la selva." },
   "destination-nono": { title: "Viajes a medida por Nono", description: "Excursiones de uno, dos y cuatro días al bosque nublado andino, con colibríes, vida local y naturaleza." },
   villa: { title: "Villa Doris en el bosque nublado de Nono", description: "Descubre Villa Doris, una casa de campo rodeada de naturaleza en el bosque nublado del Chocó Andino, cerca de Quito." },
+  yacht: { title: "Yacht Anahi en Galápagos", description: "Explora Galápagos a bordo de Yacht Anahi, con días de fauna, desembarcos en las islas y noches tranquilas sobre el mar." },
   about: { title: "Sobre Inca Holidays", description: "Conoce Inca Holidays, una empresa de viajes de Quito que crea experiencias culturales, de aventura suave y viajes a medida." },
   plan: { title: "Planifica tu viaje a medida", description: "Cuéntale a Inca Holidays tus fechas, intereses y estilo de viaje para comenzar a diseñar tu itinerario." },
   privacy: { title: "Aviso de privacidad", description: "Cómo se gestiona la información de las consultas de viaje en el sitio web de Inca Holidays." },
@@ -588,6 +621,7 @@ const spanishMeta = {
 
 // The supplied English copy is preserved in full, including every day of each itinerary.
 function completeCopy(pageKey, locale) {
+  if (["destination-amazon", "destination-galapagos"].includes(pageKey)) return "";
   const sets = {
     home: [["Home y About us", "Our story", "Nuestra historia"]],
     about: [["Home y About us", "Our story and values", "Nuestra historia y valores"], ["Sustainability", "Sustainability", "Sostenibilidad"]],
@@ -698,6 +732,7 @@ const outputPages = [
   { key: "destinations", ...pages.destinations, main: destinationsPage("en"), mainEs: destinationsPage("es"), image: "/assets/images/hero-galapagos-1200.webp" },
   ...destinations.map(d => ({ key: `destination-${d.slug}`, path: `/destinations/${d.slug}/`, title: `${d.name} tailor-made journeys`, description: d.short, main: destinationPage(d), mainEs: destinationPage(d, "es"), image: `/assets/images/${d.hero.includes(".") ? d.hero : `${d.hero}-1200.webp`}` })),
   { key: "villa", ...pages.villa, main: villaPage(), image: "/assets/images/hero-villa-1200.webp" },
+  { key: "yacht", ...pages.yacht, main: yachtAnahiPage(), mainEs: yachtAnahiPage("es"), image: "/assets/images/yacht-anahi-exterior.png" },
   { key: "about", ...pages.about, main: aboutPage(), image: "/assets/images/about-local-connection.webp" },
   { key: "plan", ...pages.plan, main: planPage() },
   { key: "privacy", ...pages.privacy, main: privacyPage() },
@@ -712,13 +747,11 @@ async function writeRoute(route, html) {
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(join(dist, "assets"), { recursive: true });
-await cp(join(src, "assets"), join(dist, "assets"), { recursive: true });
-for (const file of ["grand-ocean-spray-exterior.jpeg", "grand-ocean-spray-lounge.jpeg", "grand-ocean-spray-sky-deck.jpg", "grand-ocean-spray-cabin.jpg", "grand-ocean-spray-dining.jpg", "grand-ocean-spray-stern.jpg"]) {
-  await cp(join(root, "assets", "images", file), join(dist, "assets", "images", file));
-}
-await cp(join(src, "styles.css"), join(dist, "assets", "styles.css"));
-await cp(join(src, "app.js"), join(dist, "assets", "app.js"));
-await cp(join(root, ".openai"), join(dist, ".openai"), { recursive: true });
+await copyTree(join(src, "assets"), join(dist, "assets"));
+await copyTree(join(root, "assets", "images"), join(dist, "assets", "images"));
+await copyFile(join(src, "styles.css"), join(dist, "assets", "styles.css"));
+await copyFile(join(src, "app.js"), join(dist, "assets", "app.js"));
+await copyTree(join(root, ".openai"), join(dist, ".openai"));
 await mkdir(join(dist, "en"), { recursive: true });
 
 for (const page of outputPages) {
