@@ -75,7 +75,7 @@ export const destinations = [
     short: "Canoe journeys, forest trails and encounters with local guides.",
     intro: "Where the forest leads.",
     detail: "Travel by canoe and trail with local guides, wildlife and carefully chosen lodges.",
-    hero: "hero-amazon-river.webp",
+    hero: "la-selva-aerial.jpg",
     heroWidths: [],
     heroPosition: "50% 50%",
     accent: "forest",
@@ -85,11 +85,12 @@ export const destinations = [
       ["Wildlife & birds", "Observe the extraordinary diversity of species that inhabit Ecuador's Amazon basin."],
       ["Cultural connection", "Include thoughtful experiences that place people and conservation within the same story."]
     ],
+    storyImage: ["la-selva-1.jpg", "Canoe journey through the Amazon rainforest"],
     gallery: [
-      ["amazon-macaw.webp", "Scarlet macaw in Ecuador's Amazon rainforest"],
-      ["amazon-toucan.webp", "Toucan perched in tropical forest"],
-      ["amazon-community.webp", "Community member in the Ecuadorian Amazon"],
-      ["amazon-culture.webp", "Traditional cooking in a rainforest community"]
+      ["la-selva-6.jpg", "Squirrel monkeys in the rainforest canopy"],
+      ["la-selva-7.jpg", "Green lizard resting on a rainforest branch"],
+      ["la-selva-5.jpg", "Local guide painting a traveler's face at the lodge"],
+      ["la-selva-2.jpg", "Dining room overlooking the Amazon river"]
     ],
     credit: ""
   },
