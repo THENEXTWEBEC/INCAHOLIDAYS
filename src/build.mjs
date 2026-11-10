@@ -307,6 +307,19 @@ function amazonLodges(locale = "en") {
   return `<section class="lodge-journey section"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "La Amazonía, a tu ritmo." : "Your Amazon, your rhythm."}</h2><p>${es ? "Cada lodge reúne su programa y sus imágenes en un solo bloque." : "Each lodge brings its program and images together in one clear block."}</p></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p></div></div><div class="lodge-programs"><span class="lodge-section-label">${es ? "Programas" : "Programs"}</span>${l.programs.map(([title,days,details])=>`<details><summary>${title}${icon("plus")}</summary><ol>${days.map((day,n)=>`<li class="program-day"><div class="program-day__summary"><div><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${details?.[n] || day}</p></div></details></div></li>`).join("")}</ol></details>`).join("")}</div><div class="lodge-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.${l.formats?.[n] || l.ext || "webp"}" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
 }
 
+function galapagosCruise(locale = "en") {
+  const es = locale === "es";
+  const images = [
+    ["grand-ocean-spray-exterior.jpeg", es ? "Grand Ocean Spray navegando por Galápagos" : "Grand Ocean Spray sailing through the Galápagos"],
+    ["grand-ocean-spray-sky-deck.jpg", es ? "Sky deck del Grand Ocean Spray" : "Grand Ocean Spray sky deck"],
+    ["grand-ocean-spray-lounge.jpeg", es ? "Sala de estar del Grand Ocean Spray" : "Grand Ocean Spray lounge"],
+    ["grand-ocean-spray-cabin.jpg", es ? "Cabina del Grand Ocean Spray" : "Grand Ocean Spray cabin"],
+    ["grand-ocean-spray-dining.jpg", es ? "Comedor del Grand Ocean Spray" : "Grand Ocean Spray dining room"],
+    ["grand-ocean-spray-stern.jpg", es ? "Popa del Grand Ocean Spray" : "Grand Ocean Spray stern"]
+  ];
+  return `<section class="cruise-journey section"><div class="shell"><div class="cruise-heading"><span class="eyebrow">${es ? "Programa · Galápagos" : "Program · Galápagos"}</span><h2>Grand Ocean Spray</h2><p>${es ? "Un catamarán de última generación para recorrer las islas con comodidad, privacidad y sofisticación." : "A state-of-the-art catamaran for exploring the islands with comfort, privacy and sophistication."}</p></div><div class="cruise-program"><span class="lodge-section-label">${es ? "Itinerario" : "Itinerary"}</span><h3>${es ? "Cruceros de 3, 4 o 7 noches" : "3-, 4- or 7-night cruises"}</h3><p>${es ? "Los itinerarios dependen de las fechas de salida, disponibilidad y condiciones meteorológicas. Consulta las opciones para tus fechas." : "Itineraries depend on departure dates, availability and weather conditions. Ask about the options for your dates."}</p><a class="text-link" href="/plan-your-trip/?destination=galapagos">${es ? "Consultar disponibilidad" : "Check availability"} ${icon("arrow")}</a></div><div class="cruise-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span></div>${gallery(images, "cruise")}</div></section>`;
+}
+
 function destinationPage(d, locale = "en") {
   return `<main id="main">
     ${pageHero({ eyebrow: `${d.number} · ${d.eyebrow}`, title: d.title, copy: d.short, hero: d.hero, widths: d.heroWidths, position: d.heroPosition, alt: `${d.name}, Ecuador`, credit: d.credit })}
@@ -318,7 +331,7 @@ function destinationPage(d, locale = "en") {
         <figure class="story-visual reveal"><img src="/assets/images/${(d.storyImage || d.gallery[0])[0]}" alt="${escapeHtml((d.storyImage || d.gallery[0])[1])}" loading="lazy" decoding="async"></figure>
       </div>
     </section>
-    ${d.slug === "amazon" ? amazonLodges(locale) : ""}
+    ${d.slug === "amazon" ? amazonLodges(locale) : d.slug === "galapagos" ? galapagosCruise(locale) : ""}
     <!--full-copy-->
     <section class="gallery-section section">
       <div class="shell section-heading"><span class="eyebrow reveal">A sense of place</span><h2 class="reveal">Look closer.</h2></div>
@@ -700,6 +713,9 @@ async function writeRoute(route, html) {
 await rm(dist, { recursive: true, force: true });
 await mkdir(join(dist, "assets"), { recursive: true });
 await cp(join(src, "assets"), join(dist, "assets"), { recursive: true });
+for (const file of ["grand-ocean-spray-exterior.jpeg", "grand-ocean-spray-lounge.jpeg", "grand-ocean-spray-sky-deck.jpg", "grand-ocean-spray-cabin.jpg", "grand-ocean-spray-dining.jpg", "grand-ocean-spray-stern.jpg"]) {
+  await cp(join(root, "assets", "images", file), join(dist, "assets", "images", file));
+}
 await cp(join(src, "styles.css"), join(dist, "assets", "styles.css"));
 await cp(join(src, "app.js"), join(dist, "assets", "app.js"));
 await cp(join(root, ".openai"), join(dist, ".openai"), { recursive: true });
