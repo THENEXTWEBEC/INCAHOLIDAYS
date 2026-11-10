@@ -6,7 +6,7 @@ import { destinations, pages, site, villa } from "./content.mjs";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const src = join(root, "src");
 const dist = join(root, "dist");
-const assetVersion = "20261109-faster-images";
+const assetVersion = "20261110-destination-order";
 const fullContent = JSON.parse(await readFile(join(src, "full-content.json"), "utf8"));
 const fullContentEs = JSON.parse(await readFile(join(src, "full-content-es.json"), "utf8"));
 
@@ -270,7 +270,7 @@ function amazonLodges(locale = "en") {
   lodges.forEach(lodge => {
     lodge.programs = lodge.programs.map(([title, days], index) => [title, days, itineraryDays(locale, sourceHeadings[lodge.prefix][index], days.length)]);
   });
-  return `<section class="lodge-journey section"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "La Amazonía, a tu ritmo." : "Your Amazon, your rhythm."}</h2><p>${es ? "Elige un lodge, explora sus fotos y abre el itinerario." : "Choose a lodge, explore the photos and open an itinerary."}</p></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p></div></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.${l.formats?.[n] || l.ext || "webp"}" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p><div class="lodge-programs">${l.programs.map(([title,days,details])=>`<details><summary>${title}${icon("plus")}</summary><ol>${days.map((day,n)=>`<li class="program-day"><div class="program-day__summary"><div><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${details?.[n] || day}</p></div></details></div></li>`).join("")}</ol></details>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
+  return `<section class="lodge-journey section"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "La Amazonía, a tu ritmo." : "Your Amazon, your rhythm."}</h2><p>${es ? "Cada lodge reúne su programa y sus imágenes en un solo bloque." : "Each lodge brings its program and images together in one clear block."}</p></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p></div></div><div class="lodge-programs"><span class="lodge-section-label">${es ? "Programas" : "Programs"}</span>${l.programs.map(([title,days,details])=>`<details><summary>${title}${icon("plus")}</summary><ol>${days.map((day,n)=>`<li class="program-day"><div class="program-day__summary"><div><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${details?.[n] || day}</p></div></details></div></li>`).join("")}</ol></details>`).join("")}</div><div class="lodge-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.${l.formats?.[n] || l.ext || "webp"}" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
 }
 
 function destinationPage(d, locale = "en") {
@@ -284,18 +284,18 @@ function destinationPage(d, locale = "en") {
         <figure class="story-visual reveal"><img src="/assets/images/${(d.storyImage || d.gallery[0])[0]}" alt="${escapeHtml((d.storyImage || d.gallery[0])[1])}" loading="lazy" decoding="async"></figure>
       </div>
     </section>
+    ${d.slug === "amazon" ? amazonLodges(locale) : ""}
     <!--full-copy-->
+    <section class="gallery-section section">
+      <div class="shell section-heading"><span class="eyebrow reveal">A sense of place</span><h2 class="reveal">Look closer.</h2></div>
+      <div class="shell">${gallery(d.gallery)}</div>
+    </section>
     <section class="experience-list-section section section--muted">
       <div class="shell section-heading"><span class="eyebrow reveal">Ways to explore</span><h2 class="reveal">Explore your way.</h2></div>
       <div class="shell experience-list">
         ${d.experiences.map(([title,copy],index)=>`<article class="experience-row reveal"><span>${String(index+1).padStart(2,"0")}</span><h3>${title}</h3><p>${copy}</p>${icon(index % 2 ? "route" : "compass")}</article>`).join("")}
       </div>
     </section>
-    <section class="gallery-section section">
-      <div class="shell section-heading"><span class="eyebrow reveal">A sense of place</span><h2 class="reveal">Look closer.</h2></div>
-      <div class="shell">${gallery(d.gallery)}</div>
-    </section>
-    ${d.slug === "amazon" ? amazonLodges(locale) : ""}
     ${finalCta(`Build a journey with ${d.name}`, "Make this landscape part of your story.")}
   </main>`;
 }
