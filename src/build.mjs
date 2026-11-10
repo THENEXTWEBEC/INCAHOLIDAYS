@@ -287,9 +287,16 @@ function destinationsPage(locale = "en") {
   return `<main id="main">
     ${pageHero({ eyebrow: "Ecuador in four directions", title: "One country. Four worlds.", copy: "Islands, highlands, rainforest and cloud forest, shaped into your journey.", hero: "hero-galapagos", widths: [1200,2400], position: "50% 44%", alt: "Giant tortoise in the Galapagos highlands", credit: "Hero photograph: Bjarn Bronsveld / Unsplash" })}
     <section class="atlas-section section" id="story">
-      <div class="shell atlas-intro"><span class="eyebrow reveal">The destination atlas</span><h2 class="reveal">Destino, programa e imágenes.</h2><p class="reveal">Recorre cada región de Ecuador en su propio bloque, con la información esencial en el mismo lugar.</p></div>
-      <div class="shell destination-sequence-list">
-        ${destinations.map((d, index) => destinationSequence(d, index, locale)).join("")}
+      <div class="shell atlas-intro"><span class="eyebrow reveal">The destination atlas</span><p class="reveal">Four distinct regions. Endless ways to explore.</p></div>
+      <div class="shell atlas-list">
+        ${destinations.map(d => `<article class="atlas-row reveal">
+          <a href="${localizedPath(`/destinations/${d.slug}/`, locale)}">
+            <span class="atlas-row__number">${d.number}</span>
+            <div class="atlas-row__image">${picture(d.hero,d.heroWidths,`${d.name}, Ecuador`,{position:d.heroPosition,sizes:"(max-width: 760px) 100vw, 35vw",ratio:.68})}</div>
+            <div class="atlas-row__copy"><span>${d.eyebrow}</span><h2>${d.name}</h2><p>${d.short}</p></div>
+            <span class="atlas-row__arrow">${icon("diagonal")}</span>
+          </a>
+        </article>`).join("")}
       </div>
     </section>
     ${finalCta("Combine regions", "Let Ecuador unfold one landscape at a time.")}
