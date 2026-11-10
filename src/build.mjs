@@ -411,6 +411,9 @@ const spanishTranslations = [
 ];
 
 spanishTranslations.push(
+  ["Opening hours", "Horario de atención"],
+  ["Monday to Friday · 09:00–17:00", "Lunes a viernes · 09:00–17:00"],
+  ["Instagram / Facebook", "Instagram / Facebook"],
   ["Explore your way.", "Explora a tu manera."],
   ["People, culture and place", "Personas, cultura y territorio"],
   ["People, culture and wildlife in Ecuador", "Personas, cultura y fauna de Ecuador"],
