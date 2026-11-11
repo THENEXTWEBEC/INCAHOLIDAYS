@@ -493,7 +493,7 @@ body[data-page="terms"] .site-header {
 .submit-button { margin-top: 2rem; border: 0; cursor: pointer; }
 .submit-button[disabled] { cursor: wait; opacity: .7; }
 .form-status { margin-top: 1.4rem; min-height: 0; }
-.form-status.is-success { padding: 1.25rem; border-left: 3px solid var(--olive); background: var(--ivory-deep); }
+.form-status.is-prepared { padding: 1.25rem; border-left: 3px solid var(--olive); background: var(--ivory-deep); }
 .form-status a { display: inline-flex; align-items: center; gap: .5rem; margin-top: .8rem; font-weight: 700; border-bottom: 1px solid currentColor; }
 
 /* Legal and 404 */
@@ -667,6 +667,119 @@ body[data-page="terms"] .site-header {
   .footer-bottom { flex-direction: column; padding-bottom: calc(2rem + env(safe-area-inset-bottom)); }
 }
 
+/* Yacht Anahi */
+.anahi-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(19rem, .72fr);
+  min-height: 25rem;
+  margin-bottom: clamp(5rem, 9vw, 9rem);
+  background: var(--forest-deep);
+  color: var(--white);
+  overflow: hidden;
+}
+
+.anahi-feature__image { min-height: 25rem; overflow: hidden; }
+.anahi-feature__image img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; transition: transform .9s var(--ease); }
+.anahi-feature:hover .anahi-feature__image img { transform: scale(1.045); }
+.anahi-feature__copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(2rem, 5vw, 5.5rem); }
+.anahi-feature__copy h2 { margin: 1.4rem 0 1.1rem; font-family: var(--serif); font-size: clamp(3rem, 5vw, 5.8rem); font-weight: 400; letter-spacing: -.05em; line-height: .9; }
+.anahi-feature__copy p { max-width: 28rem; margin-bottom: 2rem; color: rgba(255,253,248,.78); }
+.anahi-feature__copy .text-link { color: var(--sand); }
+.endemic-feature { width: var(--shell); margin: clamp(5rem, 9vw, 9rem) auto 0; }
+.endemic-feature .anahi-feature__image img { object-position: 50% 52%; }
+.land-feature { margin-top: 1rem; }
+.land-feature--naturalist { background: #273b34; }
+.land-feature--darwins { background: #3d3027; }
+.land-feature--naturalist .anahi-feature__image img { object-position: 50% 52%; }
+.land-feature--darwins .anahi-feature__image img { object-position: 50% 45%; }
+
+.anahi-intro { background: var(--paper); }
+.anahi-intro__grid { display: grid; grid-template-columns: minmax(7rem, .25fr) minmax(0, 1.1fr) minmax(18rem, .8fr); gap: clamp(2rem, 6vw, 8rem); align-items: start; }
+.anahi-intro__index { display: flex; flex-direction: column; gap: .8rem; padding-top: .4rem; }
+.anahi-intro__index span { font-family: var(--serif); font-size: clamp(3rem, 6vw, 6.6rem); line-height: .8; color: var(--clay); }
+.anahi-intro__index small { max-width: 9rem; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.anahi-intro__lead h2, .anahi-rhythm__heading h2, .anahi-cabins__copy h2, .anahi-wildlife__copy h2 { margin-top: 1.5rem; font-family: var(--serif); font-size: clamp(3rem, 5vw, 6.5rem); font-weight: 400; letter-spacing: -.05em; line-height: .92; }
+.anahi-intro__lead h2 { max-width: 10ch; }
+.anahi-intro__detail { padding-top: 3.4rem; }
+.anahi-intro__detail p { margin-bottom: 2rem; color: var(--ink-soft); font-size: 1.08rem; }
+
+.anahi-rhythm__heading { display: grid; grid-template-columns: .7fr 1.3fr; align-items: end; gap: 3rem; }
+.anahi-rhythm__heading h2 { max-width: 9ch; }
+.anahi-rhythm__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: clamp(3.5rem, 7vw, 7rem); border-top: 1px solid var(--line); }
+.anahi-rhythm__grid article { min-height: 15rem; padding: 1.7rem 2.2rem 1.7rem 0; border-right: 1px solid var(--line); }
+.anahi-rhythm__grid article + article { padding-left: 2.2rem; }
+.anahi-rhythm__grid article:last-child { border-right: 0; }
+.anahi-rhythm__grid span { color: var(--clay); font-size: .72rem; font-weight: 800; letter-spacing: .13em; }
+.anahi-rhythm__grid h3 { margin: 2.8rem 0 .8rem; font-family: var(--serif); font-size: 2rem; font-weight: 400; }
+.anahi-rhythm__grid p { max-width: 21rem; color: var(--ink-soft); }
+
+.anahi-cabins { background: var(--paper); }
+.anahi-cabins__grid { display: grid; grid-template-columns: minmax(18rem, .78fr) minmax(0, 1fr) minmax(0, 1.15fr); gap: 1rem; align-items: stretch; }
+.anahi-cabins__copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(1rem, 3vw, 4rem) clamp(1rem, 4vw, 5rem) clamp(2rem, 3vw, 4rem) 0; }
+.anahi-cabins__copy h2 { max-width: 8ch; font-size: clamp(2.8rem, 4vw, 5rem); }
+.anahi-cabins__copy p { max-width: 25rem; margin: 2rem 0; color: var(--ink-soft); }
+.anahi-cabin { position: relative; min-height: 34rem; overflow: hidden; background: var(--ivory-deep); }
+.anahi-cabin img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.anahi-cabin:hover img { transform: scale(1.03); }
+.anahi-cabin figcaption { position: absolute; left: 1.25rem; bottom: 1.2rem; color: var(--white); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 1px 12px rgba(0,0,0,.55); }
+.anahi-cabin--twin img { object-position: 50% 52%; }
+.anahi-cabin--suite img { object-position: 50% 52%; }
+
+.section--deep { background: var(--forest-deep); color: var(--white); }
+.anahi-wildlife__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .9fr); min-height: 41rem; align-items: center; gap: clamp(3rem, 8vw, 10rem); }
+.anahi-wildlife__image { height: 100%; min-height: 34rem; overflow: hidden; }
+.anahi-wildlife__image img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.anahi-wildlife__copy { padding-block: 3rem; }
+.anahi-wildlife__copy h2 { max-width: 8ch; color: var(--white); }
+.anahi-wildlife__copy p { max-width: 27rem; margin: 2rem 0; color: rgba(255,253,248,.76); font-size: 1.08rem; }
+.anahi-wildlife__copy .text-link { color: var(--sand); }
+
+.anahi-gallery .gallery-grid { grid-template-columns: repeat(12, 1fr); grid-template-rows: 24rem 18rem 24rem; }
+.anahi-gallery .gallery-item--1 { grid-column: span 5; }
+.anahi-gallery .gallery-item--2 { grid-column: span 7; }
+.anahi-gallery .gallery-item--3 { grid-column: span 4; }
+.anahi-gallery .gallery-item--4 { grid-column: span 4; }
+.anahi-gallery .gallery-item--5 { grid-column: span 4; }
+.anahi-gallery .gallery-item--6 { grid-column: 3 / span 7; }
+
+@media (max-width: 980px) {
+  .desktop-nav { gap: 1rem; }
+  .desktop-nav a { font-size: .63rem; }
+  .anahi-feature { grid-template-columns: 1fr; }
+  .anahi-feature__image { min-height: 21rem; }
+  .anahi-intro__grid { grid-template-columns: minmax(5rem, .2fr) 1fr; }
+  .anahi-intro__detail { grid-column: 2; padding-top: 0; }
+  .anahi-rhythm__heading { grid-template-columns: 1fr; gap: 0; }
+  .anahi-rhythm__heading h2 { max-width: 10ch; }
+  .anahi-cabins__grid { grid-template-columns: 1fr 1fr; }
+  .anahi-cabins__copy { grid-column: 1 / -1; padding: 0 0 2rem; }
+  .anahi-cabins__copy h2 { max-width: 10ch; }
+  .anahi-wildlife__grid { min-height: 0; grid-template-columns: 1fr; gap: 0; }
+  .anahi-wildlife__image { min-height: 30rem; }
+}
+
+@media (max-width: 760px) {
+  .anahi-feature { margin-bottom: 5rem; }
+  .anahi-feature__copy { padding: 2.4rem 1.4rem 2.7rem; }
+  .anahi-intro__grid { grid-template-columns: 1fr; gap: 2.1rem; }
+  .anahi-intro__index { flex-direction: row; align-items: end; gap: 1rem; }
+  .anahi-intro__index span { font-size: 4.8rem; }
+  .anahi-intro__lead h2 { max-width: 12ch; }
+  .anahi-intro__detail { grid-column: auto; }
+  .anahi-rhythm__grid { grid-template-columns: 1fr; }
+  .anahi-rhythm__grid article, .anahi-rhythm__grid article + article { min-height: 0; padding: 1.8rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .anahi-rhythm__grid article:last-child { border-bottom: 0; }
+  .anahi-rhythm__grid h3 { margin-top: 1.2rem; }
+  .anahi-cabins__grid { grid-template-columns: 1fr; }
+  .anahi-cabin { min-height: 24rem; }
+  .anahi-wildlife__image { min-height: 23rem; }
+  .anahi-wildlife__copy { padding: 4rem 0 0; }
+  .anahi-gallery .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 12rem); gap: .55rem; }
+  .anahi-gallery .gallery-item--1, .anahi-gallery .gallery-item--2, .anahi-gallery .gallery-item--3, .anahi-gallery .gallery-item--4, .anahi-gallery .gallery-item--5, .anahi-gallery .gallery-item--6 { grid-column: span 1; }
+  .anahi-gallery .gallery-item--2 { grid-row: span 2; }
+  .anahi-gallery .gallery-item--6 { grid-column: 1 / -1; }
+}
+
 /* Day details remain inside each card and expand in the normal page flow. */
 .program-day {
   display: block;
@@ -785,6 +898,8 @@ body[data-page="terms"] .site-header {
 
 @media (pointer: coarse) and (max-width: 760px) {
   [data-parallax-media] { transform: none; }
+  .journey-hero { height: 100svh; min-height: 600px; }
+  .journey-stage { position: relative; min-height: 600px; }
   .destination-tile:hover img, .gallery-item:hover img, .atlas-row:hover .atlas-row__image img { transform: none; filter: none; }
 }
 
@@ -902,3 +1017,10 @@ body[data-page="terms"] .site-header {
 .cruise-journey{background:#e8e9dc;color:#1d392b}.cruise-heading{max-width:58rem;margin-bottom:3rem}.cruise-heading h2{margin:1rem 0;font:400 clamp(3.5rem,7vw,7rem)/.92 var(--serif);letter-spacing:-.05em}.cruise-heading p,.cruise-program p{max-width:52ch;color:#465449;line-height:1.7}.cruise-program{max-width:56rem;margin-bottom:3.5rem;padding:2rem clamp(1.25rem,3vw,3rem);border:1px solid #b8c1b2;border-radius:1rem;background:rgba(255,253,248,.58)}.cruise-program h3{margin:.5rem 0 .8rem;font:400 clamp(1.8rem,3vw,3rem)/1 var(--serif)}.cruise-images-heading{margin-bottom:1rem}.gallery-grid--cruise{background:transparent}.gallery-grid--cruise .gallery-item{background:#fffdf8}
 @media(max-width:1050px){.destination-sequence{grid-template-columns:5rem 1fr 1fr}.destination-sequence__images{grid-column:2 / -1}.destination-sequence__gallery{grid-template-columns:repeat(3,1fr);grid-template-rows:12rem}.destination-sequence__gallery button:first-child{grid-row:auto}}
 @media(max-width:700px){.destination-sequence{grid-template-columns:3.5rem 1fr;gap:1rem 1.25rem;padding-block:3.5rem}.destination-sequence__number{font-size:3.5rem}.destination-sequence__destination,.destination-sequence__program,.destination-sequence__images{grid-column:2}.destination-sequence__gallery{grid-template-columns:1.2fr .8fr;grid-template-rows:8rem 8rem}.destination-sequence__gallery button:first-child{grid-row:span 2}}
+
+.lodge-quick-links{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:2rem}.lodge-quick-links a{display:inline-flex;align-items:center;gap:.6rem;min-height:2.8rem;padding:.6rem .9rem;border:1px solid #aab5a5;border-radius:999px;font-size:.76rem;font-weight:700}.lodge-quick-links .icon{width:1rem;height:1rem}.lodge-duration{margin:.8rem 0;color:#344036}.program-overview{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1.5rem;padding:0 0 1.3rem}.program-overview p{max-width:65ch;margin:0;color:#465449;line-height:1.6}.program-overview .text-link{font-size:.82rem}.galapagos-ways{margin-bottom:clamp(4rem,8vw,8rem)}.galapagos-ways>h2,.nono-stay-link h2{max-width:14ch;margin:1rem 0 2rem;font:400 clamp(2.8rem,5.5vw,5.5rem)/.98 var(--serif);letter-spacing:-.04em}.galapagos-ways__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}.galapagos-ways__grid a{display:flex;min-height:11rem;flex-direction:column;justify-content:space-between;gap:1.5rem;padding:1.4rem;border:1px solid #b8c1b2;border-radius:.85rem;background:rgba(255,253,248,.42);transition:background .2s ease,transform .2s ease}.galapagos-ways__grid a:hover{background:#fffdf8;transform:translateY(-2px)}.galapagos-ways__grid strong{font:400 clamp(1.6rem,2.3vw,2.5rem)/1 var(--serif)}.galapagos-ways__grid span{max-width:32ch;color:#465449;line-height:1.55}.program-overview a,.lodge-quick-links a,.galapagos-ways__grid a{touch-action:manipulation}.form-context{margin:0 0 1.5rem;padding:1rem 1.1rem;border-left:3px solid var(--olive);background:var(--ivory-deep);font-size:.9rem;font-weight:700}.form-whatsapp{display:inline-flex;align-items:center;gap:.7rem;min-height:3rem;margin-top:1rem;padding:.6rem 0;border-bottom:1px solid currentColor;color:var(--forest);font-size:.86rem;font-weight:700}.form-whatsapp .icon{width:1.2rem;height:1.2rem}.plan-aside a{min-height:2.75rem}
+.experience-index{background:#eae3d6}.experience-index__heading{display:grid;grid-template-columns:minmax(10rem,.55fr) 1.45fr;gap:2rem;align-items:end;margin-bottom:2.5rem}.experience-index__heading h2{max-width:14ch;margin:0;font:400 clamp(2.8rem,5.5vw,5.5rem)/.98 var(--serif);letter-spacing:-.04em}.experience-index__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(24,32,25,.2)}.experience-index__grid a{position:relative;display:flex;min-height:17rem;flex-direction:column;align-items:flex-start;gap:.75rem;padding:1.5rem 2.5rem 1.5rem 0;border-bottom:1px solid rgba(24,32,25,.2)}.experience-index__grid a+a{padding-left:1.5rem;border-left:1px solid rgba(24,32,25,.2)}.experience-index__grid a>span{color:var(--clay);font-size:.64rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.experience-index__grid h3{margin:.5rem 0 0;font:400 clamp(1.8rem,3vw,3rem)/1 var(--serif)}.experience-index__grid p{max-width:33ch;color:var(--ink-soft);line-height:1.6}.experience-index__grid .icon{position:absolute;right:1rem;bottom:1.35rem;width:1.1rem;height:1.1rem;transition:transform .2s ease}.experience-index__grid a:hover .icon{transform:translate(2px,-2px)}.experience-index__grid a:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+@media(max-width:700px){.program-overview{grid-template-columns:1fr;gap:.7rem}.galapagos-ways__grid{grid-template-columns:1fr}.galapagos-ways__grid a{min-height:8rem}.lodge-quick-links{align-items:stretch;flex-direction:column}.lodge-quick-links a{justify-content:space-between;min-height:3.25rem}.mobile-menu a span{max-width:55%;text-align:right;line-height:1.5;letter-spacing:.02em}.form-context{font-size:.82rem}}
+@media(max-width:760px){.plan-grid{grid-template-columns:minmax(0,1fr)}.plan-grid>* ,.trip-form,.destination-checks,.form-row,.form-row label,.check-card{min-width:0}.plan-aside{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.plan-aside>a{min-width:0}.plan-aside>a span,.aside-note span{min-width:0;overflow-wrap:anywhere}.check-card{grid-template-columns:1.3rem minmax(0,1fr)}.form-step{grid-template-columns:2.4rem minmax(0,1fr)}}
+@media(max-width:700px){.experience-index__heading{grid-template-columns:1fr;gap:.8rem}.experience-index__grid{grid-template-columns:1fr}.experience-index__grid a,.experience-index__grid a+a{min-height:12rem;padding:1.2rem .5rem 1.2rem 0;border-left:0}.experience-index__grid p{max-width:38ch}}
+@media(prefers-reduced-motion:reduce){.galapagos-ways__grid a{transition:none}}
