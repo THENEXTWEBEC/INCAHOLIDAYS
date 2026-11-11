@@ -739,7 +739,7 @@ const outputPages = [
   { key: "destinations", ...pages.destinations, main: destinationsPage("en"), mainEs: destinationsPage("es"), image: "/assets/images/hero-galapagos-1200.webp" },
   ...destinations.map(d => ({ key: `destination-${d.slug}`, path: `/destinations/${d.slug}/`, title: `${d.name} tailor-made journeys`, description: d.short, main: destinationPage(d), mainEs: destinationPage(d, "es"), image: `/assets/images/${d.hero.includes(".") ? d.hero : `${d.hero}-1200.webp`}` })),
   { key: "villa", ...pages.villa, main: villaPage(), image: "/assets/images/hero-villa-1200.webp" },
-  { key: "yacht", ...pages.yacht, main: yachtAnahiPage(), mainEs: yachtAnahiPage("es"), image: "/assets/images/yacht-anahi-exterior.png" },
+  ...(pages.yacht ? [{ key: "yacht", ...pages.yacht, main: yachtAnahiPage(), mainEs: yachtAnahiPage("es"), image: "/assets/images/yacht-anahi-exterior.png" }] : []),
   { key: "about", ...pages.about, main: aboutPage(), image: "/assets/images/about-local-connection.webp" },
   { key: "plan", ...pages.plan, main: planPage() },
   { key: "privacy", ...pages.privacy, main: privacyPage() },
