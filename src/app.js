@@ -35,6 +35,11 @@ menuToggle?.addEventListener("click", () => {
 
 mobileMenu?.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setMenu(false)));
 
+const languageSwitch = document.querySelector(".language-switch");
+if (languageSwitch && window.location.search && document.querySelector("[data-trip-form]")) {
+  languageSwitch.href += window.location.search;
+}
+
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && document.body.classList.contains("menu-open")) setMenu(false);
   if (event.key !== "Tab" || !document.body.classList.contains("menu-open")) return;
@@ -92,8 +97,6 @@ if (!reduceMotion && !window.matchMedia("(pointer: coarse) and (max-width: 760px
 
 const journey = document.querySelector("[data-journey-hero]");
 const landscapes = [...document.querySelectorAll("[data-landscape]")];
-const journeyCta = document.querySelector("[data-journey-cta]");
-const journeyCtaLabel = document.querySelector("[data-cta-label]");
 const routePath = document.querySelector(".journey-route path");
 const routeLabels = [...document.querySelectorAll(".journey-route span")];
 const sceneLabel = document.querySelector("[data-scene-label]");
@@ -103,9 +106,8 @@ const worldTrack = document.querySelector(".worlds-track");
 const worldProgress = document.querySelector(".worlds-progress span");
 const memory = document.querySelector(".memory-section");
 
-if (journey && !reduceMotion) {
+if (journey && !reduceMotion && !window.matchMedia("(pointer: coarse) and (max-width: 760px)").matches) {
   const sceneNames = isSpanish ? ["Chimborazo · 6.263 m", "Amazonía · Napo", "Costa · Chocó Andino", "Galápagos · Pacífico"] : ["Chimborazo · 6,263 m", "Amazon · Napo", "Coast · Chocó Andino", "Galápagos · Pacific"];
-  const labels = isSpanish ? ["Descubre Ecuador", "Diseña tu ruta", "Planifica tu viaje"] : ["Discover Ecuador", "Design your route", "Plan your trip"];
   let scheduled = false;
   const loadLandscape = index => {
     const image = landscapes[index]?.querySelector("img[data-src]");
@@ -137,7 +139,6 @@ if (journey && !reduceMotion) {
     });
     routePath?.style.setProperty("--route-draw", String(1200 * (1 - progress)));
     routeLabels.forEach((label, index) => label.style.setProperty("--route-opacity", progress > index * .23 + .08 ? "1" : "0"));
-    if (journeyCtaLabel) journeyCtaLabel.textContent = progress < .34 ? labels[0] : progress < .7 ? labels[1] : labels[2];
     if (sceneLabel) sceneLabel.textContent = sceneNames[scene];
     if (sceneCount) sceneCount.textContent = `0${scene + 1} / 04`;
     scheduled = false;
@@ -165,7 +166,7 @@ if (worlds && worldTrack && !reduceMotion && !window.matchMedia("(max-width: 760
   schedule();
 }
 
-if (!reduceMotion && memory) {
+if (!reduceMotion && memory && !window.matchMedia("(pointer: coarse) and (max-width: 760px)").matches) {
   let scheduled = false;
   const paintMemory = () => {
     const bounds = memory.getBoundingClientRect();
@@ -277,18 +278,43 @@ const form = document.querySelector("[data-trip-form]");
 if (form) {
   const params = new URLSearchParams(window.location.search);
   const requestedDestination = params.get("destination");
-  const destinationAliases = {
-    galapagos: "Galapagos",
-    andes: "Andes & Highlands",
-    amazon: "Amazon Rainforest",
-    nono: "Nono Cloud Forest",
-    "villa-doris": "Villa Doris"
-  };
-  if (requestedDestination && destinationAliases[requestedDestination]) {
-    const checkbox = [...form.querySelectorAll('input[name="destinations"]')]
-      .find(input => input.value === destinationAliases[requestedDestination]);
-    if (checkbox) checkbox.checked = true;
+  const lodge = params.get("lodge");
+  const program = params.get("program");
+  const experience = params.get("experience")?.replaceAll("Grand Océano Spray", "Grand Ocean Spray");
+  const lodgeNames = { huasquila: "Huasquila Amazon Lodge", "la-selva": "La Selva Eco-Lodge", sani: "Sani Lodge" };
+  const contextParts = [lodgeNames[lodge] || lodge, program, experience].filter(Boolean);
+  const context = contextParts.join(" · ");
+  const destinationInput = requestedDestination && form.querySelector(`input[name="destinations"][data-destination="${CSS.escape(requestedDestination)}"]`);
+  if (destinationInput) destinationInput.checked = true;
+  if (form.elements.trip_context && context) form.elements.trip_context.value = context;
+  const contextBanner = form.querySelector("[data-form-context]");
+  if (contextBanner && (requestedDestination || context)) {
+    const destinationLabel = destinationInput?.closest("label")?.querySelector("strong")?.textContent;
+    contextBanner.hidden = false;
+    contextBanner.textContent = [destinationLabel, ...contextParts].filter(Boolean).join(" · ");
   }
+  const preferredExperience = form.elements.experience;
+  if (preferredExperience && experience) {
+    const option = [...preferredExperience.options].find(item => item.value.toLowerCase() === experience.toLowerCase());
+    if (option) preferredExperience.value = option.value;
+  }
+  const whatsappLink = form.querySelector("[data-form-whatsapp]");
+  const refreshWhatsApp = () => {
+    if (!whatsappLink) return;
+    const data = new FormData(form);
+    const destinationNames = data.getAll("destinations").join(", ");
+    const message = [
+      isSpanish ? "Hola, Inca Holidays. Quisiera consultar sobre mi viaje." : "Hello Inca Holidays. I would like to ask about my trip.",
+      context ? `${isSpanish ? "Experiencia" : "Experience"}: ${context}` : "",
+      destinationNames ? `${isSpanish ? "Destino" : "Destination"}: ${destinationNames}` : "",
+      data.get("name") ? `${isSpanish ? "Nombre" : "Name"}: ${data.get("name")}` : "",
+      data.get("travelers") ? `${isSpanish ? "Viajeros" : "Travelers"}: ${data.get("travelers")}` : "",
+      data.get("start") ? `${isSpanish ? "Inicio aproximado" : "Approximate start"}: ${data.get("start")}` : "",
+      data.get("comments") ? `${isSpanish ? "Comentarios" : "Notes"}: ${data.get("comments")}` : ""
+    ].filter(Boolean).join("\n");
+    whatsappLink.href = `https://wa.me/593996189559?text=${encodeURIComponent(message)}`;
+  };
+  refreshWhatsApp();
 
   const clearError = field => {
     field.removeAttribute("aria-invalid");
@@ -303,8 +329,8 @@ if (form) {
   };
 
   form.querySelectorAll("input, select, textarea").forEach(field => {
-    field.addEventListener("input", () => clearError(field));
-    field.addEventListener("change", () => clearError(field));
+    field.addEventListener("input", () => { clearError(field); refreshWhatsApp(); });
+    field.addEventListener("change", () => { clearError(field); refreshWhatsApp(); });
   });
 
   form.addEventListener("submit", event => {
@@ -366,7 +392,7 @@ if (form) {
 
     if (form.elements.company_website?.value) {
       form.reset();
-      status.textContent = "Thank you. Your request has been prepared.";
+      status.textContent = "";
       return;
     }
 
@@ -387,6 +413,7 @@ if (form) {
       `WhatsApp: ${data.get("whatsapp")}`,
       `${isSpanish ? "Viajeros" : "Travelers"}: ${data.get("travelers")}`,
       `${isSpanish ? "Destinos" : "Destinations"}: ${selectedDestinations}`,
+      `${isSpanish ? "Experiencia seleccionada" : "Selected experience"}: ${data.get("trip_context") || data.get("experience") || (isSpanish ? "Por definir" : "To be decided")}`,
       `${isSpanish ? "Inicio aproximado" : "Approximate start"}: ${data.get("start")}`,
       `${isSpanish ? "Fin aproximado" : "Approximate end"}: ${data.get("end") || (isSpanish ? "Flexible" : "Flexible")}`,
       `${isSpanish ? "Experiencia preferida" : "Preferred experience"}: ${data.get("experience")}`,
@@ -401,7 +428,7 @@ if (form) {
     window.setTimeout(() => {
       submit.disabled = false;
       submitLabel.textContent = isSpanish ? "Preparar mi solicitud de viaje" : "Prepare my trip request";
-      status.className = "form-status is-success";
+      status.className = "form-status is-prepared";
       status.innerHTML = isSpanish ? `<strong>Tu solicitud está lista.</strong><br>Revísala y envíala desde tu aplicación de correo.<br><a href="${mailto}">Abrir el borrador de correo</a>` : `<strong>Your request is ready.</strong><br>Review and send it from your email application.<br><a href="${mailto}">Open the email draft</a>`;
       status.querySelector("a")?.focus();
     }, 450);
