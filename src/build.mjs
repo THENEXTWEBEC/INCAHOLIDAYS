@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { access, copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { execFile as execFileCallback } from "node:child_process";
 import { promisify } from "node:util";
 import { dirname, join } from "node:path";
@@ -71,6 +71,7 @@ const iconPaths = {
   people: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 2-7 6-7s6 3 6 7M15 6c3 0 5 2 5 5M16 14c3 0 5 2 5 6"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   close: '<path d="m6 6 12 12M18 6 6 18"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
   quote: '<path d="M7 10H4c0-4 2-6 6-7v2c-2 1-3 2-3 5v7H2v-7h5Zm12 0h-3c0-4 2-6 6-7v2c-2 1-3 2-3 5v7h-5v-7h5Z"/>'
 };
 
@@ -97,8 +98,7 @@ function nav(pageKey, locale = "es") {
       </a>
       <nav class="desktop-nav" aria-label="Primary navigation">
         <a href="${localizedPath("/destinations/", locale)}" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
-        <a href="${localizedPath("/yacht-anahi/", locale)}" ${pageKey === "yacht" ? 'aria-current="page"' : ""}>Yacht Anahi</a>
-        <a href="${localizedPath("/villa-doris/", locale)}" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
+        <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences</a>
         <a href="${localizedPath("/about/", locale)}" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
       </nav>
       <div class="header-actions"><a class="language-switch" href="__LANGUAGE_PATH__" aria-label="${locale === "es" ? "Switch to English" : "Cambiar a español"}">${locale === "es" ? "EN" : "ES"}</a><a class="header-cta" href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("arrow")}</a></div>
@@ -107,11 +107,10 @@ function nav(pageKey, locale = "es") {
       </button>
     </div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" data-mobile-menu>
-      <a href="${localizedPath("/", locale)}">Home <span>00</span></a>
-      <a href="${localizedPath("/destinations/", locale)}">Destinations <span>01–04</span></a>
-      <a href="${localizedPath("/yacht-anahi/", locale)}">Yacht Anahi <span>05</span></a>
-      <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris <span>06</span></a>
-      <a href="${localizedPath("/about/", locale)}">About <span>07</span></a>
+      <a href="${localizedPath("/", locale)}">Home</a>
+      <a href="${localizedPath("/destinations/", locale)}">Destinations <span>Galápagos · Andes · Amazon · Nono</span></a>
+      <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences <span>Lodges · cruises · stays</span></a>
+      <a href="${localizedPath("/about/", locale)}">About</a>
       <a href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("diagonal")}</a>
     </nav>
   </header>`;
@@ -135,6 +134,9 @@ function footer(locale = "es") {
         <h3>Explore</h3>
         ${destinations.map(d => `<a href="${localizedPath(`/destinations/${d.slug}/`, locale)}">${d.name}</a>`).join("")}
         <a href="${localizedPath("/yacht-anahi/", locale)}">Yacht Anahi</a>
+        <a href="${localizedPath("/yacht-endemic/", locale)}">Endemic</a>
+        <a href="${localizedPath("/naturalist-expedition/", locale)}">Naturalist Expedition</a>
+        <a href="${localizedPath("/darwins-steps/", locale)}">Darwin's Steps</a>
         <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris</a>
       </div>
       <div>
@@ -268,7 +270,7 @@ function homePage() {
         <div class="journey-image journey-image--coast" data-landscape="2">${picture("hero-nono", [1200,2200], "Green Ecuadorian cloud forest", {position:"50% 50%", deferred:true})}</div>
         <div class="journey-image journey-image--islands" data-landscape="3">${picture("hero-galapagos", [1200,2400], "Volcanic shores of Galápagos", {position:"50% 46%", deferred:true})}</div>
         <div class="journey-shade"></div><div class="journey-foreground" aria-hidden="true"></div>
-        <div class="journey-copy shell"><span class="eyebrow light">A medida · Ecuador y Galápagos</span><h1><span>Travel</span> <span>deeper</span><em>into Ecuador.</em></h1><p>Cultural encounters, soft adventure and considered routes for independent travelers and small groups.</p><div class="journey-actions"><a class="button button--light compass-cta" href="/plan-your-trip/" data-journey-cta><span data-cta-label>Discover Ecuador</span>${icon("compass")}</a><a class="text-link light" href="#worlds">Explore destinations ${icon("diagonal")}</a></div></div>
+        <div class="journey-copy shell"><span class="eyebrow light">A medida · Ecuador y Galápagos</span><h1><span>Travel</span> <span>deeper</span><em>into Ecuador.</em></h1><p>Cultural encounters, soft adventure and considered routes for independent travelers and small groups.</p><div class="journey-actions"><a class="button button--light compass-cta" href="/destinations/" data-journey-cta><span data-cta-label>Explore destinations</span>${icon("compass")}</a><a class="text-link light" href="/plan-your-trip/">Plan your trip ${icon("diagonal")}</a></div></div>
         <div class="journey-route" aria-hidden="true"><svg viewBox="0 0 1000 150" preserveAspectRatio="none"><path d="M0 118 C120 118 112 44 250 64 S390 139 500 78 650 26 742 80 890 129 1000 26"/></svg><span>Altitude</span><span>Culture</span><span>Nature</span><span>Ocean</span></div>
         <div class="journey-caption"><span data-scene-label>Chimborazo · 6,263 m</span><span data-scene-count>01 / 04</span></div>
       </div>
@@ -284,6 +286,7 @@ function homePage() {
 }
 
 function destinationsPage(locale = "en") {
+  const es = locale === "es";
   return `<main id="main">
     ${pageHero({ eyebrow: "Ecuador in four directions", title: "One country. Four worlds.", copy: "Islands, highlands, rainforest and cloud forest, shaped into your journey.", hero: "hero-galapagos", widths: [1200,2400], position: "50% 44%", alt: "Giant tortoise in the Galapagos highlands", credit: "Hero photograph: Bjarn Bronsveld / Unsplash" })}
     <section class="atlas-section section" id="story">
@@ -299,6 +302,7 @@ function destinationsPage(locale = "en") {
         </article>`).join("")}
       </div>
     </section>
+    <section class="experience-index section" id="experiences"><div class="shell"><div class="experience-index__heading"><span class="eyebrow">${es ? "Experiencias" : "Experiences"}</span><h2>${es ? "Elige una forma de viajar." : "Choose how you want to travel."}</h2></div><div class="experience-index__grid"><a href="${localizedPath("/destinations/amazon/#lodges", locale)}"><span>${es ? "Amazonía" : "Amazon"}</span><h3>${es ? "Lodges de selva" : "Rainforest lodges"}</h3><p>${es ? "Compara Huasquila, La Selva y Sani antes de abrir sus programas." : "Compare Huasquila, La Selva and Sani before opening their programs."}</p>${icon("diagonal")}</a><a href="${localizedPath("/destinations/galapagos/#cruises", locale)}"><span>${es ? "Galápagos" : "Galapagos"}</span><h3>${es ? "Cruceros y navegación" : "Cruises and sailing"}</h3><p>${es ? "Explora Yacht Anahi, Grand Ocean Spray y otras formas de descubrir las islas." : "Explore Yacht Anahi, Grand Ocean Spray and other ways to discover the islands."}</p>${icon("diagonal")}</a><a href="${localizedPath("/villa-doris/", locale)}"><span>${es ? "Nono" : "Nono"}</span><h3>Villa Doris</h3><p>${es ? "Conoce la casa, sus habitaciones, jardines y estancia en el bosque nublado." : "Explore the house, rooms, gardens and stay in the cloud forest."}</p>${icon("diagonal")}</a></div></div></section>
     ${finalCta("Combine regions", "Let Ecuador unfold one landscape at a time.")}
   </main>`;
 }
@@ -322,7 +326,7 @@ function amazonLodges(locale = "en") {
   lodges.forEach(lodge => {
     lodge.programs = lodge.programs.map(([title, days], index) => [title, days, itineraryDays(locale, sourceHeadings[lodge.prefix][index], days.length)]);
   });
-  return `<section class="lodge-journey section"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "La Amazonía, a tu ritmo." : "Your Amazon, your rhythm."}</h2><p>${es ? "Cada lodge reúne su programa y sus imágenes en un solo bloque." : "Each lodge brings its program and images together in one clear block."}</p></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p></div></div><div class="lodge-programs"><span class="lodge-section-label">${es ? "Programas" : "Programs"}</span>${l.programs.map(([title,days,details])=>`<details><summary>${title}${icon("plus")}</summary><ol>${days.map((day,n)=>`<li class="program-day"><div class="program-day__summary"><div><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${details?.[n] || day}</p></div></details></div></li>`).join("")}</ol></details>`).join("")}</div><div class="lodge-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.${l.formats?.[n] || l.ext || "webp"}" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
+  return `<section class="lodge-journey section" id="lodges"><div class="shell"><div class="lodge-intro"><span class="eyebrow">${es ? "Tres maneras de entrar en la selva" : "Three ways into the rainforest"}</span><h2>${es ? "La Amazonía, a tu ritmo." : "Your Amazon, your rhythm."}</h2><p>${es ? "Compara los tres lodges por su ubicación, actividades y duración antes de explorar cada itinerario." : "Compare the three lodges by setting, activities and duration before opening each itinerary."}</p><nav class="lodge-quick-links" aria-label="${es ? "Explorar lodges" : "Explore lodges"}">${lodges.map(l => `<a href="#${l.prefix}">${l.name} ${icon("diagonal")}</a>`).join("")}</nav></div>${lodges.map((l,i)=>`<article class="lodge" id="${l.prefix}"><div class="lodge-heading"><span class="lodge-number">0${i+1}</span><div><span class="eyebrow">${l.tag}</span><h3>${l.name}</h3><p>${l.intro}</p><p class="lodge-duration"><strong>${es ? "Duraciones disponibles:" : "Available durations:"}</strong> ${[...new Set(l.programs.map(([title]) => title.replace(/^.*?·\s*/, "")))].join(" · ")}</p><a class="text-link" href="#${l.prefix}-programs">${es ? "Explorar programas" : "Explore programs"} ${icon("arrow")}</a></div></div><div class="lodge-programs" id="${l.prefix}-programs"><span class="lodge-section-label">${es ? "Programas e itinerarios" : "Programs & itineraries"}</span>${l.programs.map(([title,days,details],p)=>`<details class="lodge-program"><summary>${title}${icon("plus")}</summary><div class="program-overview"><p>${days.slice(0,2).join(" ")}</p><a class="text-link" href="/plan-your-trip/?destination=amazon&lodge=${encodeURIComponent(l.prefix)}&program=${encodeURIComponent(title)}">${es ? "Consultar este programa" : "Ask about this program"} ${icon("arrow")}</a></div><ol>${days.map((day,n)=>`<li class="program-day"><div class="program-day__summary"><div><strong>${es ? "Día" : "Day"} ${n+1}</strong><p>${day}</p></div><details class="program-day__detail"><summary class="program-day__toggle" aria-label="${es ? "Abrir detalle del día" : "Open day details"}"><svg class="icon program-day__right" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg><svg class="icon program-day__down" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4"/></svg><span class="sr-only">${es ? "Ver información completa" : "View full information"}</span></summary><div class="program-day__copy"><p>${details?.[n] || day}</p></div></details></div></li>`).join("")}</ol></details>`).join("")}</div><div class="lodge-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span><p class="lodge-hint">${es ? "Desliza para explorar las fotografías" : "Swipe to explore the photographs"} ${icon("arrow")}</p></div><div class="lodge-gallery" tabindex="0" aria-label="${es ? "Fotografías de" : "Photographs of"} ${l.name}">${Array.from({length:l.photos},(_,n)=>`<figure><img src="/assets/images/${l.prefix}-${n+1}.${l.formats?.[n] || l.ext || "webp"}" alt="${l.name} — ${es ? "fotografía" : "photograph"} ${n+1}" loading="lazy" decoding="async"><figcaption>${l.name} <span>${String(n+1).padStart(2,"0")} / ${String(l.photos).padStart(2,"0")}</span></figcaption></figure>`).join("")}</div><a class="text-link" href="/plan-your-trip/?destination=amazon&lodge=${encodeURIComponent(l.prefix)}">${es ? "Consulta por este lodge" : "Ask about this lodge"} ${icon("arrow")}</a></article>`).join("")}</div></section>`;
 }
 
 function galapagosCruise(locale = "en") {
@@ -335,7 +339,7 @@ function galapagosCruise(locale = "en") {
     ["grand-ocean-spray-dining.jpg", es ? "Comedor del Grand Ocean Spray" : "Grand Ocean Spray dining room"],
     ["grand-ocean-spray-stern.jpg", es ? "Popa del Grand Ocean Spray" : "Grand Ocean Spray stern"]
   ];
-  return `<section class="cruise-journey section"><div class="shell"><a class="anahi-feature reveal" href="${localizedPath("/yacht-anahi/", locale)}"><div class="anahi-feature__image"><img src="/assets/images/yacht-anahi-exterior.jpg" alt="${es ? "Yacht Anahi navegando por Galápagos" : "Yacht Anahi sailing through the Galápagos"}" loading="lazy" decoding="async"></div><div class="anahi-feature__copy"><span class="eyebrow">${es ? "A bordo · nuevo" : "On board · featured"}</span><h2>Yacht Anahi</h2><p>${es ? "Una forma cercana y luminosa de vivir las islas: fauna, costas volcánicas y noches tranquilas sobre el Pacífico." : "A close, light-filled way to experience the islands: wildlife, volcanic shores and quiet nights on the Pacific."}</p><span class="text-link">${es ? "Conocer el yate" : "Discover the yacht"} ${icon("arrow")}</span></div></a><div class="cruise-heading"><span class="eyebrow">${es ? "Programa · Galápagos" : "Program · Galápagos"}</span><h2>Grand Ocean Spray</h2><p>${es ? "Un catamarán de última generación para recorrer las islas con comodidad, privacidad y sofisticación." : "A state-of-the-art catamaran for exploring the islands with comfort, privacy and sophistication."}</p></div><div class="cruise-program"><span class="lodge-section-label">${es ? "Itinerario" : "Itinerary"}</span><h3>${es ? "Cruceros de 3, 4 o 7 noches" : "3-, 4- or 7-night cruises"}</h3><p>${es ? "Los itinerarios dependen de las fechas de salida, disponibilidad y condiciones meteorológicas. Consulta las opciones para tus fechas." : "Itineraries depend on departure dates, availability and weather conditions. Ask about the options for your dates."}</p><a class="text-link" href="/plan-your-trip/?destination=galapagos">${es ? "Consultar disponibilidad" : "Check availability"} ${icon("arrow")}</a></div><div class="cruise-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span></div>${gallery(images, "cruise")}</div></section>`;
+  return `<section class="cruise-journey section" id="cruises"><div class="shell"><div class="galapagos-ways"><span class="eyebrow">${es ? "Formas de explorar" : "Ways to explore"}</span><h2>${es ? "Elige cómo vivir las islas." : "Choose how to experience the islands."}</h2><div class="galapagos-ways__grid"><a href="#cruises-options"><strong>${es ? "Cruceros" : "Cruises"}</strong><span>${es ? "Navega entre islas a bordo de un yate." : "Travel between islands aboard a yacht."}</span></a><a href="/darwins-steps/"><strong>${es ? "Rutas terrestres" : "Land-based journeys"}</strong><span>${es ? "Explora con base en Santa Cruz y excursiones de día." : "Explore from a Santa Cruz base with day excursions."}</span></a><a href="/plan-your-trip/?destination=galapagos&experience=tailor-made"><strong>${es ? "A medida" : "Tailor-made"}</strong><span>${es ? "Diseña un recorrido según tus fechas e intereses." : "Shape a journey around your dates and interests."}</span></a></div></div><div id="cruises-options"><a class="anahi-feature reveal" href="${localizedPath("/yacht-anahi/", locale)}"><div class="anahi-feature__image"><img src="/assets/images/yacht-anahi-exterior.jpg" alt="${es ? "Yacht Anahi navegando por Galápagos" : "Yacht Anahi sailing through the Galápagos"}" loading="lazy" decoding="async"></div><div class="anahi-feature__copy"><span class="eyebrow">${es ? "Crucero · Yacht Anahi" : "Cruise · Yacht Anahi"}</span><h2>Yacht Anahi</h2><p>${es ? "Explora el yate y su experiencia en su página dedicada." : "Explore the yacht and its experience on its dedicated page."}</p><span class="text-link">${es ? "Conocer el yate" : "Discover the yacht"} ${icon("arrow")}</span></div></a></div><div class="cruise-heading"><span class="eyebrow">${es ? "Crucero · Galápagos" : "Cruise · Galápagos"}</span><h2>Grand Ocean Spray</h2><p>${es ? "Un catamarán de última generación para recorrer las islas con comodidad, privacidad y sofisticación." : "A state-of-the-art catamaran for exploring the islands with comfort, privacy and sophistication."}</p></div><div class="cruise-program"><span class="lodge-section-label">${es ? "Itinerario" : "Itinerary"}</span><h3>${es ? "Cruceros de 3, 4 o 7 noches" : "3-, 4- or 7-night cruises"}</h3><p>${es ? "Los itinerarios dependen de las fechas de salida, disponibilidad y condiciones meteorológicas. Consulta las opciones para tus fechas." : "Itineraries depend on departure dates, availability and weather conditions. Ask about the options for your dates."}</p><a class="text-link" href="/plan-your-trip/?destination=galapagos&experience=Grand%20Ocean%20Spray">${es ? "Consultar disponibilidad" : "Check availability"} ${icon("arrow")}</a></div><div class="cruise-images-heading"><span class="lodge-section-label">${es ? "Imágenes" : "Images"}</span></div>${gallery(images, "cruise")}</div></section>`;
 }
 
 function yachtAnahiPage(locale = "en") {
@@ -350,27 +354,114 @@ function yachtAnahiPage(locale = "en") {
   ];
   return `<main id="main">
     ${pageHero({ eyebrow: es ? "Galápagos · Yacht Anahi" : "Galápagos · Yacht Anahi", title: es ? "Las islas, a tu ritmo." : "The islands, at your pace.", copy: es ? "Descubre la fauna, las costas volcánicas y el silencio del Pacífico desde una base cómoda sobre el agua." : "Discover wildlife, volcanic shores and the quiet of the Pacific from a comfortable base on the water.", hero: "yacht-anahi-exterior.jpg", widths: [], position: "50% 52%", alt: es ? "Yacht Anahi navegando por las islas Galápagos" : "Yacht Anahi sailing through the Galápagos" })}
-    <section class="anahi-intro section" id="story"><div class="shell anahi-intro__grid"><div class="anahi-intro__index"><span>05</span><small>${es ? "Una forma distinta de navegar" : "A different way to sail"}</small></div><div class="anahi-intro__lead"><span class="eyebrow">${es ? "El viaje" : "The journey"}</span><h2>${es ? "Cada día abre una nueva orilla." : "Every day opens onto a new shore."}</h2></div><div class="anahi-intro__detail"><p>${es ? "Yacht Anahi combina la libertad de moverse entre islas con la calma de tener siempre un lugar propio al que regresar. Baja a tierra para encontrarte con la vida silvestre y vuelve al barco para mirar el horizonte." : "Yacht Anahi combines the freedom of moving between islands with the ease of having a place of your own to return to. Step ashore for wildlife encounters, then come back on board to watch the horizon."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Consultar un itinerario" : "Ask about an itinerary"} ${icon("arrow")}</a></div></div></section>
+    <section class="anahi-intro section" id="story"><div class="shell anahi-intro__grid"><div class="anahi-intro__index"><span>05</span><small>${es ? "Una forma distinta de navegar" : "A different way to sail"}</small></div><div class="anahi-intro__lead"><span class="eyebrow">${es ? "El viaje" : "The journey"}</span><h2>${es ? "Cada día abre una nueva orilla." : "Every day opens onto a new shore."}</h2></div><div class="anahi-intro__detail"><p>${es ? "Yacht Anahi combina la libertad de moverse entre islas con la calma de tener siempre un lugar propio al que regresar. Baja a tierra para encontrarte con la vida silvestre y vuelve al barco para mirar el horizonte." : "Yacht Anahi combines the freedom of moving between islands with the ease of having a place of your own to return to. Step ashore for wildlife encounters, then come back on board to watch the horizon."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos&amp;experience=Yacht%20Anahi">${es ? "Consultar Yacht Anahi" : "Ask about Yacht Anahi"} ${icon("arrow")}</a></div></div></section>
     <section class="anahi-rhythm section section--muted"><div class="shell"><div class="section-heading anahi-rhythm__heading"><span class="eyebrow">${es ? "El ritmo a bordo" : "Life on board"}</span><h2>${es ? "Comodidad para mirar más lejos." : "Comfort that lets you look farther."}</h2></div><div class="anahi-rhythm__grid"><article><span>01</span><h3>${es ? "Días de fauna" : "Wildlife-led days"}</h3><p>${es ? "Piqueros, lobos marinos, iguanas marinas y aves únicas aparecen en las islas y junto a la costa." : "Boobies, sea lions, marine iguanas and singular birdlife appear on the islands and along the coast."}</p></article><article><span>02</span><h3>${es ? "Noches tranquilas" : "Quiet nights"}</h3><p>${es ? "Después de una jornada de exploración, regresa a una cabina fresca, luminosa y hecha para descansar." : "After a day of exploring, return to a cool, light-filled cabin made for resting."}</p></article><article><span>03</span><h3>${es ? "Isla por isla" : "Island by island"}</h3><p>${es ? "La ruta cambia con el paisaje: playas blancas, roca volcánica, bahías azules y horizontes abiertos." : "The route changes with the landscape: white beaches, volcanic rock, blue bays and open horizons."}</p></article></div></div></section>
-    <section class="anahi-cabins section"><div class="shell anahi-cabins__grid"><div class="anahi-cabins__copy"><span class="eyebrow">${es ? "El espacio" : "The space"}</span><h2>${es ? "Un lugar al que da gusto volver." : "A place you will want to return to."}</h2><p>${es ? "Las cabinas combinan líneas limpias, luz natural y detalles suaves para que el descanso también forme parte de la expedición." : "The cabins pair clean lines, natural light and quiet details, making rest part of the expedition too."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Planificar Galápagos" : "Plan the Galápagos"} ${icon("arrow")}</a></div><figure class="anahi-cabin anahi-cabin--twin reveal"><img src="/assets/images/yacht-anahi-double-cabin.png" alt="${es ? "Cabina twin convertible de Yacht Anahi" : "Yacht Anahi convertible twin cabin"}" loading="lazy" decoding="async"><figcaption>${es ? "Cabina convertible twin" : "Convertible twin cabin"}</figcaption></figure><figure class="anahi-cabin anahi-cabin--suite reveal"><img src="/assets/images/yacht-anahi-triple-suite.png" alt="${es ? "Suite triple de Yacht Anahi" : "Yacht Anahi triple suite"}" loading="lazy" decoding="async"><figcaption>${es ? "Suite triple" : "Triple suite"}</figcaption></figure></div></section>
+    <section class="anahi-cabins section"><div class="shell anahi-cabins__grid"><div class="anahi-cabins__copy"><span class="eyebrow">${es ? "El espacio" : "The space"}</span><h2>${es ? "Un lugar al que da gusto volver." : "A place you will want to return to."}</h2><p>${es ? "Las cabinas combinan líneas limpias, luz natural y detalles suaves para que el descanso también forme parte de la expedición." : "The cabins pair clean lines, natural light and quiet details, making rest part of the expedition too."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos&amp;experience=Yacht%20Anahi">${es ? "Consultar Yacht Anahi" : "Ask about Yacht Anahi"} ${icon("arrow")}</a></div><figure class="anahi-cabin anahi-cabin--twin reveal"><img src="/assets/images/yacht-anahi-double-cabin.png" alt="${es ? "Cabina twin convertible de Yacht Anahi" : "Yacht Anahi convertible twin cabin"}" loading="lazy" decoding="async"><figcaption>${es ? "Cabina convertible twin" : "Convertible twin cabin"}</figcaption></figure><figure class="anahi-cabin anahi-cabin--suite reveal"><img src="/assets/images/yacht-anahi-triple-suite.png" alt="${es ? "Suite triple de Yacht Anahi" : "Yacht Anahi triple suite"}" loading="lazy" decoding="async"><figcaption>${es ? "Suite triple" : "Triple suite"}</figcaption></figure></div></section>
     <section class="anahi-wildlife section section--deep"><div class="shell anahi-wildlife__grid"><figure class="anahi-wildlife__image reveal"><img src="/assets/images/yacht-anahi-marine-iguana.jpg" alt="${es ? "Iguana marina de Galápagos sobre una roca" : "Galápagos marine iguana resting on rock"}" loading="lazy" decoding="async"></figure><div class="anahi-wildlife__copy"><span class="eyebrow light">${es ? "La vida silvestre" : "The wildlife"}</span><h2>${es ? "La naturaleza no está lejos." : "Nature is never far away."}</h2><p>${es ? "En Galápagos, el encuentro comienza antes de llegar a tierra: una silueta en el agua, unas alas sobre la cubierta, una iguana quieta sobre la lava." : "In the Galápagos, the encounter begins before you reach shore: a shape in the water, wings above the deck, an iguana still on the lava."}</p><a class="text-link light" href="${localizedPath("/destinations/galapagos/", locale)}">${es ? "Explorar Galápagos" : "Explore the Galápagos"} ${icon("diagonal")}</a></div></div></section>
     <section class="gallery-section section anahi-gallery" aria-label="${es ? "Galería de Yacht Anahi y Galápagos" : "Yacht Anahi and Galápagos gallery"}"><div class="shell section-heading"><span class="eyebrow reveal">${es ? "En tierra y en el agua" : "On shore and at sea"}</span><h2 class="reveal">${es ? "Mira más de cerca." : "Look closer."}</h2></div><div class="shell">${gallery(galleryItems, "anahi")}</div></section>
     ${finalCta(es ? "Tu viaje a Galápagos" : "Your Galápagos journey", es ? "Deja que las islas marquen el ritmo." : "Let the islands set the pace.")}
   </main>`;
 }
 
+function endemicFeature(locale = "en") {
+  const es = locale === "es";
+  return `<a class="anahi-feature endemic-feature reveal" href="${localizedPath("/yacht-endemic/", locale)}"><div class="anahi-feature__image"><img src="/assets/images/endemic-exterior.jpg" alt="${es ? "Endemic navegando al atardecer por Galápagos" : "Endemic sailing through the Galápagos at sunset"}" loading="lazy" decoding="async"></div><div class="anahi-feature__copy"><span class="eyebrow">${es ? "A bordo · Endemic" : "On board · Endemic"}</span><h2>Endemic</h2><p>${es ? "Suites luminosas, espacios abiertos y aventuras en el agua para vivir Galápagos con una sensación de calma y descubrimiento." : "Light-filled suites, open-air spaces and adventures on the water for a calm, discovery-led Galápagos experience."}</p><span class="text-link">${es ? "Ver Endemic" : "Explore Endemic"} ${icon("arrow")}</span></div></a>`;
+}
+
+function endemicYachtPage(locale = "en") {
+  const es = locale === "es";
+  const galleryItems = [
+    ["endemic-kayak.jpg", es ? "Kayak junto a la costa volcánica de Galápagos" : "Kayaking beside the volcanic Galápagos coast"],
+    ["endemic-jacuzzi.jpg", es ? "Jacuzzi y cubierta exterior de Endemic" : "Endemic jacuzzi and open-air deck"],
+    ["endemic-sky.jpg", es ? "Cubierta y horizonte abierto de Endemic" : "Endemic deck beneath an open horizon"],
+    ["endemic-lounge.jpg", es ? "Sala de estar de Endemic" : "Endemic lounge"],
+    ["endemic-dinner.jpg", es ? "Comedor de Endemic frente al mar" : "Endemic dining room overlooking the sea"],
+    ["endemic-golden-suite-6.jpg", es ? "Golden Suite de Endemic" : "Endemic Golden Suite"]
+  ];
+  return `<main id="main">
+    ${pageHero({ eyebrow: es ? "Galápagos · Endemic" : "Galápagos · Endemic", title: es ? "Lujo que sigue al horizonte." : "Luxury that follows the horizon.", copy: es ? "Una experiencia de expedición elegante, con suites frente al mar, cubierta abierta y días para explorar las islas." : "An elegant expedition experience, with sea-facing suites, open-air decks and days shaped by the islands.", hero: "endemic-exterior.jpg", widths: [], position: "50% 52%", alt: es ? "Yacht Endemic navegando por Galápagos al atardecer" : "Endemic yacht sailing through the Galápagos at sunset" })}
+    <section class="anahi-intro section" id="story"><div class="shell anahi-intro__grid"><div class="anahi-intro__index"><span>06</span><small>${es ? "Una expedición con calma" : "An expedition at ease"}</small></div><div class="anahi-intro__lead"><span class="eyebrow">${es ? "La experiencia" : "The experience"}</span><h2>${es ? "El mar abre la puerta." : "The sea opens the door."}</h2></div><div class="anahi-intro__detail"><p>${es ? "Endemic combina el espíritu de una expedición con una atmósfera íntima y contemporánea. Cada día invita a salir al agua, caminar entre lava antigua y volver a una suite con el océano enmarcado en la ventana." : "Endemic pairs the spirit of an expedition with an intimate, contemporary atmosphere. Each day invites you onto the water, across ancient lava and back to a suite with the ocean framed in the window."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Consultar Endemic" : "Ask about Endemic"} ${icon("arrow")}</a></div></div></section>
+    <section class="anahi-rhythm section section--muted"><div class="shell"><div class="section-heading anahi-rhythm__heading"><span class="eyebrow">${es ? "A bordo" : "On board"}</span><h2>${es ? "Cada detalle mira hacia afuera." : "Every detail looks outward."}</h2></div><div class="anahi-rhythm__grid"><article><span>01</span><h3>${es ? "Golden Suites" : "Golden Suites"}</h3><p>${es ? "Habitaciones luminosas, materiales naturales y vistas que mantienen el paisaje cerca incluso durante el descanso." : "Light-filled rooms, natural materials and views that keep the landscape close, even while you rest."}</p></article><article><span>02</span><h3>${es ? "Aventura activa" : "Active adventure"}</h3><p>${es ? "Kayak, desembarcos y recorridos que ponen la geografía de Galápagos en el centro del día." : "Kayaking, landings and excursions that place the geography of the Galápagos at the center of the day."}</p></article><article><span>03</span><h3>${es ? "Tiempo para quedarse" : "Time to linger"}</h3><p>${es ? "Jacuzzi, lounge y cubierta abierta para dejar que el océano marque el ritmo entre una experiencia y la siguiente." : "Jacuzzi, lounge and open-air decks for letting the ocean set the rhythm between experiences."}</p></article></div></div></section>
+    <section class="anahi-cabins section"><div class="shell anahi-cabins__grid"><div class="anahi-cabins__copy"><span class="eyebrow">${es ? "El alojamiento" : "The accommodation"}</span><h2>${es ? "Una suite con el mar dentro." : "A suite with the sea inside."}</h2><p>${es ? "Las Golden Suites están diseñadas para que la luz, el agua y la sensación de amplitud acompañen cada noche del viaje." : "Golden Suites are designed so light, water and a sense of space accompany every night of the journey."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Planificar Galápagos" : "Plan the Galápagos"} ${icon("arrow")}</a></div><figure class="anahi-cabin anahi-cabin--twin reveal"><img src="/assets/images/endemic-golden-suite-10.jpg" alt="${es ? "Golden Suite de Endemic con vistas al mar" : "Endemic Golden Suite with ocean views"}" loading="lazy" decoding="async"><figcaption>Golden Suite</figcaption></figure><figure class="anahi-cabin anahi-cabin--suite reveal"><img src="/assets/images/endemic-golden-suite-6.jpg" alt="${es ? "Segunda vista de una Golden Suite de Endemic" : "Endemic Golden Suite interior"}" loading="lazy" decoding="async"><figcaption>${es ? "Suite frente al mar" : "Sea-facing suite"}</figcaption></figure></div></section>
+    <section class="anahi-wildlife section section--deep"><div class="shell anahi-wildlife__grid"><figure class="anahi-wildlife__image reveal"><img src="/assets/images/endemic-kayak.jpg" alt="${es ? "Viajeros en kayak junto a una costa volcánica de Galápagos" : "Travelers kayaking beside a volcanic Galápagos coast"}" loading="lazy" decoding="async"></figure><div class="anahi-wildlife__copy"><span class="eyebrow light">${es ? "La aventura" : "The adventure"}</span><h2>${es ? "El océano también es un sendero." : "The ocean is a trail too."}</h2><p>${es ? "Remar junto a la lava, cruzar una bahía tranquila y ver cómo la vida marina aparece a pocos metros: Endemic acerca la expedición al agua." : "Paddle beside lava, cross a quiet bay and watch marine life appear just metres away: Endemic brings the expedition close to the water."}</p><a class="text-link light" href="${localizedPath("/destinations/galapagos/", locale)}">${es ? "Explorar Galápagos" : "Explore the Galápagos"} ${icon("diagonal")}</a></div></div></section>
+    <section class="gallery-section section anahi-gallery" aria-label="${es ? "Galería de Endemic" : "Endemic gallery"}"><div class="shell section-heading"><span class="eyebrow reveal">${es ? "El yate por dentro y por fuera" : "Inside and out"}</span><h2 class="reveal">${es ? "Mira más de cerca." : "Look closer."}</h2></div><div class="shell">${gallery(galleryItems, "anahi")}</div></section>
+    ${finalCta(es ? "Tu viaje a Galápagos" : "Your Galápagos journey", es ? "Deja que Endemic te acerque a las islas." : "Let Endemic bring you closer to the islands.")}
+  </main>`;
+}
+
+function landFeature(locale, kind, title, image, eyebrow, copy, label) {
+  const es = locale === "es";
+  const path = kind === "naturalist" ? "/naturalist-expedition/" : "/darwins-steps/";
+  return `<a class="anahi-feature endemic-feature land-feature land-feature--${kind} reveal" href="${localizedPath(path, locale)}"><div class="anahi-feature__image"><img src="/assets/images/${image}" alt="${escapeHtml(es ? label.esAlt : label.enAlt)}" loading="lazy" decoding="async"></div><div class="anahi-feature__copy"><span class="eyebrow">${es ? eyebrow.es : eyebrow.en}</span><h2>${title}</h2><p>${es ? copy.es : copy.en}</p><span class="text-link">${es ? label.es : label.en} ${icon("arrow")}</span></div></a>`;
+}
+
+function naturalistFeature(locale = "en") {
+  return landFeature(locale, "naturalist", "Naturalist Expedition", "naturalist-bahia-landscape.jpg", { en: "Land-based · wildlife-led", es: "Terrestre · fauna y paisaje" }, { en: "Volcanic shores, wildlife encounters and guided island days connected by time on the water.", es: "Costas volcánicas, encuentros con fauna y días guiados en las islas, unidos por el tiempo sobre el agua." }, { en: "Explore the expedition", es: "Ver la expedición", enAlt: "Volcanic bay and beach in the Galapagos", esAlt: "Bahía volcánica y playa en Galápagos" });
+}
+
+function darwinsStepsFeature(locale = "en") {
+  return landFeature(locale, "darwins", "Darwin's Steps", "darwins-steps-walk.jpg", { en: "Santa Cruz base · land tour", es: "Base en Santa Cruz · tour terrestre" }, { en: "A wildlife-rich Galapagos tour based on Santa Cruz, with guided day excursions and a comfortable room to return to.", es: "Un tour de Galápagos con base en Santa Cruz, excursiones guiadas de día y una habitación cómoda a la que volver." }, { en: "Discover Darwin's Steps", es: "Descubrir Darwin's Steps", enAlt: "Travelers hiking on a Galapagos island from Santa Cruz", esAlt: "Viajeros caminando por una isla de Galápagos desde Santa Cruz" });
+}
+
+function naturalistExpeditionPage(locale = "en") {
+  const es = locale === "es";
+  const galleryItems = [
+    ["naturalist-landing.jpg", es ? "Desembarco guiado en la costa de Galápagos" : "Guided landing on the Galapagos coast"],
+    ["naturalist-turtle.jpg", es ? "Tortuga marina bajo el agua" : "Green sea turtle underwater"],
+    ["naturalist-flamingo.jpg", es ? "Flamenco de Galápagos en aguas poco profundas" : "Galapagos flamingo in shallow water"],
+    ["naturalist-lava-arches.jpg", es ? "Arcos de lava y cactus sobre el mar" : "Lava arches and cacti above the sea"],
+    ["naturalist-booby.jpg", es ? "Piquero de patas azules sobre la lava" : "Blue-footed booby on volcanic ground"],
+    ["naturalist-hiking.jpg", es ? "Caminata por un paisaje volcánico" : "Hiking through a volcanic landscape"],
+    ["naturalist-boat.jpg", es ? "Lancha de apoyo navegando entre islas" : "Day boat moving between islands"]
+  ];
+  return `<main id="main">
+    ${pageHero({ eyebrow: es ? "Galápagos · expedición naturalista" : "Galápagos · Naturalist Expedition", title: es ? "Las islas, de cerca." : "The islands, up close.", copy: es ? "Días de exploración guiada, fauna única y paisajes volcánicos, con el océano como parte del camino." : "Guided days of wildlife, volcanic landscapes and close encounters, with the ocean as part of the route.", hero: "naturalist-bahia-landscape.jpg", widths: [], position: "50% 52%", alt: es ? "Bahía volcánica de Galápagos" : "Volcanic Galapagos bay" })}
+    <section class="anahi-intro section" id="story"><div class="shell anahi-intro__grid"><div class="anahi-intro__index"><span>07</span><small>${es ? "Fauna, lava y mar" : "Wildlife, lava and sea"}</small></div><div class="anahi-intro__lead"><span class="eyebrow">${es ? "La expedición" : "The expedition"}</span><h2>${es ? "Cada desembarco cambia la mirada." : "Every landing changes the view."}</h2></div><div class="anahi-intro__detail"><p>${es ? "Una experiencia naturalista para caminar, navegar y observar. La ruta pone el foco en los ecosistemas de Galápagos y deja espacio para que cada isla marque su propio ritmo." : "A naturalist experience shaped by walking, boating and observing. The route focuses on Galapagos ecosystems, leaving room for each island to set its own pace."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Consultar la expedición" : "Ask about the expedition"} ${icon("arrow")}</a></div></div></section>
+    <section class="anahi-rhythm section section--muted"><div class="shell"><div class="section-heading anahi-rhythm__heading"><span class="eyebrow">${es ? "El ritmo del viaje" : "The rhythm of the journey"}</span><h2>${es ? "La naturaleza lleva la agenda." : "Nature sets the agenda."}</h2></div><div class="anahi-rhythm__grid"><article><span>01</span><h3>${es ? "Desembarcos" : "Landings"}</h3><p>${es ? "Camina por costas de lava, playas claras y senderos donde la fauna no se esconde." : "Walk lava shores, bright beaches and trails where wildlife does not hide."}</p></article><article><span>02</span><h3>${es ? "Vida marina" : "Marine life"}</h3><p>${es ? "Nada o navega junto a tortugas, aves marinas y aguas transparentes." : "Swim or boat alongside turtles, seabirds and clear water."}</p></article><article><span>03</span><h3>${es ? "Mirada local" : "Local insight"}</h3><p>${es ? "Guías naturalistas conectan cada especie con el paisaje y la historia de las islas." : "Naturalist guides connect each species with the landscape and history of the islands."}</p></article></div></div></section>
+    <section class="anahi-wildlife section section--deep"><div class="shell anahi-wildlife__grid"><figure class="anahi-wildlife__image reveal"><img src="/assets/images/naturalist-turtle.jpg" alt="${es ? "Tortuga marina nadando en Galápagos" : "Green sea turtle swimming in the Galapagos"}" loading="lazy" decoding="async"></figure><div class="anahi-wildlife__copy"><span class="eyebrow light">${es ? "La vida silvestre" : "The wildlife"}</span><h2>${es ? "La fauna está en todas partes." : "Wildlife is everywhere."}</h2><p>${es ? "Un flamenco en la laguna, un piquero sobre la lava o una tortuga bajo el agua: Galápagos recompensa la atención." : "A flamingo in the lagoon, a booby on the lava or a turtle below the surface: the Galapagos rewards attention."}</p><a class="text-link light" href="${localizedPath("/destinations/galapagos/", locale)}">${es ? "Explorar Galápagos" : "Explore the Galapagos"} ${icon("diagonal")}</a></div></div></section>
+    <section class="gallery-section section anahi-gallery" aria-label="${es ? "Galería de la expedición naturalista" : "Naturalist Expedition gallery"}"><div class="shell section-heading"><span class="eyebrow reveal">${es ? "En tierra y en el agua" : "On shore and on the water"}</span><h2 class="reveal">${es ? "Mira más de cerca." : "Look closer."}</h2></div><div class="shell">${gallery(galleryItems, "anahi")}</div></section>
+    ${finalCta(es ? "Tu viaje a Galápagos" : "Your Galapagos journey", es ? "Deja que las islas te sorprendan." : "Let the islands surprise you.")}
+  </main>`;
+}
+
+function darwinsStepsPage(locale = "en") {
+  const es = locale === "es";
+  const galleryItems = [
+    ["darwins-steps-walk.jpg", es ? "Caminata guiada junto a la costa" : "Guided walk beside the coast"],
+    ["darwins-steps-frigatebird.jpg", es ? "Fragata entre la vegetación de Santa Cruz" : "Frigatebird among Santa Cruz vegetation"],
+    ["darwins-steps-boobies.jpg", es ? "Familia de piqueros de patas azules" : "Family of blue-footed boobies"],
+    ["darwins-steps-tortoise.jpg", es ? "Tortuga gigante de Santa Cruz" : "Santa Cruz giant tortoise"],
+    ["darwins-steps-sally-lightfoot.jpg", es ? "Cangrejo zayapa sobre la roca" : "Sally Lightfoot crab on volcanic rock"],
+    ["darwins-steps-iguana.jpg", es ? "Iguana marina descansando" : "Marine iguana resting"],
+    ["darwins-steps-yacht.jpg", es ? "Yate de excursión frente a la costa" : "Excursion yacht off the coast"],
+    ["darwins-steps-room-1.jpg", es ? "Habitación de Darwin's Steps" : "Darwin's Steps room"],
+    ["darwins-steps-room-2.jpg", es ? "Suite con detalles inspirados en Galápagos" : "Suite with Galapagos-inspired details"]
+  ];
+  return `<main id="main">
+    ${pageHero({ eyebrow: es ? "Santa Cruz · tour terrestre" : "Santa Cruz · land-based tour", title: es ? "Darwin's Steps, con base en Santa Cruz." : "Darwin's Steps, based in Santa Cruz.", copy: es ? "Una forma cercana y flexible de descubrir Galápagos: excursiones de día, fauna extraordinaria y el confort de volver siempre a la misma base." : "A close, flexible way to discover the Galapagos: wildlife-led day excursions and the comfort of returning to the same Santa Cruz base.", hero: "darwins-steps-walk.jpg", widths: [], position: "50% 52%", alt: es ? "Viajeros caminando por una isla de Galápagos" : "Travelers hiking across a Galapagos island" })}
+    <section class="anahi-intro section" id="story"><div class="shell anahi-intro__grid"><div class="anahi-intro__index"><span>08</span><small>${es ? "No es crucero" : "Not a cruise"}</small></div><div class="anahi-intro__lead"><span class="eyebrow">${es ? "La idea" : "The idea"}</span><h2>${es ? "Una isla como punto de partida." : "One island as your starting point."}</h2></div><div class="anahi-intro__detail"><p>${es ? "Darwin's Steps es un tour terrestre con base en Santa Cruz. Cada día puedes salir hacia una nueva experiencia y regresar a una habitación cómoda, sin cambiar de barco ni de alojamiento." : "Darwin's Steps is a land-based tour with a Santa Cruz base. Each day opens onto a new experience before you return to a comfortable room—without changing boats or hotels."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Planificar Santa Cruz" : "Plan Santa Cruz"} ${icon("arrow")}</a></div></div></section>
+    <section class="anahi-rhythm section section--muted"><div class="shell"><div class="section-heading anahi-rhythm__heading"><span class="eyebrow">${es ? "Un día tras otro" : "Day after day"}</span><h2>${es ? "Explora más, empaca menos." : "Explore more, unpack once."}</h2></div><div class="anahi-rhythm__grid"><article><span>01</span><h3>${es ? "Base en Santa Cruz" : "Santa Cruz base"}</h3><p>${es ? "Una estancia cómoda en la isla que hace sencillo organizar cada salida." : "A comfortable island stay that makes each day trip easy to arrange."}</p></article><article><span>02</span><h3>${es ? "Excursiones guiadas" : "Guided day trips"}</h3><p>${es ? "Caminatas, costas, fauna y navegación en rutas elegidas según el clima y tus intereses." : "Walks, shores, wildlife and boat outings shaped around weather and your interests."}</p></article><article><span>03</span><h3>${es ? "Fauna extraordinaria" : "Remarkable wildlife"}</h3><p>${es ? "Tortugas gigantes, iguanas marinas, piqueros y fragatas aparecen en el camino." : "Giant tortoises, marine iguanas, boobies and frigatebirds appear along the way."}</p></article></div></div></section>
+    <section class="anahi-cabins section"><div class="shell anahi-cabins__grid"><div class="anahi-cabins__copy"><span class="eyebrow">${es ? "Tu base" : "Your base"}</span><h2>${es ? "Vuelve a un lugar tranquilo." : "Return to somewhere calm."}</h2><p>${es ? "Una habitación luminosa para descansar entre excursiones y mantener el viaje sencillo, personal y conectado con la isla." : "A bright room to rest between excursions, keeping the journey simple, personal and connected to the island."}</p><a class="text-link" href="${localizedPath("/plan-your-trip/", locale)}?destination=galapagos">${es ? "Consultar el tour" : "Ask about the tour"} ${icon("arrow")}</a></div><figure class="anahi-cabin anahi-cabin--twin reveal"><img src="/assets/images/darwins-steps-room-1.jpg" alt="${es ? "Habitación doble de Darwin's Steps" : "Darwin's Steps double room"}" loading="lazy" decoding="async"><figcaption>${es ? "Habitación doble" : "Double room"}</figcaption></figure><figure class="anahi-cabin anahi-cabin--suite reveal"><img src="/assets/images/darwins-steps-room-2.jpg" alt="${es ? "Habitación de Darwin's Steps con cama matrimonial" : "Darwin's Steps room with double bed"}" loading="lazy" decoding="async"><figcaption>${es ? "Habitación con cama matrimonial" : "Double-bed room"}</figcaption></figure></div></section>
+    <section class="anahi-wildlife section section--deep"><div class="shell anahi-wildlife__grid"><figure class="anahi-wildlife__image reveal"><img src="/assets/images/darwins-steps-tortoise.jpg" alt="${es ? "Tortuga gigante en Santa Cruz" : "Giant tortoise in Santa Cruz"}" loading="lazy" decoding="async"></figure><div class="anahi-wildlife__copy"><span class="eyebrow light">${es ? "La isla" : "The island"}</span><h2>${es ? "Santa Cruz abre muchas puertas." : "Santa Cruz opens many doors."}</h2><p>${es ? "Desde los bosques altos hasta la costa y las islas cercanas, Santa Cruz es una base natural para leer la historia viva de Galápagos." : "From the highlands to the coast and nearby islands, Santa Cruz is a natural base for reading the living history of the Galapagos."}</p><a class="text-link light" href="${localizedPath("/destinations/galapagos/", locale)}">${es ? "Explorar Galápagos" : "Explore the Galapagos"} ${icon("diagonal")}</a></div></div></section>
+    <section class="gallery-section section anahi-gallery" aria-label="${es ? "Galería de Darwin's Steps" : "Darwin's Steps gallery"}"><div class="shell section-heading"><span class="eyebrow reveal">${es ? "La experiencia" : "The experience"}</span><h2 class="reveal">${es ? "Mira más de cerca." : "Look closer."}</h2></div><div class="shell">${gallery(galleryItems, "anahi")}</div></section>
+    ${finalCta(es ? "Tu viaje a Galápagos" : "Your Galapagos journey", es ? "Descubre las islas desde Santa Cruz." : "Discover the islands from Santa Cruz.")}
+  </main>`;
+}
+
 function destinationPage(d, locale = "en") {
+  const es = locale === "es";
   return `<main id="main">
     ${pageHero({ eyebrow: `${d.number} · ${d.eyebrow}`, title: d.title, copy: d.short, hero: d.hero, widths: d.heroWidths, position: d.heroPosition, alt: `${d.name}, Ecuador`, credit: d.credit })}
     <section class="destination-story section" id="story">
       <div class="shell story-grid story-grid--destination">
         <div class="story-index reveal"><span>${d.number}</span><div></div><small>${d.name}</small></div>
         <div class="story-lead reveal"><span class="eyebrow">The experience</span><h2>${d.intro}</h2></div>
-        <div class="story-detail reveal"><p>${d.detail}</p><a class="text-link" href="/plan-your-trip/?destination=${d.slug}">Plan your trip ${icon("arrow")}</a></div>
+        <div class="story-detail reveal"><p>${d.detail}</p><a class="text-link" href="/plan-your-trip/?destination=${d.slug}">${es ? "Planifica tu viaje" : "Plan your trip"} ${icon("arrow")}</a></div>
         <figure class="story-visual reveal"><img src="/assets/images/${(d.storyImage || d.gallery[0])[0]}" alt="${escapeHtml((d.storyImage || d.gallery[0])[1])}" loading="lazy" decoding="async"></figure>
       </div>
     </section>
-    ${d.slug === "amazon" ? amazonLodges(locale) : d.slug === "galapagos" ? galapagosCruise(locale) : ""}
+    ${d.slug === "amazon" ? amazonLodges(locale) : d.slug === "galapagos" ? `${galapagosCruise(locale)}${endemicFeature(locale)}${naturalistFeature(locale)}${darwinsStepsFeature(locale)}` : ""}
+    ${d.slug === "nono" ? `<section class="nono-stay-link section section--muted"><div class="shell"><div><span class="eyebrow">${es ? "Alojamiento en Nono" : "Stay in Nono"}</span><h2>${es ? "Conoce Villa Doris." : "Meet Villa Doris."}</h2><p>${es ? "Descubre la casa, sus habitaciones y jardines antes de planificar tu estancia." : "Explore the house, rooms and gardens as you plan your stay."}</p><a class="text-link" href="${localizedPath("/villa-doris/", locale)}">${es ? "Conoce Villa Doris" : "Discover Villa Doris"} ${icon("arrow")}</a></div></div></section>` : ""}
     <!--full-copy-->
     <section class="gallery-section section">
       <div class="shell section-heading"><span class="eyebrow reveal">A sense of place</span><h2 class="reveal">Look closer.</h2></div>
@@ -382,7 +473,7 @@ function destinationPage(d, locale = "en") {
         ${d.experiences.map(([title,copy],index)=>`<article class="experience-row reveal"><span>${String(index+1).padStart(2,"0")}</span><h3>${title}</h3><p>${copy}</p>${icon(index % 2 ? "route" : "compass")}</article>`).join("")}
       </div>
     </section>
-    ${finalCta(`Build a journey with ${d.name}`, "Make this landscape part of your story.")}
+    ${finalCta(es ? `Diseña un viaje por ${d.name}` : `Build a journey with ${d.name}`, es ? "Haz de este paisaje parte de tu historia." : "Make this landscape part of your story.")}
   </main>`;
 }
 
@@ -390,7 +481,7 @@ function villaPage() {
   return `<main id="main">
     ${pageHero({ eyebrow: "Nono · Choco Andino cloud forest", title: villa.title, copy: "A quiet country house in Nono, just beyond Quito.", hero: "hero-villa", widths: [1200,1600], position: "50% 46%", alt: "Villa Doris country house in Nono, Ecuador" })}
     <section class="destination-story section" id="story">
-      <div class="shell story-grid"><div class="story-index reveal"><span>05</span><div></div><small>Villa Doris</small></div><div class="story-lead reveal"><span class="eyebrow">A peaceful stay</span><h2>${villa.intro}</h2></div><div class="story-detail reveal"><p>${villa.detail}</p><a class="text-link" href="/plan-your-trip/?destination=villa-doris">Ask about Villa Doris ${icon("arrow")}</a></div></div>
+      <div class="shell story-grid"><div class="story-index reveal"><span>05</span><div></div><small>Villa Doris</small></div><div class="story-lead reveal"><span class="eyebrow">A peaceful stay</span><h2>${villa.intro}</h2></div><div class="story-detail reveal"><p>${villa.detail}</p><a class="text-link" href="/plan-your-trip/?destination=villa-doris">Ask about Villa Doris ${icon("arrow")}</a><a class="text-link" href="/destinations/nono/">Discover Nono ${icon("arrow")}</a></div></div>
     </section>
     <!--full-copy-->
     <section class="villa-landscape section section--muted">
@@ -435,25 +526,28 @@ function aboutPage() {
 }
 
 function planPage() {
-  const checks = destinations.map(d => `<label class="check-card"><input type="checkbox" name="destinations" value="${d.name}"><span class="check-mark"></span><strong>${d.name}</strong><small>${d.eyebrow}</small></label>`).join("");
+  const checks = destinations.map(d => `<label class="check-card"><input type="checkbox" name="destinations" value="${d.name}" data-destination="${d.slug}"><span class="check-mark"></span><strong>${d.name}</strong><small>${d.eyebrow}</small></label>`).join("");
   return `<main id="main" class="plan-page">
     <section class="plan-intro"><div class="shell"><span class="eyebrow reveal">Plan your trip</span><h1 class="reveal">Your journey starts here.</h1><p class="reveal">Choose your places and dates. Review the email request before sending.</p></div></section>
     <section class="plan-form-section section" id="story"><div class="shell plan-grid">
       <aside class="plan-aside reveal"><span class="eyebrow">Direct contact</span><h2>Prefer to talk first?</h2><p>Contact our team in Quito.</p><a href="mailto:${site.email}">${icon("mail")}<span><small>Email</small>${site.email}</span></a><a href="mailto:${site.emailHref}">${icon("mail")}<span><small>Direct inbox</small>${site.emailSecondary}</span></a><a href="https://wa.me/${site.whatsappHref}" rel="noopener">${icon("whatsapp")}<span><small>WhatsApp</small>${site.whatsappDisplay}</span></a><div class="aside-note">${icon("pin")}<span><small>Based in</small>${site.location}</span></div><div class="aside-note">${icon("calendar")}<span><small>Opening hours</small>Monday to Friday · 09:00–17:00</span></div><a href="https://instagram.com/nonovilladoris" rel="noopener">${icon("diagonal")}<span><small>Instagram / Facebook</small>@nonovilladoris</span></a></aside>
       <form class="trip-form reveal" data-trip-form novalidate>
+        <input type="hidden" name="trip_context" value="">
+        <div class="form-context" data-form-context hidden role="status"></div>
         <div class="form-step"><span>01</span><div><h2>About you</h2><p>Who should we contact about this journey?</p></div></div>
         <div class="form-row"><label>Full name <input type="text" name="name" autocomplete="name" required><span class="field-error"></span></label><label>Email <input type="email" name="email" autocomplete="email" required><span class="field-error"></span></label></div>
         <div class="form-row"><label>WhatsApp with country code <input type="tel" name="whatsapp" autocomplete="tel" placeholder="+1 415 555 0142" required><span class="field-error"></span></label><label>Number of travelers <input type="number" name="travelers" min="1" max="30" inputmode="numeric" required><span class="field-error"></span></label></div>
         <div class="form-step form-step--spaced"><span>02</span><div><h2>Where would you like to go?</h2><p>Select every region that interests you.</p></div></div>
-        <fieldset class="destination-checks"><legend class="sr-only">Destinations of interest</legend>${checks}<label class="check-card"><input type="checkbox" name="destinations" value="Villa Doris"><span class="check-mark"></span><strong>Villa Doris</strong><small>Country house in Nono</small></label></fieldset><span class="group-error" data-destination-error></span>
+        <fieldset class="destination-checks"><legend class="sr-only">Destinations of interest</legend>${checks}<label class="check-card"><input type="checkbox" name="destinations" value="Villa Doris" data-destination="villa-doris"><span class="check-mark"></span><strong>Villa Doris</strong><small>Country house in Nono</small></label></fieldset><span class="group-error" data-destination-error></span>
         <div class="form-step form-step--spaced"><span>03</span><div><h2>Shape the journey</h2><p>Approximate information is enough to begin.</p></div></div>
-        <div class="form-row"><label>Approximate start <input type="month" name="start" required><span class="field-error"></span></label><label>Approximate end <input type="month" name="end"><span class="field-error"></span></label></div>
+        <div class="form-row"><label>Approximate start <input type="month" name="start"><span class="field-error"></span></label><label>Approximate end <input type="month" name="end"><span class="field-error"></span></label></div>
         <label>Preferred experience <select name="experience" required><option value="">Choose one</option><option>Cultural experiences</option><option>Soft adventure</option><option>Nature and wildlife</option><option>Birdwatching</option><option>A balanced mix</option></select><span class="field-error"></span></label>
         <label>Comments or preferences <textarea name="comments" rows="6" placeholder="Tell us about your interests, pace, mobility needs, celebrations or anything else that would help shape the route."></textarea><span class="field-error"></span></label>
         <label class="consent"><input type="checkbox" name="consent" required><span class="check-mark"></span><span>I agree to use these details to prepare and send an enquiry to Inca Holidays.</span></label><span class="field-error consent-error"></span>
         <label class="honeypot" aria-hidden="true">Company website <input type="text" name="company_website" tabindex="-1" autocomplete="off"></label>
         <button class="button button--ink submit-button" type="submit"><span>Prepare my trip request</span>${icon("arrow")}</button>
         <div class="form-status" role="status" aria-live="polite" data-form-status></div>
+        <a class="form-whatsapp" data-form-whatsapp href="https://wa.me/${site.whatsappHref}" target="_blank" rel="noopener">Continue by WhatsApp ${icon("whatsapp")}</a>
       </form>
     </div></section>
   </main>`;
@@ -497,6 +591,12 @@ const spanishTranslations = [
 ];
 
 spanishTranslations.push(
+  ["Experiences", "Experiencias"], ["Lodges · cruises · stays", "Lodges · cruceros · alojamientos"], ["Galápagos · Andes · Amazon · Nono", "Galápagos · Andes · Amazonía · Nono"],
+  ["The house and its spaces.", "La casa y sus espacios."], ["Villa Doris · The property", "Villa Doris · La propiedad"], ["Villa Doris property", "La casa de Villa Doris"],
+  ["Available durations:", "Duraciones disponibles:"], ["Explore programs", "Explorar programas"], ["Programs & itineraries", "Programas e itinerarios"], ["Ask about this program", "Consulta este programa"], ["Compare the three lodges by setting, activities and duration before opening each itinerary.", "Compara los tres lodges por su entorno, actividades y duración antes de abrir cada itinerario."], ["Explore lodges", "Explorar lodges"],
+  ["Ways to explore", "Formas de explorar"], ["Choose how to experience the islands.", "Elige cómo vivir las islas."], ["Land-based journeys", "Rutas terrestres"], ["Explore from a Santa Cruz base with day excursions.", "Explora desde Santa Cruz con excursiones de día."], ["Shape a journey around your dates and interests.", "Diseña un viaje según tus fechas e intereses."], ["Cruise · Yacht Anahi", "Crucero · Yacht Anahi"], ["Explore the yacht and its experience on its dedicated page.", "Conoce el yate y su experiencia en su página dedicada."], ["Cruise · Galápagos", "Crucero · Galápagos"], ["Tailor-made", "A medida"],
+  ["Stay in Nono", "Alójate en Nono"], ["Meet Villa Doris.", "Conoce Villa Doris."], ["Explore the house, rooms and gardens as you plan your stay.", "Descubre la casa, las habitaciones y los jardines al planificar tu estancia."], ["Discover Villa Doris", "Conoce Villa Doris"], ["Discover Nono", "Descubre Nono"],
+  ["Continue by WhatsApp", "Continuar por WhatsApp"], ["Selected experience", "Experiencia seleccionada"], ["To be decided", "Por definir"], ["Destination", "Destino"], ["Experience", "Experiencia"], ["Notes", "Comentarios"],
   ["Opening hours", "Horario de atención"],
   ["Monday to Friday · 09:00–17:00", "Lunes a viernes · 09:00–17:00"],
   ["Instagram / Facebook", "Instagram / Facebook"],
@@ -602,6 +702,7 @@ function translateToSpanish(html) {
   for (const [from, to] of [...spanishTranslations].sort((a, b) => b[0].length - a[0].length)) translated = translated.split(from).join(to);
   translated = translated.replaceAll("Contactoo", "Contacto").replaceAll("Contactoa", "Contacta");
   translated = translated.replaceAll("Grand Océano Spray", "Grand Ocean Spray");
+  translated = translated.replaceAll("Grand%20Océano%20Spray", "Grand%20Ocean%20Spray");
   translated = translated.replace('<html lang="en">', '<html lang="es">');
   return translated;
 }
@@ -619,6 +720,9 @@ const spanishMeta = {
   "destination-nono": { title: "Viajes a medida por Nono", description: "Excursiones de uno, dos y cuatro días al bosque nublado andino, con colibríes, vida local y naturaleza." },
   villa: { title: "Villa Doris en el bosque nublado de Nono", description: "Descubre Villa Doris, una casa de campo rodeada de naturaleza en el bosque nublado del Chocó Andino, cerca de Quito." },
   yacht: { title: "Yacht Anahi en Galápagos", description: "Explora Galápagos a bordo de Yacht Anahi, con días de fauna, desembarcos en las islas y noches tranquilas sobre el mar." },
+  endemic: { title: "Endemic en Galápagos", description: "Vive Galápagos a bordo de Endemic, con suites elegantes, espacios abiertos y aventuras junto al mar." },
+  naturalist: { title: "Expedición naturalista en Galápagos", description: "Explora Galápagos con desembarcos guiados, paisajes volcánicos y tiempo sobre el agua." },
+  darwins: { title: "Darwin's Steps desde Santa Cruz", description: "Un tour terrestre por Galápagos con base en Santa Cruz, fauna, paisajes insulares y excursiones guiadas." },
   about: { title: "Sobre Inca Holidays", description: "Conoce Inca Holidays, una empresa de viajes de Quito que crea experiencias culturales, de aventura suave y viajes a medida." },
   plan: { title: "Planifica tu viaje a medida", description: "Cuéntale a Inca Holidays tus fechas, intereses y estilo de viaje para comenzar a diseñar tu itinerario." },
   privacy: { title: "Aviso de privacidad", description: "Cómo se gestiona la información de las consultas de viaje en el sitio web de Inca Holidays." },
@@ -632,7 +736,7 @@ function completeCopy(pageKey, locale) {
   const sets = {
     home: [["Home y About us", "Our story", "Nuestra historia"]],
     about: [["Home y About us", "Our story and values", "Nuestra historia y valores"], ["Sustainability", "Sustainability", "Sostenibilidad"]],
-    villa: [["Villa Doris Guest House", "Villa Doris: our story and the house", "Villa Doris: nuestra historia y la casa"], ["Villa Doris Experiences:", "Villa Doris experiences", "Experiencias en Villa Doris"]],
+    villa: [["Villa Doris Guest House", "Villa Doris: our story and the house", "Villa Doris: nuestra historia y la casa"]],
     "destination-nono": [["Villa Doris Experiences:", "Nono and the hummingbird route", "Nono y la ruta del colibrí"]],
     "destination-amazon": [["Amazon Rainforest", "Amazon lodges and complete itineraries", "Lodges de la Amazonía e itinerarios completos"]],
     "destination-galapagos": [["Galápagos Islands", "Galápagos islands and cruises", "Islas Galápagos y cruceros"]],
@@ -642,7 +746,7 @@ function completeCopy(pageKey, locale) {
   const sections = sets[pageKey];
   if (!sections) return "";
   const es = locale === "es";
-  const isDestination = pageKey.startsWith("destination-") || pageKey === "villa";
+  const isDestination = pageKey.startsWith("destination-");
   let dayCardId = 0;
   const formatted = (text) => {
     const lines = text.split(/\n/).map(line => line.trim()).filter(Boolean);
@@ -664,10 +768,14 @@ function completeCopy(pageKey, locale) {
     return `<p>${safe}</p>`;
     }).join("");
   };
-  const sectionTitle = isDestination ? (es ? "Programas y actividades" : "Programs & activities") : (es ? "Más para tu viaje." : "More for your journey.");
-  const sectionEyebrow = isDestination ? (es ? "Encuentra tu itinerario" : "Find your itinerary") : (es ? "Descubre todos los detalles" : "Discover all the details");
-  const sectionLabel = isDestination ? (es ? "Programas y actividades por destino" : "Destination programs and activities") : (es ? "Información completa" : "Full information");
+  const isVilla = pageKey === "villa";
+  const sectionTitle = isVilla ? (es ? "La casa y sus espacios." : "The house and its spaces.") : isDestination ? (es ? "Programas y actividades" : "Programs & activities") : (es ? "Más para tu viaje." : "More for your journey.");
+  const sectionEyebrow = isVilla ? (es ? "Villa Doris · La propiedad" : "Villa Doris · The property") : isDestination ? (es ? "Encuentra tu itinerario" : "Find your itinerary") : (es ? "Descubre todos los detalles" : "Discover all the details");
+  const sectionLabel = isVilla ? (es ? "La casa de Villa Doris" : "Villa Doris property") : isDestination ? (es ? "Programas y actividades por destino" : "Destination programs and activities") : (es ? "Información completa" : "Full information");
   const sectionContent = sections.map(([key,en,sp])=>`<details class="full-copy__section"><summary>${es ? sp : en}<span aria-hidden="true">＋</span></summary><div class="full-copy__text" lang="${es ? "es" : "en"}">${formatted(es ? fullContentEs[key] : fullContent[key])}</div></details>`).join("");
+  if (pageKey === "destination-andes") {
+    return `<section class="full-copy section" aria-label="${es ? "Información de los Andes" : "Andean context"}"><div class="shell"><div class="full-copy__intro"><span class="eyebrow">${es ? "El contexto andino" : "Andean context"}</span><h2>${es ? "Conoce los Andes." : "Discover the Andes."}</h2></div>${sectionContent}</div></section>`;
+  }
   const villaPhotos = pageKey === "villa" ? `<aside class="villa-program-photos" aria-label="${es ? "Personas y naturaleza en Nono" : "People and nature in Nono"}">
     <figure class="villa-program-photo villa-program-photo--host"><img src="/assets/images/villa-doris-local-woman.webp" alt="Woman in the countryside near Nono" loading="lazy" decoding="async"><figcaption>${es ? "Vida local" : "Local life"}</figcaption></figure>
     <figure class="villa-program-photo villa-program-photo--birding"><img src="/assets/images/villa-doris-birdwatcher.webp" alt="Traveler watching nature in the countryside" loading="lazy" decoding="async"><figcaption>${es ? "Observación de aves" : "Birdwatching"}</figcaption></figure>
@@ -739,7 +847,10 @@ const outputPages = [
   { key: "destinations", ...pages.destinations, main: destinationsPage("en"), mainEs: destinationsPage("es"), image: "/assets/images/hero-galapagos-1200.webp" },
   ...destinations.map(d => ({ key: `destination-${d.slug}`, path: `/destinations/${d.slug}/`, title: `${d.name} tailor-made journeys`, description: d.short, main: destinationPage(d), mainEs: destinationPage(d, "es"), image: `/assets/images/${d.hero.includes(".") ? d.hero : `${d.hero}-1200.webp`}` })),
   { key: "villa", ...pages.villa, main: villaPage(), image: "/assets/images/hero-villa-1200.webp" },
-  { key: "yacht", ...(pages.yacht || { path: "/yacht-anahi/", title: "Yacht Anahi in Galápagos", description: "Explore the Galápagos aboard Yacht Anahi, with wildlife encounters, island landings and quiet nights at sea." }), main: yachtAnahiPage(), mainEs: yachtAnahiPage("es"), image: "/assets/images/yacht-anahi-exterior.jpg" },
+  ...(pages.yacht ? [{ key: "yacht", ...pages.yacht, main: yachtAnahiPage(), mainEs: yachtAnahiPage("es"), image: "/assets/images/yacht-anahi-exterior.jpg" }] : []),
+  ...(pages.endemic ? [{ key: "endemic", ...pages.endemic, main: endemicYachtPage(), mainEs: endemicYachtPage("es"), image: "/assets/images/endemic-exterior.jpg" }] : []),
+  ...(pages.naturalist ? [{ key: "naturalist", ...pages.naturalist, main: naturalistExpeditionPage(), mainEs: naturalistExpeditionPage("es"), image: "/assets/images/naturalist-bahia-landscape.jpg" }] : []),
+  ...(pages.darwins ? [{ key: "darwins", ...pages.darwins, main: darwinsStepsPage(), mainEs: darwinsStepsPage("es"), image: "/assets/images/darwins-steps-walk.jpg" }] : []),
   { key: "about", ...pages.about, main: aboutPage(), image: "/assets/images/about-local-connection.webp" },
   { key: "plan", ...pages.plan, main: planPage() },
   { key: "privacy", ...pages.privacy, main: privacyPage() },
@@ -752,10 +863,18 @@ async function writeRoute(route, html) {
   await writeFile(join(routeDir, "index.html"), html);
 }
 
-await rm(dist, { recursive: true, force: true });
+const assetAnchors = ["yacht-anahi-exterior.jpg", "endemic-exterior.jpg", "naturalist-bahia-landscape.jpg", "darwins-steps-walk.jpg"].map(file => join(dist, "assets", "images", file));
+let hasBuiltAssets = true;
+for (const assetAnchor of assetAnchors) {
+  try { await access(assetAnchor); } catch { hasBuiltAssets = false; }
+}
+if (!hasBuiltAssets) {
+  await rm(dist, { recursive: true, force: true });
+  await mkdir(join(dist, "assets"), { recursive: true });
+  await copyTree(join(src, "assets"), join(dist, "assets"));
+  await copyTree(join(root, "assets", "images"), join(dist, "assets", "images"));
+}
 await mkdir(join(dist, "assets"), { recursive: true });
-await copyTree(join(src, "assets"), join(dist, "assets"));
-await copyTree(join(root, "assets", "images"), join(dist, "assets", "images"));
 await copyFile(join(src, "styles.css"), join(dist, "assets", "styles.css"));
 await copyFile(join(src, "app.js"), join(dist, "assets", "app.js"));
 await copyTree(join(root, ".openai"), join(dist, ".openai"));
