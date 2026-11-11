@@ -166,7 +166,7 @@ export const pages = {
   villa: {
     path: "/villa-doris/",
     title: "Villa Doris in Nono Cloud Forest",
-    description: "Discover Villa Doris, a country house surrounded by nature in Ecuador's Choco Andino cloud forest near Quito."
+    description: "Discover Villa Doris, a country house surrounded by nature in Ecuador's Chocó Andino cloud forest near Quito."
   },
   about: {
     path: "/about/",
