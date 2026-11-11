@@ -99,6 +99,7 @@ function nav(pageKey, locale = "es") {
       <nav class="desktop-nav" aria-label="Primary navigation">
         <a href="${localizedPath("/destinations/", locale)}" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
         <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences</a>
+        <a href="${localizedPath("/villa-doris/", locale)}" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
         <a href="${localizedPath("/about/", locale)}" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
       </nav>
       <div class="header-actions"><a class="language-switch" href="__LANGUAGE_PATH__" aria-label="${locale === "es" ? "Switch to English" : "Cambiar a español"}">${locale === "es" ? "EN" : "ES"}</a><a class="header-cta" href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("arrow")}</a></div>
@@ -110,6 +111,7 @@ function nav(pageKey, locale = "es") {
       <a href="${localizedPath("/", locale)}">Home</a>
       <a href="${localizedPath("/destinations/", locale)}">Destinations <span>Galápagos · Andes · Amazon · Nono</span></a>
       <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences <span>Lodges · cruises · stays</span></a>
+      <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris</a>
       <a href="${localizedPath("/about/", locale)}">About</a>
       <a href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("diagonal")}</a>
     </nav>
