@@ -29,6 +29,12 @@ jobs:
       - name: Build site
         run: node src/build.mjs
 
+      - name: Copy standalone itinerary pages
+        run: |
+          mkdir -p dist/destinations/galapagos/itineraries dist/en/destinations/galapagos/itineraries
+          cp destinations/galapagos/itineraries/index.html dist/destinations/galapagos/itineraries/index.html
+          cp en/destinations/galapagos/itineraries/index.html dist/en/destinations/galapagos/itineraries/index.html
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
