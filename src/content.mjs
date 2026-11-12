@@ -168,6 +168,26 @@ export const pages = {
     title: "Villa Doris in Nono Cloud Forest",
     description: "Discover Villa Doris, a country house surrounded by nature in Ecuador's Chocó Andino cloud forest near Quito."
   },
+  yacht: {
+    path: "/yacht-anahi/",
+    title: "Yacht Anahi in the Galapagos",
+    description: "Explore the Galapagos aboard Yacht Anahi, with wildlife-led days, island landings and calm nights at sea."
+  },
+  endemic: {
+    path: "/yacht-endemic/",
+    title: "Endemic Yacht in the Galapagos",
+    description: "Experience the Galapagos aboard Endemic, with elegant suites, open-air spaces and wildlife-led adventures."
+  },
+  naturalist: {
+    path: "/naturalist-expedition/",
+    title: "Naturalist Expedition in the Galapagos",
+    description: "Explore the Galapagos with wildlife-led landings, volcanic landscapes and time on the water."
+  },
+  darwins: {
+    path: "/darwins-steps/",
+    title: "Darwin's Steps from Santa Cruz",
+    description: "A land-based Galapagos tour with a Santa Cruz base, wildlife, island landscapes and guided day excursions."
+  },
   about: {
     path: "/about/",
     title: "About Inca Holidays",
