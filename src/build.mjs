@@ -393,7 +393,7 @@ function endemicYachtPage(locale = "en") {
 
 function landFeature(locale, kind, title, image, eyebrow, copy, label) {
   const es = locale === "es";
-  const path = kind === "naturalist" ? "/naturalist-expedition/" : "/darwins-steps/";
+  const path = kind === "naturalist" ? "/destinations/galapagos/itineraries/#naturalist-expedition" : "/destinations/galapagos/itineraries/#darwins-steps";
   return `<a class="anahi-feature endemic-feature land-feature land-feature--${kind} reveal" href="${localizedPath(path, locale)}"><div class="anahi-feature__image"><img src="/assets/images/${image}" alt="${escapeHtml(es ? label.esAlt : label.enAlt)}" loading="lazy" decoding="async"></div><div class="anahi-feature__copy"><span class="eyebrow">${es ? eyebrow.es : eyebrow.en}</span><h2>${title}</h2><p>${es ? copy.es : copy.en}</p><span class="text-link">${es ? label.es : label.en} ${icon("arrow")}</span></div></a>`;
 }
 
