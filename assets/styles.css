@@ -902,3 +902,9 @@ body[data-page="terms"] .site-header {
 .cruise-journey{background:#e8e9dc;color:#1d392b}.cruise-heading{max-width:58rem;margin-bottom:3rem}.cruise-heading h2{margin:1rem 0;font:400 clamp(3.5rem,7vw,7rem)/.92 var(--serif);letter-spacing:-.05em}.cruise-heading p,.cruise-program p{max-width:52ch;color:#465449;line-height:1.7}.cruise-program{max-width:56rem;margin-bottom:3.5rem;padding:2rem clamp(1.25rem,3vw,3rem);border:1px solid #b8c1b2;border-radius:1rem;background:rgba(255,253,248,.58)}.cruise-program h3{margin:.5rem 0 .8rem;font:400 clamp(1.8rem,3vw,3rem)/1 var(--serif)}.cruise-images-heading{margin-bottom:1rem}.gallery-grid--cruise{background:transparent}.gallery-grid--cruise .gallery-item{background:#fffdf8}
 @media(max-width:1050px){.destination-sequence{grid-template-columns:5rem 1fr 1fr}.destination-sequence__images{grid-column:2 / -1}.destination-sequence__gallery{grid-template-columns:repeat(3,1fr);grid-template-rows:12rem}.destination-sequence__gallery button:first-child{grid-row:auto}}
 @media(max-width:700px){.destination-sequence{grid-template-columns:3.5rem 1fr;gap:1rem 1.25rem;padding-block:3.5rem}.destination-sequence__number{font-size:3.5rem}.destination-sequence__destination,.destination-sequence__program,.destination-sequence__images{grid-column:2}.destination-sequence__gallery{grid-template-columns:1.2fr .8fr;grid-template-rows:8rem 8rem}.destination-sequence__gallery button:first-child{grid-row:span 2}}
+
+
+/* Keep the Galapagos gallery separated: no image spans or overlaps. */
+.gallery-grid--cruise { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(20rem, 28rem); gap: 1.25rem; }
+.gallery-grid--cruise .gallery-item--1,
+.gallery-grid--cruise .gallery-item--4 { grid-column: auto; grid-row: auto; height: auto; }
