@@ -173,7 +173,7 @@ function picture(base, widths, alt, options = {}) {
   </picture>`;
 }
 
-function pageHero({ eyebrow, title, copy, hero, widths, position, alt, credit, compact = false, variant = "" }) {
+function pageHero({ eyebrow, title, copy, hero, widths, position, alt, credit, compact = false, variant = "", scrollLabel = "Scroll to discover", scrollTarget = "story" }) {
   return `<section class="page-hero ${compact ? "page-hero--compact" : ""} ${variant ? `page-hero--${variant}` : ""}">
     <div class="page-hero__media" data-parallax-media>${picture(hero, widths, alt, { priority: true, position, ratio: .68 })}</div>
     <div class="page-hero__shade"></div>
@@ -183,7 +183,7 @@ function pageHero({ eyebrow, title, copy, hero, widths, position, alt, credit, c
       ${copy ? `<p class="reveal">${copy}</p>` : ""}
     </div>
     ${credit ? `<span class="photo-credit">${credit}</span>` : ""}
-    <a class="scroll-cue" href="#story" aria-label="Continue to the story"><span></span>Scroll to discover</a>
+    <a class="scroll-cue" href="#${scrollTarget}" aria-label="${scrollLabel}"><span></span>${scrollLabel}</a>
   </section>`;
 }
 
@@ -536,12 +536,12 @@ function darwinsStepsPage(locale = "en") {
 function destinationPage(d, locale = "en") {
   const es = locale === "es";
   return `<main id="main">
-    ${pageHero({ eyebrow: `${d.number} · ${d.eyebrow}`, title: d.title, copy: d.short, hero: d.hero, widths: d.heroWidths, position: d.heroPosition, alt: `${d.name}, Ecuador`, credit: d.credit })}
+    ${pageHero({ eyebrow: `${d.number} · ${d.eyebrow}`, title: d.title, copy: d.short, hero: d.hero, widths: d.heroWidths, position: d.heroPosition, alt: `${d.name}, Ecuador`, credit: d.credit, scrollLabel: d.slug === "galapagos" ? (es ? "Ver opciones de viaje" : "View travel options") : "Scroll to discover" })}
     <section class="destination-story section" id="story">
       <div class="shell story-grid story-grid--destination">
         <div class="story-index reveal"><span>${d.number}</span><div></div><small>${d.name}</small></div>
-        <div class="story-lead reveal"><span class="eyebrow">The experience</span><h2>${d.intro}</h2></div>
-        <div class="story-detail reveal"><p>${d.detail}</p><a class="text-link" href="/plan-your-trip/?destination=${d.slug}">${es ? "Planifica tu viaje" : "Plan your trip"} ${icon("arrow")}</a></div>
+        <div class="story-lead reveal"><span class="eyebrow">${es ? "La experiencia" : "The experience"}</span><h2>${d.slug === "galapagos" ? (es ? "Elige dónde alojarte y cómo moverte." : "Choose where to stay and how to travel.") : d.intro}</h2></div>
+        <div class="story-detail reveal"><p>${d.slug === "galapagos" ? (es ? "En crucero, duermes a bordo y navegas entre islas. En tour terrestre, te alojas en una isla y haces excursiones guiadas durante el día." : "On a cruise, sleep on board and travel between islands by sea. On a land tour, stay on an island and take guided day excursions.") : d.detail}</p>${d.slug === "galapagos" ? "" : `<a class="text-link" href="/plan-your-trip/?destination=${d.slug}">${es ? "Planifica tu viaje" : "Plan your trip"} ${icon("arrow")}</a>`}</div>
         <figure class="story-visual reveal"><img src="/assets/images/${(d.storyImage || d.gallery[0])[0]}" alt="${escapeHtml((d.storyImage || d.gallery[0])[1])}" loading="lazy" decoding="async"></figure>
       </div>
     </section>
