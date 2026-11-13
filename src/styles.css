@@ -1108,3 +1108,26 @@ body[data-page="terms"] .site-header {
   .lodge-gallery figure,
   .lodge-gallery figure:nth-child(3n+2) { flex-basis: 85%; }
 }
+
+
+/* Exact shared image frame dimensions for every Amazon lodge gallery. */
+.lodge-gallery figure,
+.lodge-gallery figure:nth-child(3n+2) {
+  flex: 0 0 min(62%, 720px);
+  width: min(62%, 720px);
+  min-width: 0;
+}
+.lodge-gallery figure > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+@media (max-width: 700px) {
+  .lodge-gallery figure,
+  .lodge-gallery figure:nth-child(3n+2) {
+    flex: 0 0 85%;
+    width: 85%;
+  }
+}
