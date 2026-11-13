@@ -481,7 +481,7 @@ function landFeature(locale, kind, title, image, eyebrow, copy, label) {
 }
 
 function naturalistFeature(locale = "en") {
-  return landFeature(locale, "naturalist", "Naturalist Expedition", "naturalist-bahia-landscape.jpg", { en: "Land-based · wildlife-led", es: "Terrestre · fauna y paisaje" }, { en: "Volcanic shores, wildlife encounters and guided island days connected by time on the water.", es: "Costas volcánicas, encuentros con fauna y días guiados en las islas, unidos por el tiempo sobre el agua." }, { en: "Explore the expedition", es: "Ver la expedición", enAlt: "Volcanic bay and beach in the Galapagos", esAlt: "Bahía volcánica y playa en Galápagos" });
+  return landFeature(locale, "naturalist", "Naturalist Expedition", "naturalist-bahia-landscape.jpg", { en: "Land-based · wildlife-led", es: "Terrestre · fauna y paisaje" }, { en: "Guided day excursions through volcanic landscapes and wildlife habitats.", es: "Excursiones guiadas de día entre paisajes volcánicos y hábitats de fauna." }, { en: "Explore the expedition", es: "Ver la expedición", enAlt: "Volcanic bay and beach in the Galapagos", esAlt: "Bahía volcánica y playa en Galápagos" });
 }
 
 function darwinsStepsFeature(locale = "en") {
