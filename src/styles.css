@@ -1098,10 +1098,13 @@ body[data-page="terms"] .site-header {
 }
 
 
-/* Huasquila gallery: keep every photo card the same size on desktop and mobile. */
-#huasquila .lodge-gallery figure,
-#huasquila .lodge-gallery figure:nth-child(3n+2) { flex-basis: min(62%, 720px); }
+
+
+/* Uniform image card dimensions across all Amazon lodge galleries. */
+.lodge-gallery figure,
+.lodge-gallery figure:nth-child(3n+2) { flex-basis: min(62%, 720px); }
+.lodge-gallery img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
 @media (max-width: 700px) {
-  #huasquila .lodge-gallery figure,
-  #huasquila .lodge-gallery figure:nth-child(3n+2) { flex-basis: 85%; }
+  .lodge-gallery figure,
+  .lodge-gallery figure:nth-child(3n+2) { flex-basis: 85%; }
 }
