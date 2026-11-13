@@ -178,6 +178,11 @@ export const pages = {
     title: "Endemic Yacht in the Galapagos",
     description: "Experience the Galapagos aboard Endemic, with elegant suites, open-air spaces and wildlife-led adventures."
   },
+  grand: {
+    path: "/yacht-grand-ocean-spray/",
+    title: "Grand Ocean Spray in the Galapagos",
+    description: "Discover the Golden Treasure Expedition aboard Grand Ocean Spray, with its verified eight-day Galapagos itinerary."
+  },
   naturalist: {
     path: "/naturalist-expedition/",
     title: "Naturalist Expedition in the Galapagos",
