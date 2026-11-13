@@ -333,10 +333,11 @@ function amazonLodges(locale = "en") {
 
 function galapagosCruise(locale = "en") {
   const es = locale === "es";
-  const card = ({ href, image, alt, eyebrow, title, program, copy, link }) => `<article class="galapagos-option reveal">
-    <a class="galapagos-option__image" href="${localizedPath(href, locale)}" aria-label="${link}: ${title}"><img src="/assets/images/${image}" alt="${alt}" loading="lazy" decoding="async"></a>
-    <div class="galapagos-option__copy"><span class="eyebrow">${eyebrow}</span><h3>${title}</h3><p class="galapagos-option__program">${program}</p><p>${copy}</p><a class="text-link" href="${localizedPath(href, locale)}">${link} ${icon("arrow")}</a></div>
-  </article>`;
+  const card = ({ href, image, alt, eyebrow, title, program, copy, link }) => {
+    const variant = href.includes("anahi") ? "anahi" : href.includes("grand-ocean-spray") ? "grand" : "endemic";
+    const loading = variant === "anahi" ? 'fetchpriority="high"' : 'loading="lazy"';
+    return `<a class="cruise-showcase cruise-showcase--${variant} reveal" href="${localizedPath(href, locale)}"><div class="cruise-showcase__image"><img src="/assets/images/${image}" alt="${alt}" ${loading} decoding="async"></div><div class="cruise-showcase__copy"><span class="eyebrow">${eyebrow}</span><h2>${title}</h2><h3>${program}</h3><p>${copy}</p><span class="cruise-showcase__link">${link} ${icon("arrow")}</span></div></a>`;
+  };
   const cards = [
     {
       href: "/yacht-anahi/", image: "yacht-anahi-exterior.jpg",
