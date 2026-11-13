@@ -1144,3 +1144,17 @@ body[data-page="terms"] .site-header {
 .grand-yacht-photo img{width:100%;height:100%;object-fit:cover}
 @media(max-width:700px){.cruise-cover.anahi-feature{grid-template-columns:1fr;grid-template-rows:45svh minmax(0,1fr);height:100svh;height:100dvh;min-height:0}.cruise-cover .anahi-feature__image{min-height:0}.cruise-cover .anahi-feature__copy{padding:clamp(1.15rem,5vw,2rem);justify-content:center}.cruise-cover .anahi-feature__copy h2{margin:.8rem 0;font-size:clamp(2.8rem,12vw,4.4rem)}.cruise-cover .anahi-feature__copy h3{font-size:1.05rem}.cruise-cover .anahi-feature__copy p{margin-bottom:1rem;font-size:.9rem;line-height:1.45}.cruise-cover .anahi-feature__copy .eyebrow{font-size:.62rem}.grand-yacht-photo{height:48svh;margin-bottom:2rem}}
 
+
+/* Galapagos option cards: consistent image proportions and responsive comparison grid. */
+.galapagos-option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;align-items:stretch}
+.galapagos-option{display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid rgba(32,56,43,.14);border-radius:20px;background:var(--paper,#fff)}
+.galapagos-option__image{display:block;aspect-ratio:4/3;overflow:hidden;background:#e6e8df}
+.galapagos-option__image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
+.galapagos-option__image:hover img{transform:scale(1.035)}
+.galapagos-option__copy{display:flex;flex:1;flex-direction:column;align-items:flex-start;padding:clamp(1.15rem,2vw,1.65rem)}
+.galapagos-option__copy h3{margin:.45rem 0 .5rem}
+.galapagos-option__copy p{max-width:34rem;line-height:1.65}
+.galapagos-option__program{font-weight:650;color:var(--ink,#20382b)}
+.galapagos-option__copy .text-link{margin-top:auto;padding-top:1rem}
+@media(max-width:900px){.galapagos-option-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.galapagos-option-grid{grid-template-columns:1fr;gap:1rem}.galapagos-option__image{aspect-ratio:16/10}}
