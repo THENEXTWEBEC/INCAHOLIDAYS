@@ -104,6 +104,9 @@ const sceneCount = document.querySelector("[data-scene-count]");
 const worlds = document.querySelector(".worlds-section");
 const worldTrack = document.querySelector(".worlds-track");
 const worldProgress = document.querySelector(".worlds-progress span");
+const worldProgressBar = document.querySelector(".worlds-progress");
+const worldPrev = document.querySelector("[data-world-prev]");
+const worldNext = document.querySelector("[data-world-next]");
 const memory = document.querySelector(".memory-section");
 
 if (journey && !reduceMotion && !window.matchMedia("(pointer: coarse) and (max-width: 760px)").matches) {
@@ -149,20 +152,54 @@ if (journey && !reduceMotion && !window.matchMedia("(pointer: coarse) and (max-w
   scheduleJourney();
 }
 
-if (worlds && worldTrack && !reduceMotion && !window.matchMedia("(max-width: 760px)").matches) {
+if (worlds && worldTrack) {
+  const panels = [...worldTrack.querySelectorAll(".world-panel")];
   let scheduled = false;
+  const currentIndex = () => {
+    const trackCenter = worldTrack.getBoundingClientRect().left + worldTrack.clientWidth / 2;
+    return panels.reduce((best, panel, index) => {
+      const center = panel.getBoundingClientRect().left + panel.offsetWidth / 2;
+      const bestCenter = panels[best].getBoundingClientRect().left + panels[best].offsetWidth / 2;
+      return Math.abs(center - trackCenter) < Math.abs(bestCenter - trackCenter) ? index : best;
+    }, 0);
+  };
+  const goToWorld = index => {
+    const panel = panels[Math.max(0, Math.min(panels.length - 1, index))];
+    if (!panel) return;
+    worldTrack.scrollTo({ left: panel.offsetLeft - panels[0].offsetLeft, behavior: reduceMotion ? "auto" : "smooth" });
+  };
+  worldPrev?.addEventListener("click", () => goToWorld(currentIndex() - 1));
+  worldNext?.addEventListener("click", () => goToWorld(currentIndex() + 1));
   const paintWorlds = () => {
-    const bounds = worlds.getBoundingClientRect();
-    const distance = Math.max(1, worlds.offsetHeight - window.innerHeight);
-    const progress = Math.max(0, Math.min(1, -bounds.top / distance));
-    const travel = Math.max(0, worldTrack.scrollWidth - window.innerWidth * .86);
-    worldTrack.style.setProperty("--worlds-x", `${-travel * progress}px`);
-    worldProgress?.style.setProperty("--progress", `${progress * 100}%`);
+    const index = currentIndex();
+    worldProgress?.style.setProperty("--progress", `${(index / Math.max(1, panels.length - 1)) * 100}%`);
+    worldProgressBar?.setAttribute("aria-valuenow", String(index + 1));
+    if (worldPrev) worldPrev.disabled = index === 0;
+    if (worldNext) worldNext.disabled = index === panels.length - 1;
     scheduled = false;
   };
   const schedule = () => { if (scheduled) return; scheduled = true; requestAnimationFrame(paintWorlds); };
-  window.addEventListener("scroll", schedule, { passive: true });
+  worldTrack.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule, { passive: true });
+  let dragStart = null;
+  worldTrack.addEventListener("pointerdown", event => {
+    if (event.pointerType !== "mouse" || event.button !== 0 || event.target.closest("a,button")) return;
+    dragStart = { x: event.clientX, left: worldTrack.scrollLeft, id: event.pointerId };
+    worldTrack.setPointerCapture(event.pointerId);
+  });
+  worldTrack.addEventListener("pointermove", event => {
+    if (!dragStart || dragStart.id !== event.pointerId) return;
+    if (Math.abs(event.clientX - dragStart.x) > 5) worldTrack.classList.add("is-dragging");
+    if (worldTrack.classList.contains("is-dragging")) worldTrack.scrollLeft = dragStart.left - (event.clientX - dragStart.x);
+  });
+  const endDrag = event => {
+    if (!dragStart || dragStart.id !== event.pointerId) return;
+    dragStart = null;
+    worldTrack.classList.remove("is-dragging");
+    schedule();
+  };
+  worldTrack.addEventListener("pointerup", endDrag);
+  worldTrack.addEventListener("pointercancel", endDrag);
   schedule();
 }
 
