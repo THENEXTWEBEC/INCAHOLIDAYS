@@ -749,7 +749,42 @@ spanishTranslations.push(
   ["Every journey begins with connection.", "Cada viaje comienza con una conexión."],
   ["Culture · Andes", "Cultura · Andes"],
   ["Community · Amazonía", "Comunidad · Amazonía"],
-  ["Wildlife · Galápagos", "Fauna · Galápagos"]
+  ["Wildlife · Galápagos", "Fauna · Galápagos"],
+  ["B2B Travel Partners", "Socios de viaje B2B"],
+  ["Your trusted local partner in Ecuador.", "Tu aliado local de confianza en Ecuador."],
+  ["Why Work With Inca Holidays?", "¿Por qué trabajar con Inca Holidays?"],
+  ["We know that exceptional travel is built on trust and reliable relationships. As an Ecuadorian-owned company with deep roots across all four regions, we partner with international agencies to craft personalized, seamless journeys that showcase the true soul of our country.", "Sabemos que los viajes excepcionales se construyen sobre la confianza y relaciones sólidas. Como empresa ecuatoriana con profundas raíces en las cuatro regiones, colaboramos con agencias internacionales para crear viajes personalizados y fluidos que muestran el verdadero espíritu de nuestro país."],
+  ["Over 25 Years of Experience", "Más de 25 años de experiencia"],
+  ["Deep-rooted understanding of Ecuador’s unique travel industry and landscapes.", "Un conocimiento profundo del sector turístico ecuatoriano y de sus paisajes únicos."],
+  ["Local Expertise", "Conocimiento local"],
+  ["We know our country’s four regions like the back of our hand, including hidden spots, cultures, and pristine ecosystems.", "Conocemos como la palma de nuestra mano las cuatro regiones del país, incluidos sus rincones escondidos, culturas y ecosistemas intactos."],
+  ["Professional & Reliable", "Profesionales y confiables"],
+  ["A legally registered tour provider dedicated to delivering outstanding quality and flawless execution.", "Un operador turístico legalmente registrado, comprometido con ofrecer una calidad excepcional y una ejecución impecable."],
+  ["Trusted Partnerships", "Alianzas de confianza"],
+  ["Long-standing professional relationships built on transparency, authenticity, and unwavering integrity.", "Relaciones profesionales duraderas, basadas en la transparencia, la autenticidad y la integridad."],
+  ["Experienced Team", "Equipo experimentado"],
+  ["Top-tier national guides and dependable drivers focused on providing genuine hospitality and care.", "Guías nacionales de primer nivel y conductores confiables, enfocados en ofrecer hospitalidad y atención genuinas."],
+  ["Personalized Journeys", "Viajes personalizados"],
+  ["Bespoke itineraries crafted to match the precise expectations and dreams of every traveler.", "Itinerarios diseñados para responder a las expectativas y los sueños de cada viajero."],
+  ["Community Commitment", "Compromiso con las comunidades"],
+  ["Investing directly in local initiatives to ensure sustainable, meaningful support for surrounding villages.", "Invertimos directamente en iniciativas locales para brindar un apoyo sostenible y significativo a las comunidades cercanas."],
+  ["Respect for Nature", "Respeto por la naturaleza"],
+  ["Promoting conscious exploration that protects wild habitats, native species, and regional traditions.", "Promovemos una exploración consciente que protege los hábitats silvestres, las especies nativas y las tradiciones de cada región."],
+  ["Services for B2B Partners", "Servicios para socios B2B"],
+  ["Serving as your trusted DMC in Ecuador, we offer regional knowledge, seamless operational logistics, and dedicated hospitality to ensure flawless journeys for your guests.", "Como tu operador local de confianza en Ecuador, aportamos conocimiento regional, logística eficiente y atención dedicada para que los viajes de tus clientes transcurran a la perfección."],
+  ["Stays & Transfers", "Alojamientos y traslados"],
+  ["Handpicked hotel bookings, dependable private transfers, ground transport, and internal flight logistics.", "Reservas en hoteles cuidadosamente seleccionados, traslados privados confiables, transporte terrestre y coordinación de vuelos internos."],
+  ["Guided Excursions & Local Encounters", "Excursiones guiadas y encuentros locales"],
+  ["Private tours, deep cultural connections, nature activities, and genuine community food experiences.", "Tours privados, conexiones culturales profundas, actividades en la naturaleza y experiencias gastronómicas auténticas con comunidades."],
+  ["Galápagos Excursions", "Excursiones en Galápagos"],
+  ["Land-based island itineraries, short daily excursions, and premier cruise bookings.", "Itinerarios terrestres entre las islas, excursiones cortas de un día y reservas en cruceros de primera categoría."],
+  ["Amazon & Andean Explorations", "Exploraciones amazónicas y andinas"],
+  ["Conscious nature-oriented trips, authentic local stays, and hand-selected eco-friendly lodges.", "Viajes responsables en la naturaleza, alojamientos locales auténticos y lodges ecológicos seleccionados cuidadosamente."],
+  ["On-the-Ground Logistics & Care", "Logística y atención local"],
+  ["Round-the-clock local assistance, detailed execution, and smooth communication with regional partners through every step of the trip.", "Asistencia local permanente, coordinación detallada y comunicación fluida con nuestros aliados regionales durante todo el viaje."],
+  ["CONTACT", "CONTACTO"],
+  ["Let's Build Great Travel Experiences Together", "Creemos juntos grandes experiencias de viaje"],
+  ["Contact our team to discuss your next travel program.", "Contacta a nuestro equipo para conversar sobre tu próximo programa de viaje."]
 );
 
 spanishTranslations.push(
@@ -850,6 +885,7 @@ const spanishMeta = {
   endemic: { title: "Endemic en Galápagos", description: "Vive Galápagos a bordo de Endemic, con suites elegantes, espacios abiertos y aventuras junto al mar." },
   naturalist: { title: "Expedición naturalista en Galápagos", description: "Explora Galápagos con desembarcos guiados, paisajes volcánicos y tiempo sobre el agua." },
   darwins: { title: "Darwin's Steps desde Santa Cruz", description: "Un tour terrestre por Galápagos con base en Santa Cruz, fauna, paisajes insulares y excursiones guiadas." },
+  b2b: { title: "Socios de viaje B2B", description: "Tu aliado local de confianza en Ecuador." },
   about: { title: "Sobre Inca Holidays", description: "Conoce Inca Holidays, una empresa de viajes de Quito que crea experiencias culturales, de aventura suave y viajes a medida." },
   plan: { title: "Planifica tu viaje a medida", description: "Cuéntale a Inca Holidays tus fechas, intereses y estilo de viaje para comenzar a diseñar tu itinerario." },
   privacy: { title: "Aviso de privacidad", description: "Cómo se gestiona la información de las consultas de viaje en el sitio web de Inca Holidays." },
@@ -964,7 +1000,7 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
 </body>
 </html>`;
   const englishRendered = pageKey === "home" ? rendered.replaceAll("A medida · Ecuador y Galápagos", "Tailor-made · Ecuador and Galápagos").replaceAll("Costa y bosque nublado", "Coast and cloud forest").replaceAll("Costa · Chocó Andino", "Coast · Chocó Andino") : rendered;
-  const localized = locale === "es" ? (pageKey === "b2b" ? rendered : translateToSpanish(rendered)).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : englishRendered;
+  const localized = locale === "es" ? translateToSpanish(rendered).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : englishRendered;
   if (locale !== "en") return localized;
   return localized.replaceAll('href="/', 'href="/en/').replaceAll('content="/', 'content="/en/').replaceAll('href="/en/assets/', 'href="/assets/').replaceAll('href="/en/en/', 'href="/en/').replace('__LANGUAGE_PATH__', localizedPath(path, "es"));
 }
