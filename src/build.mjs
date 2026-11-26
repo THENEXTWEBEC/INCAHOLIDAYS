@@ -766,6 +766,7 @@ spanishTranslations.push(
   ["Top-tier national guides and dependable drivers focused on providing genuine hospitality and care.", "Guías nacionales de primer nivel y conductores confiables, enfocados en ofrecer hospitalidad y atención genuinas."],
   ["Personalized Journeys", "Viajes personalizados"],
   ["Bespoke itineraries crafted to match the precise expectations and dreams of every traveler.", "Itinerarios diseñados para responder a las expectativas y los sueños de cada viajero."],
+  ["Bespoke itineraries crafted to match the exact expectations, passions, and budgets of every traveler.", "Itinerarios diseñados según las expectativas, intereses y presupuesto de cada viajero."],
   ["Community Commitment", "Compromiso con las comunidades"],
   ["Investing directly in local initiatives to ensure sustainable, meaningful support for surrounding villages.", "Invertimos directamente en iniciativas locales para brindar un apoyo sostenible y significativo a las comunidades cercanas."],
   ["Respect for Nature", "Respeto por la naturaleza"],
