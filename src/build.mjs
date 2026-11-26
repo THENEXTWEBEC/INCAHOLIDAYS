@@ -100,7 +100,10 @@ function nav(pageKey, locale = "es") {
         <a href="${localizedPath("/destinations/", locale)}" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
         <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences</a>
         <a href="${localizedPath("/villa-doris/", locale)}" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
+        <a href="/b2b-travel-partners/">B2B Travel Partners</a>
         <a href="${localizedPath("/about/", locale)}" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
+      <a href="/b2b-travel-partners/">B2B Travel Partners</a>
+        <a href="/b2b-travel-partners/">B2B Travel Partners</a>
       </nav>
       <div class="header-actions"><a class="language-switch" href="__LANGUAGE_PATH__" aria-label="${locale === "es" ? "Switch to English" : "Cambiar a español"}">${locale === "es" ? "EN" : "ES"}</a><a class="header-cta" href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("arrow")}</a></div>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-menu-toggle>
@@ -534,6 +537,33 @@ function darwinsStepsPage(locale = "en") {
   </main>`;
 }
 
+function b2bTravelPartnersPage() {
+  const strengths = [
+    ["Over 25 Years of Experience", "Deep-rooted understanding of Ecuador’s unique travel industry and landscapes."],
+    ["Local Expertise", "We know our country’s four regions like the back of our hand, including hidden spots, cultures, and pristine ecosystems."],
+    ["Professional & Reliable", "A legally registered tour provider dedicated to delivering outstanding quality and flawless execution."],
+    ["Trusted Partnerships", "Long-standing professional relationships built on transparency, authenticity, and unwavering integrity."],
+    ["Experienced Team", "Top-tier national guides and dependable drivers focused on providing genuine hospitality and care."],
+    ["Personalized Journeys", "Bespoke itineraries crafted to match the precise expectations and dreams of every traveler."],
+    ["Community Commitment", "Investing directly in local initiatives to ensure sustainable, meaningful support for surrounding villages."],
+    ["Respect for Nature", "Promoting conscious exploration that protects wild habitats, native species, and regional traditions."]
+  ];
+  const services = [
+    ["Personalized Journeys", "Bespoke itineraries crafted to match the exact expectations, passions, and budgets of every traveler."],
+    ["Stays & Transfers", "Handpicked hotel bookings, dependable private transfers, ground transport, and internal flight logistics."],
+    ["Guided Excursions & Local Encounters", "Private tours, deep cultural connections, nature activities, and genuine community food experiences."],
+    ["Galápagos Excursions", "Land-based island itineraries, short daily excursions, and premier cruise bookings."],
+    ["Amazon & Andean Explorations", "Conscious nature-oriented trips, authentic local stays, and hand-selected eco-friendly lodges."],
+    ["On-the-Ground Logistics & Care", "Round-the-clock local assistance, detailed execution, and smooth communication with regional partners through every step of the trip."]
+  ];
+  return `<main id="main" class="b2b-page">
+    <section class="b2b-hero" style="--b2b-image:url('/assets/images/hero-andes-2400.webp')"><div class="shell b2b-hero__copy"><h1>B2B Travel Partners</h1><p>Your trusted local partner in Ecuador.</p></div></section>
+    <section class="b2b-intro section"><div class="shell"><div class="b2b-section-heading"><h2>Why Work With Inca Holidays?</h2></div><p class="b2b-intro__copy">We know that exceptional travel is built on trust and reliable relationships. As an Ecuadorian-owned company with deep roots across all four regions, we partner with international agencies to craft personalized, seamless journeys that showcase the true soul of our country.</p><div class="b2b-strengths">${strengths.map(([title, copy], i) => `<article><span>${String(i + 1).padStart(2, "0")}</span><h3>${title}</h3><p>${copy}</p></article>`).join("")}</div></div></section>
+    <section class="b2b-services section section--muted"><div class="shell"><div class="b2b-section-heading"><h2>Services for B2B Partners</h2><p>Serving as your trusted DMC in Ecuador, we offer regional knowledge, seamless operational logistics, and dedicated hospitality to ensure flawless journeys for your guests.</p></div><div class="b2b-service-list">${services.map(([title, copy], i) => `<article><span>${String(i + 1).padStart(2, "0")}</span><div><h3>${title}</h3><p>${copy}</p></div></article>`).join("")}</div></div></section>
+    <section class="b2b-contact section"><div class="shell b2b-contact__inner"><span class="eyebrow light">CONTACT</span><h2>Let's Build Great Travel Experiences Together</h2><a class="button button--light" href="/plan-your-trip/">Contact our team to discuss your next travel program. ${icon("arrow")}</a></div></section>
+  </main>`;
+}
+
 function destinationPage(d, locale = "en") {
   const es = locale === "es";
   return `<main id="main">
@@ -934,7 +964,7 @@ function baseHtml({ pageKey, title, description, path, main, image = "/assets/im
 </body>
 </html>`;
   const englishRendered = pageKey === "home" ? rendered.replaceAll("A medida · Ecuador y Galápagos", "Tailor-made · Ecuador and Galápagos").replaceAll("Costa y bosque nublado", "Coast and cloud forest").replaceAll("Costa · Chocó Andino", "Coast · Chocó Andino") : rendered;
-  const localized = locale === "es" ? translateToSpanish(rendered).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : englishRendered;
+  const localized = locale === "es" ? (pageKey === "b2b" ? rendered : translateToSpanish(rendered)).replace("__LANGUAGE_PATH__", localizedPath(path, "en")) : englishRendered;
   if (locale !== "en") return localized;
   return localized.replaceAll('href="/', 'href="/en/').replaceAll('content="/', 'content="/en/').replaceAll('href="/en/assets/', 'href="/assets/').replaceAll('href="/en/en/', 'href="/en/').replace('__LANGUAGE_PATH__', localizedPath(path, "es"));
 }
@@ -949,6 +979,7 @@ const outputPages = [
   ...(pages.grand ? [{ key: "grand", ...pages.grand, main: grandOceanSprayPage(), mainEs: grandOceanSprayPage("es"), image: "/assets/images/grand-ocean-spray-exterior.jpeg" }] : []),
   ...(pages.naturalist ? [{ key: "naturalist", ...pages.naturalist, main: naturalistExpeditionPage(), mainEs: naturalistExpeditionPage("es"), image: "/assets/images/naturalist-bahia-landscape.jpg" }] : []),
   ...(pages.darwins ? [{ key: "darwins", ...pages.darwins, main: darwinsStepsPage(), mainEs: darwinsStepsPage("es"), image: "/assets/images/darwins-steps-walk.jpg" }] : []),
+  ...(pages.b2b ? [{ key: "b2b", ...pages.b2b, main: b2bTravelPartnersPage(), image: "/assets/images/hero-andes-1200.webp" }] : []),
   { key: "about", ...pages.about, main: aboutPage(), image: "/assets/images/about-local-connection.webp" },
   { key: "plan", ...pages.plan, main: planPage() },
   { key: "privacy", ...pages.privacy, main: privacyPage() },

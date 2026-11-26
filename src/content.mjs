@@ -193,6 +193,11 @@ export const pages = {
     title: "Darwin's Steps from Santa Cruz",
     description: "A land-based Galapagos tour with a Santa Cruz base, wildlife, island landscapes and guided day excursions."
   },
+b2b: {
+    path: "/b2b-travel-partners/",
+    title: "B2B Travel Partners",
+    description: "Your trusted local partner in Ecuador."
+  },
   about: {
     path: "/about/",
     title: "About Inca Holidays",
