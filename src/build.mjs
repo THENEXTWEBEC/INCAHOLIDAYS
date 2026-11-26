@@ -100,10 +100,8 @@ function nav(pageKey, locale = "es") {
         <a href="${localizedPath("/destinations/", locale)}" ${destinationActive ? 'aria-current="page"' : ""}>Destinations</a>
         <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences</a>
         <a href="${localizedPath("/villa-doris/", locale)}" ${pageKey === "villa" ? 'aria-current="page"' : ""}>Villa Doris</a>
-        <a href="/b2b-travel-partners/">B2B Travel Partners</a>
         <a href="${localizedPath("/about/", locale)}" ${pageKey === "about" ? 'aria-current="page"' : ""}>About</a>
-      <a href="/b2b-travel-partners/">B2B Travel Partners</a>
-        <a href="/b2b-travel-partners/">B2B Travel Partners</a>
+        <a href="/b2b-travel-partners/" ${pageKey === "b2b" ? 'aria-current="page"' : ""}>B2B Travel Partners</a>
       </nav>
       <div class="header-actions"><a class="language-switch" href="__LANGUAGE_PATH__" aria-label="${locale === "es" ? "Switch to English" : "Cambiar a español"}">${locale === "es" ? "EN" : "ES"}</a><a class="header-cta" href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("arrow")}</a></div>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-menu-toggle>
@@ -116,6 +114,7 @@ function nav(pageKey, locale = "es") {
       <a href="${localizedPath("/destinations/#experiences", locale)}">Experiences <span>Lodges · cruises · stays</span></a>
       <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris</a>
       <a href="${localizedPath("/about/", locale)}">About</a>
+      <a href="/b2b-travel-partners/">B2B Travel Partners</a>
       <a href="${localizedPath("/plan-your-trip/", locale)}">Plan your trip ${icon("diagonal")}</a>
     </nav>
   </header>`;
@@ -143,6 +142,7 @@ function footer(locale = "es") {
         <a href="${localizedPath("/naturalist-expedition/", locale)}">Naturalist Expedition</a>
         <a href="${localizedPath("/darwins-steps/", locale)}">Darwin's Steps</a>
         <a href="${localizedPath("/villa-doris/", locale)}">Villa Doris</a>
+        <a href="/b2b-travel-partners/">B2B Travel Partners</a>
       </div>
       <div>
         <h3>Contact</h3>
